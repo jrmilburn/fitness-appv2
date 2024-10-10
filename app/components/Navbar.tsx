@@ -28,7 +28,7 @@ export default function Navbar() {
                         {/* Navigation Links */}
                         <div className='space-y-6'>
                             <li>
-                                <Link href='/'>
+                                <Link href='/workouts/week'>
                                     <button className='w-full px-6 py-3 bg-foreground text-white font-semibold rounded-lg hover:opacity-75 transition'>
                                         Current Workout
                                     </button>
