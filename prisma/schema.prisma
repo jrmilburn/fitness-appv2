@@ -1,0 +1,145 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  image         String?
+
+  programs         Program[]
+  currentProgramId String?
+}
+
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  refresh_token_expires_in Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String?
+  session_state            String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Program {
+  id        String    @id @default(cuid())
+  name      String
+  length    Int
+  days      Int
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  weeks         Week[]
+  currentWeekId String?
+}
+
+model Week {
+  id        String  @id @default(cuid())
+  weekNo    Int
+  program   Program @relation(fields: [programId], references: [id])
+  programId String
+
+  updatedAt DateTime? @updatedAt
+
+  workouts         Workout[]
+  currentWorkoutId String?
+
+  @@unique([programId, weekNo])
+}
+
+model Workout {
+  id        String @id @default(cuid())
+  workoutNo Int
+  week      Week   @relation(fields: [weekId], references: [id])
+  weekId    String
+  name      String
+
+  updatedAt DateTime? @updatedAt
+
+  excercises         Excercise[]
+  currentExcerciseId String?
+
+  @@unique([weekId, name])
+}
+
+model Excercise {
+  id        String   @id @default(cuid())
+  name      String
+  workout   Workout? @relation(fields: [workoutId], references: [id])
+  workoutId String?
+
+  updatedAt DateTime? @updatedAt
+
+  sets         Set[]
+  currentSetId String?
+
+  muscleGroupId String
+  muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id])
+
+  @@unique([workoutId, name])
+}
+
+model Set {
+  id          String    @id @default(cuid())
+  setNo       Int
+  reps        Int
+  weight      Int
+  excercise   Excercise @relation(fields: [excerciseId], references: [id])
+  excerciseId String
+
+  updatedAt DateTime? @updatedAt
+}
+
+model MuscleGroup {
+  id         String      @id @default(cuid())
+  name       String      @unique
+  excercises Excercise[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime?   @updatedAt
+}
