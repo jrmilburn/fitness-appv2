@@ -26,10 +26,24 @@ export async function GET() {
     const currentWeek = await prisma.week.findUnique({
         where: {
             id: currentProgram?.currentWeekId
+        },
+        include: {
+            workouts: true
         }
     })
 
     console.log('CURRENT WEEK: ', currentWeek);
+
+    if (!currentWeek?.currentWorkoutId) {
+        await prisma.week.update({
+            where: {
+                id: currentWeek?.id
+            },
+            data: {
+                currentWorkoutId: currentWeek?.workouts[0]?.id
+            }
+        })
+    }
 
     const currentWorkout = await prisma.workout.findUnique({
         where: {

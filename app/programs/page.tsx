@@ -26,12 +26,13 @@ export default async function Programs() {
     });
 
     return (
-        <main className="max-w-3xl mx-auto p-8 space-y-8">
+        <main className="w-full mx-auto p-8 space-y-8 overflow-y-scroll h-screen">
             {/* Title */}
-            <h1 className="text-4xl font-semibold text-gray-800 mb-8">Your Programs</h1>
 
             {/* Program Cards */}
-            <div className="space-y-6 w-full">
+            <div className="space-y-6 w-full max-w-2xl mx-auto">
+            <h1 className="text-4xl font-semibold text-gray-800 mb-8">Your Programs</h1>
+
                 {programs.map((program) => (
                     <ProgramTab
                         key={program.id}
