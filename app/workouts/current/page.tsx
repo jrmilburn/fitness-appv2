@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import Loader from '../../components/Loader';
 import Excercise from '@/app/components/CurrentWorkout/Excercise';
 import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
+import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
 
 export default function Workout() {
 
@@ -42,6 +43,9 @@ export default function Workout() {
                     key={excercise.id }
                     excercise={excercise}/>
             ))}
+            <CompleteWorkout />
         </div>
+
+
     );
 }

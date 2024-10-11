@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
+import calendarIcon from '../../assets/edit-calendar.svg'
 
 export default function WorkoutHeader({ weekId, name }) {
 
@@ -31,7 +33,13 @@ export default function WorkoutHeader({ weekId, name }) {
                     <h2 className="text-xl">Week {week?.weekNo} {name}</h2>
                 </div>
                 <div className="flex flex-col justify-end">
-                    <button className="w-8 h-8 bg-black" onClick={selectWorkout} ></button>
+                    <button className="w-8 h-8 hover:scale-105 transition-all duration-300" onClick={selectWorkout} >
+                    <Image
+                      priority
+                      src={calendarIcon}
+                      alt="Choose current workout"
+                    />
+                    </button>
                 </div>
             </div>
         </div>
