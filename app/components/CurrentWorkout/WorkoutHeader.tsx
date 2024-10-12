@@ -3,8 +3,7 @@ import Image from 'next/image';
 import calendarIcon from '../../assets/edit-calendar.svg';
 import Workouts from './Workouts';
 
-export default function WorkoutHeader({ weekId, name, setWorkout }) {
-    const [week, setWeek] = useState(null);
+export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek }) {
     const [programWorkouts, setProgramWorkouts] = useState({});
     const [workoutSelect, setWorkoutSelect] = useState(false);
 

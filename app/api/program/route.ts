@@ -23,20 +23,35 @@ export async function POST(req) {
 
   console.log(userId);
   
-  weeks.forEach(week => {
-    week.workouts.forEach(workout => {
+  weeks.forEach((week, weekIndex) => {
+    const totalWeeks = weeks.length; // Get the total number of weeks
+  
+    const setCount = (weekIndex === 0 || weekIndex === totalWeeks - 1)
+      ? 2
+      : 2 + Math.floor((2 * weekIndex) / (totalWeeks - 2));
+  
+    let repsInReserve = (weekIndex === totalWeeks - 1)
+      ? 8
+      : 3 - Math.floor((3 * weekIndex) / (totalWeeks - 2));
+  
+    // Add repsInReserve to the week object
+    week.repsInReserve = repsInReserve;
+  
+    week.workouts.forEach((workout) => {
       workout.excercises.forEach((excercise, index) => {
-          workout.excercises[index] = {
-              ...excercise,
-              setCount: 2,
-              sets: [
-                  { reps: 0, weight: 0 },
-                  { reps: 0, weight: 0 }
-              ]
-          };
+        const sets = Array.from({ length: setCount }, () => ({
+          reps: 0,
+          weight: 0,
+        }));
+  
+        workout.excercises[index] = {
+          ...excercise,
+          setCount: setCount,  // Set the calculated setCount
+          sets: sets,          // Assign the generated sets array
+        };
       });
     });
-  })
+  });
   
   try {
     // Create or update the Program
@@ -45,11 +60,12 @@ export async function POST(req) {
         name: program.name,
         length: program.length,
         days: program.days,
-        userId: userId
-    }});
+        userId: userId,
+      }
+    });
   
     for (const [weekIndex, week] of weeks.entries()) {
-      // Create or update Week
+      // Create or update Week, including repsInReserve
       const createdWeek = await prisma.week.upsert({
         where: {
           programId_weekNo: {
@@ -59,10 +75,12 @@ export async function POST(req) {
         },
         update: {
           updatedAt: new Date(),
+          repsInReserve: week.repsInReserve,  // Update repsInReserve
         },
         create: {
           weekNo: weekIndex + 1,
           programId: createdProgram.id,
+          repsInReserve: week.repsInReserve,  // Set repsInReserve
         },
       });
   
@@ -81,14 +99,13 @@ export async function POST(req) {
           create: {
             name: workout.name,
             weekId: createdWeek.id,
-            workoutNo: workIndex + 1
+            workoutNo: workIndex + 1,
           },
         });
   
         for (const excercise of workout.excercises) {
-
           console.log(excercise);
-
+  
           // Ensure the MuscleGroup exists or create it if necessary
           const muscleGroup = await prisma.muscleGroup.upsert({
             where: { name: excercise.muscle },
@@ -121,14 +138,14 @@ export async function POST(req) {
                 excerciseId: createdExcercise.id,
                 weight: set.weight,
                 reps: set.reps,
-                setNo: setIndex + 1
+                setNo: setIndex + 1,
               },
             });
           }
         }
       }
     }
-
+  
     await prisma.user.update({
       where: {
         id: userId,
@@ -136,32 +153,32 @@ export async function POST(req) {
       data: {
         currentProgramId: createdProgram.id,
       }
-    })
-
+    });
+  
     const newWeek = await prisma.week.update({
       where: {
-        programId_weekNo:{
+        programId_weekNo: {
           programId: createdProgram.id,
-          weekNo: weeks[0].weekNumber
+          weekNo: weeks[0].weekNumber,
         }
       },
       data: {
-        currentWorkoutId: weeks[0].workouts[0].id
+        currentWorkoutId: weeks[0].workouts[0].id,
       },
       include: {
-        workouts: true
+        workouts: true,
       }
-    })
-
+    });
+  
     const newProgram = await prisma.program.update({
       where: {
-        id: createdProgram.id
+        id: createdProgram.id,
       },
       data: {
-        currentWeekId: newWeek.id
+        currentWeekId: newWeek.id,
       }
-    })
-
+    });
+  
     console.log(newProgram, newWeek);
   
     return NextResponse.json(createdProgram);

@@ -8,34 +8,42 @@ export default function Excercise({ muscleId, muscleName, excercise, setProgram,
     const [showExcercises, setShowExcercises] = useState(false);
     const [selectedExcercise, setSelectedExcercise] = useState(null);
 
+    
+
     const handleSelectExcercise = (e, excercise) => {
-        e.preventDefault();
-        setSelectedExcercise(excercise)
-        setProgram((prev) => {
-          const newProgram = { ...prev };
-          newProgram.weeks[0].workouts.forEach((session) => {
+      e.preventDefault();
+      setSelectedExcercise(excercise);
+    
+      setProgram((prev) => {
+        const newProgram = { ...prev };
+    
+        // Iterate over all weeks in the program
+        newProgram.weeks.forEach((week) => {
+          week.workouts.forEach((session) => {
             if (session.name === workout) {
+              console.log(session.excercises);
     
-                console.log(session.excercises);
-    
-                if(session.excercises.length <= excerciseindex) {
-                    session.excercises.push({
-                        muscle: muscleName,
-                        excercise: excercise,
-                    });
-                } else {
-                    session.excercises[excerciseindex] = {
-                        muscle: muscleName,
-                        excercise: excercise,
-                    };
-                }
-    
+              // Ensure the exercise array is updated for each week
+              if (session.excercises.length <= excerciseindex) {
+                session.excercises.push({
+                  muscle: muscleName,
+                  excercise: excercise,
+                });
+              } else {
+                session.excercises[excerciseindex] = {
+                  muscle: muscleName,
+                  excercise: excercise,
+                };
+              }
             }
           });
-          return newProgram;
         });
-        setShowExcercises(false);
-    }
+    
+        return newProgram; // Return the updated program with changes across all weeks
+      });
+    
+      setShowExcercises(false); // Hide the exercise selection
+    };
 
     const handleShowExcercises = (e) => {
       e.preventDefault();

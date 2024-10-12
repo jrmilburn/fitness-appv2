@@ -1,7 +1,7 @@
 import Set from './Set'
 import { useEffect, useState } from 'react'
 
-export default function Excercise( {excercise} ) {
+export default function Excercise( {excercise, weekRir} ) {
 
     const [muscle, setMuscle] = useState({});
 
@@ -27,7 +27,7 @@ export default function Excercise( {excercise} ) {
                 <h2>Reps</h2>
             </div>
             {excercise.sets.map((set, index) => (
-                <Set key={index} setId={set.id} />
+                <Set key={index} setId={set.id} Rir={weekRir} />
             ))}
         </div>
     )

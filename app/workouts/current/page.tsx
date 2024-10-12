@@ -9,7 +9,7 @@ import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
 
 export default function Workout() {
 
-
+    const [week, setWeek] = useState(null);
     const [workout, setWorkout] = useState({});
 
     const { data: session } = useSession();
@@ -40,12 +40,15 @@ export default function Workout() {
                 name={workout.name}
                 weekId={workout.weekId}
                 setWorkout={setWorkout}
+                week={week}
+                setWeek={setWeek}
                 />
             )}
             {workout?.excercises && workout.excercises.map(excercise => (
                 <Excercise 
                     key={excercise.id }
-                    excercise={excercise}/>
+                    excercise={excercise}
+                    weekRir={week?.repsInReserve}/>
             ))}
             <CompleteWorkout />
         </div>

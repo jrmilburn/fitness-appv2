@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Set({ setId }) {
+export default function Set({ setId, Rir }) {
   const [isChecked, setIsChecked] = useState(false);
   const [focusedInput, setFocusedInput] = useState(''); // State to track which input is focused
 
@@ -15,7 +15,7 @@ export default function Set({ setId }) {
         {/* Weight Input */}
         <input
           type="text"
-          placeholder="Weight"
+          placeholder={`Weight`}
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           onFocus={() => setFocusedInput('weight')} // Set state when weight input is focused
           onBlur={() => setFocusedInput('')} // Reset state when input loses focus
@@ -24,7 +24,7 @@ export default function Set({ setId }) {
         {/* Reps Input */}
         <input
           type="text"
-          placeholder="Reps"
+          placeholder={`${Rir} RIR`}
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           onFocus={() => setFocusedInput('reps')} // Set state when reps input is focused
           onBlur={() => setFocusedInput('')} // Reset state when input loses focus
