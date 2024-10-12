@@ -31,7 +31,7 @@ export default function Workout() {
         });
       }, []);
 
-      console.log(workout);
+      
 
     return (
         <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>
@@ -48,7 +48,10 @@ export default function Workout() {
                 <Excercise 
                     key={excercise.id }
                     excercise={excercise}
-                    weekRir={week?.repsInReserve}/>
+                    weekRir={week?.repsInReserve}
+                    workout={workout}
+                    setWorkout={setWorkout}
+                    />
             ))}
             <CompleteWorkout />
         </div>

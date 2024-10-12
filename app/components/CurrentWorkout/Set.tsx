@@ -1,38 +1,92 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function Set({ setId, Rir }) {
+export default function Set({ setId, Rir, workout, setWorkout }) {
   const [isChecked, setIsChecked] = useState(false);
   const [focusedInput, setFocusedInput] = useState(''); // State to track which input is focused
+  const [weight, setWeight] = useState(null);
+  const [reps, setReps] = useState(null);
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/set/${setId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if(data.reps === 0) {
+        setReps(null)
+      } else {
+        setWeight(data.weight);
+        setReps(data.reps);
+      }
+
+    })
+  }, [setId])
+
+  const handleSubmit = async (e, setId) => {
+    e.preventDefault();
     setIsChecked(!isChecked);
-    // Logic for sending set to db
+
+    setWorkout(prev => ({
+      ...prev,
+      excercises: prev.excercises.map(excercise => ({
+        ...excercise,
+        sets: excercise.sets.map(set => 
+          set.id === setId ? { ...set, completed: true } : set
+        )
+      }))
+    }));
+
+    try {
+
+      const resp = await fetch(`http://localhost:3000/api/set/${setId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({weight, reps})
+      });
+
+      if(!resp.ok) {
+        throw new Error('Failed to update set');
+      }
+
+
+    } catch(err) {
+      console.error('Error updating set:', error);
+      setIsChecked(isChecked);
+    }
+
   };
 
   return (
     <>
       <div className="flex justify-between space-x-8 items-center">
-        {/* Weight Input */}
         <input
-          type="text"
+          type="number"
           placeholder={`Weight`}
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           onFocus={() => setFocusedInput('weight')} // Set state when weight input is focused
           onBlur={() => setFocusedInput('')} // Reset state when input loses focus
+          value={weight}
+          onChange={(e) => setWeight(+e.target.value)}
         />
 
-        {/* Reps Input */}
         <input
-          type="text"
+          type="number"
           placeholder={`${Rir} RIR`}
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           onFocus={() => setFocusedInput('reps')} // Set state when reps input is focused
           onBlur={() => setFocusedInput('')} // Reset state when input loses focus
+          value={reps}
+          onChange={(e) => setReps(+e.target.value)}
         />
 
         {/* Custom Checkbox */}
         <button
-          onClick={handleSubmit}
+          onClick={(e) => handleSubmit(e, setId)}
           className={`w-8 h-8 rounded-sm border-2 ${
             isChecked ? 'bg-green-500 border-blue-500' : 'border-gray-300'
           } flex items-center justify-center transition-all duration-300`}
@@ -60,7 +114,6 @@ export default function Set({ setId, Rir }) {
       >
 
 <div className="w-full h-7 overflow-hidden text-center">
-  {/* Weight Recommendation */}
   <div
     className={`transition-opacity transition-transform duration-500 ease-in-out ${
       focusedInput === 'weight'
@@ -73,7 +126,6 @@ export default function Set({ setId, Rir }) {
     Recommended weight: 100kg
   </div>
 
-  {/* Reps Recommendation */}
   <div
     className={`transition-opacity transition-transform duration-500 ease-in-out ${
       focusedInput === 'reps'

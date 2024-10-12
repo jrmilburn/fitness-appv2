@@ -52,7 +52,11 @@ export async function GET() {
         include: {
             excercises: {
                 include: {
-                    sets: true
+                    sets: {
+                        orderBy: {
+                            createdAt: 'asc'
+                        }
+                    }
                 }
             }
         }

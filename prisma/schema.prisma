@@ -104,6 +104,7 @@ model Excercise {
   workout       Workout?    @relation(fields: [workoutId], references: [id])
   workoutId     String?
   updatedAt     DateTime?   @updatedAt
+  createdAt     DateTime    @default(now())
   sets          Set[]
   currentSetId  String?
   muscleGroupId String
