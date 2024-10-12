@@ -31,12 +31,16 @@ export default function Workout() {
         });
       }, []);
 
+      console.log(workout);
+
     return (
         <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>
             {workout.weekId && (
                 <WorkoutHeader 
                 name={workout.name}
-                weekId={workout.weekId}/>
+                weekId={workout.weekId}
+                setWorkout={setWorkout}
+                />
             )}
             {workout?.excercises && workout.excercises.map(excercise => (
                 <Excercise 

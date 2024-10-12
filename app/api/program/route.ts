@@ -23,7 +23,8 @@ export async function POST(req) {
 
   console.log(userId);
   
-  weeks[0].workouts.forEach(workout => {
+  weeks.forEach(week => {
+    week.workouts.forEach(workout => {
       workout.excercises.forEach((excercise, index) => {
           workout.excercises[index] = {
               ...excercise,
@@ -34,7 +35,8 @@ export async function POST(req) {
               ]
           };
       });
-  });
+    });
+  })
   
   try {
     // Create or update the Program
