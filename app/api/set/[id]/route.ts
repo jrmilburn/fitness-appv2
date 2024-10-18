@@ -6,7 +6,7 @@ export async function PUT(
   { params }: { params: { id: string } }  // Destructure params to get the `id`
 ) {
   const { id } = params;
-  const { weight, reps } = await req.json();
+  const { weight, reps, completed } = await req.json();
 
   try {
 
@@ -17,9 +17,11 @@ export async function PUT(
         data: {
             weight: weight,
             reps: reps,
-            completed: true
+            completed: completed
         }
     })
+
+    console.log('UPDATED SET: ', set);
 
     // If no exercise is found, return 404
     if (!set) {

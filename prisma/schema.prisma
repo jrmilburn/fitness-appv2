@@ -122,6 +122,7 @@ model Set {
   excercise   Excercise @relation(fields: [excerciseId], references: [id])
   excerciseId String
   updatedAt   DateTime? @updatedAt
+  createdAt DateTime @default(now())
   completed   Boolean   @default(false)
 }
 

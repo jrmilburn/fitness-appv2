@@ -11,6 +11,7 @@ export default function Workout() {
 
     const [week, setWeek] = useState(null);
     const [workout, setWorkout] = useState({});
+    const [completed, setCompleted] = useState(false);
 
     const { data: session } = useSession();
 
@@ -30,6 +31,13 @@ export default function Workout() {
             console.error('Error:', error);
         });
       }, []);
+
+    useEffect(() => {
+        if(workout.excercises) {
+            const allCompleted = workout?.excercises.every(excercise => excercise.completed === true);
+            setCompleted(allCompleted); 
+        }
+    }, [workout.excercises])
 
       
 
@@ -53,7 +61,8 @@ export default function Workout() {
                     setWorkout={setWorkout}
                     />
             ))}
-            <CompleteWorkout />
+            <CompleteWorkout 
+                completed={completed}/>
         </div>
 
 

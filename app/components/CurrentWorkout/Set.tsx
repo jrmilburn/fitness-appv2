@@ -20,44 +20,37 @@ export default function Set({ setId, Rir, workout, setWorkout }) {
       } else {
         setWeight(data.weight);
         setReps(data.reps);
+        setIsChecked(data.completed);
       }
 
     })
   }, [setId])
 
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/set/${setId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({weight, reps, completed: isChecked})
+      });
+  }, [isChecked])
+
   const handleSubmit = async (e, setId) => {
     e.preventDefault();
-    setIsChecked(!isChecked);
+    const newCheckedValue = !isChecked;
+
+    setIsChecked(newCheckedValue);
 
     setWorkout(prev => ({
       ...prev,
       excercises: prev.excercises.map(excercise => ({
         ...excercise,
         sets: excercise.sets.map(set => 
-          set.id === setId ? { ...set, completed: true } : set
+          set.id === setId ? { ...set, completed: newCheckedValue } : set
         )
       }))
     }));
-
-    try {
-
-      const resp = await fetch(`http://localhost:3000/api/set/${setId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({weight, reps})
-      });
-
-      if(!resp.ok) {
-        throw new Error('Failed to update set');
-      }
-
-
-    } catch(err) {
-      console.error('Error updating set:', error);
-      setIsChecked(isChecked);
-    }
 
   };
 
