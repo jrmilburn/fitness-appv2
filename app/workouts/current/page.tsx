@@ -62,7 +62,9 @@ export default function Workout() {
                     />
             ))}
             <CompleteWorkout 
-                completed={completed}/>
+                completed={completed}
+                workout={workout}
+                setWorkout={setWorkout}/>
         </div>
 
 
