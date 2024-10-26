@@ -65,6 +65,11 @@ export async function PUT(
 
     const nextWorkout = await findNextWorkout(userEmail);
 
+    if(nextWorkout === "Program finished") {
+      NextResponse.json(nextWorkout);
+      return
+    }
+
     const updateUserProgram = await prisma.program.update({
       where: {
         id: user?.currentProgramId
@@ -130,6 +135,10 @@ async function findNextWorkout(userEmail) {
       break;
     }
 
+  }
+
+  if(!firstIncompleteWorkout){
+    return "Program finished"
   }
 
   return firstIncompleteWorkout;
