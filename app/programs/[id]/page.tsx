@@ -7,17 +7,19 @@ export default async function Program({ params }) {
     const program = await prisma.program.findUnique({
         where: {
             id
+        }
+    })
+
+    const currentWeek = await prisma.week.findUnique({
+        where: {
+            id: program?.currentWeekId
         },
         include: {
-            weeks: {
+            workouts: {
                 include: {
-                    workouts: {
+                    excercises: {
                         include: {
-                            excercises: {
-                                include: {
-                                    sets: true
-                                }
-                            }
+                            sets: true
                         }
                     }
                 }
@@ -37,7 +39,7 @@ export default async function Program({ params }) {
             </div>
 
             <ProgramView 
-                week={program?.weeks[0]}/>
+                week={currentWeek}/>
         </div>
 
     )

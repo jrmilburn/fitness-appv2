@@ -14,20 +14,20 @@ export default function ViewWorkouts({ workouts }) {
     return (
         <div className="w-full mx-auto flex flex-col space-y-8 p-4">
             
-            {/* Workout Selection Buttons */}
             <div className="flex justify-center space-x-4">
-                {workouts.map((workout) => (
-                    <WorkoutSelect 
-                        key={workout.id}
-                        handleSelect={handleSelectWorkout}
-                        workoutDay={workout.workoutNo}
-                        workoutShown={workoutShown}
-                    />
-                ))}
+                {workouts
+                    .sort((a, b) => a.workoutNo - b.workoutNo)  // Sort workouts by workoutNo
+                    .map((workout) => (
+                        <WorkoutSelect 
+                            key={workout.id}
+                            handleSelect={handleSelectWorkout}
+                            workoutDay={workout.workoutNo}
+                            workoutShown={workoutShown}
+                        />
+                    ))}
             </div>
 
-            {/* Workout Details */}
-            <div className="mt-8 bg-white p-6 rounded-xl shadow-lg space-y-6">
+            <div className="mt-8 bg-gray-50 p-6 rounded space-y-6">
                 <h2 className="text-2xl font-semibold text-gray-800">
                     {workouts[workoutShown]?.name}
                 </h2>
