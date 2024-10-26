@@ -39,7 +39,7 @@ export default function Workout() {
         }
     }, [workout.excercises])
 
-      
+    
 
     return (
         <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>

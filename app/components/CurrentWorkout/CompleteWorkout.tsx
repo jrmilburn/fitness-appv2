@@ -8,7 +8,10 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'  
-            }
+            },
+            body: JSON.stringify({
+                weekId: workout.weekId
+            })
         });
         console.log(response);
     }

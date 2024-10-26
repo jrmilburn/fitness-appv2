@@ -65,6 +65,7 @@ export default function Set({ setId, Rir, workout, setWorkout }) {
           onBlur={() => setFocusedInput('')} // Reset state when input loses focus
           value={weight}
           onChange={(e) => setWeight(+e.target.value)}
+          disabled={workout.completed}
         />
 
         <input
@@ -75,6 +76,7 @@ export default function Set({ setId, Rir, workout, setWorkout }) {
           onBlur={() => setFocusedInput('')} // Reset state when input loses focus
           value={reps}
           onChange={(e) => setReps(+e.target.value)}
+          disabled={workout.completed}
         />
 
         {/* Custom Checkbox */}
@@ -83,6 +85,7 @@ export default function Set({ setId, Rir, workout, setWorkout }) {
           className={`w-8 h-8 rounded-sm border-2 ${
             isChecked ? 'bg-green-500 border-blue-500' : 'border-gray-300'
           } flex items-center justify-center transition-all duration-300`}
+          disabled={workout.completed}
         >
           {isChecked && (
             <svg
