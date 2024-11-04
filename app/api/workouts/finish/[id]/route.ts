@@ -67,6 +67,7 @@ export async function PUT(
 
     if(nextWorkout === "Program finished") {
       NextResponse.json(nextWorkout);
+
       return
     }
 
@@ -87,9 +88,6 @@ export async function PUT(
         currentWorkoutId: nextWorkout.id
       }
     })
-
-    console.log('UPDATE PROGRAM', updateUserProgram);
-    console.log('UPDATE WEEK: ', updateUserWeek);
 
     // If no exercise is found, return 404
     if (!workout) {
