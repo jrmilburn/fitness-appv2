@@ -1,69 +1,73 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../lib/prisma';  
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../auth/[...nextauth]/route';
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/route";
+import { prisma } from '../../../lib/prisma';
 
 export async function GET() {
-
+  try {
     const userSession = await getServerSession(authOptions);
+
+    if (!userSession) {
+      return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
+    }
 
     const userEmail = userSession?.user.email;
 
     const user = await prisma.user.findUnique({
-      where: {
-        email: userEmail
-      }
-    })
+      where: { email: userEmail },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    if (!user.currentProgramId) {
+      return NextResponse.json({ error: 'No current program found for user' }, { status: 404 });
+    }
 
     const currentProgram = await prisma.program.findUnique({
-        where: {
-            id: user?.currentProgramId
-        }
-    })
+      where: { id: user.currentProgramId },
+    });
 
-    console.log('CURRENT PROGRAM: ', currentProgram);
+    if (!currentProgram) {
+      return NextResponse.json({ error: 'Current program not found' }, { status: 404 });
+    }
 
     const currentWeek = await prisma.week.findUnique({
-        where: {
-            id: currentProgram?.currentWeekId
-        },
-        include: {
-            workouts: true
-        }
-    })
+      where: { id: currentProgram.currentWeekId },
+      include: { workouts: true },
+    });
 
-    console.log('CURRENT WEEK: ', currentWeek);
+    if (!currentWeek) {
+      return NextResponse.json({ error: 'Current week not found in program' }, { status: 404 });
+    }
 
-    if (!currentWeek?.currentWorkoutId) {
-        await prisma.week.update({
-            where: {
-                id: currentWeek?.id
-            },
-            data: {
-                currentWorkoutId: currentWeek?.workouts[0]?.id
-            }
-        })
+    // Set default workout ID if not set
+    if (!currentWeek.currentWorkoutId) {
+      await prisma.week.update({
+        where: { id: currentWeek.id },
+        data: { currentWorkoutId: currentWeek.workouts[0]?.id },
+      });
     }
 
     const currentWorkout = await prisma.workout.findUnique({
-        where: {
-            id: currentWeek?.currentWorkoutId
+      where: { id: currentWeek.currentWorkoutId },
+      include: {
+        excercises: {
+          include: {
+            sets: { orderBy: { createdAt: 'asc' } },
+          },
         },
-        include: {
-            excercises: {
-                include: {
-                    sets: {
-                        orderBy: {
-                            createdAt: 'asc'
-                        }
-                    }
-                }
-            }
-        }
-    })
+      },
+    });
 
-    console.log('CURRENT WORKOUT: ', currentWorkout);
+    if (!currentWorkout) {
+      return NextResponse.json({ error: 'Current workout not found in week' }, { status: 404 });
+    }
 
     return NextResponse.json(currentWorkout);
-
+  } catch (error) {
+    console.error('Error fetching current workout:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  }
 }

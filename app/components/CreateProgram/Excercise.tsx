@@ -8,8 +8,6 @@ export default function Excercise({ muscleId, muscleName, excercise, setProgram,
     const [showExcercises, setShowExcercises] = useState(false);
     const [selectedExcercise, setSelectedExcercise] = useState(null);
 
-    
-
     const handleSelectExcercise = (e, excercise) => {
       e.preventDefault();
       setSelectedExcercise(excercise);

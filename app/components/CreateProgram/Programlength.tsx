@@ -40,7 +40,7 @@ export default function ProgramLength({ onNext, setProgram }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="w-full p-8 bg-white shadow-md rounded-lg mx-auto max-w-2xl">
+        <form onSubmit={handleSubmit} className="w-full p-8 bg-white shadow-md rounded-lg mx-auto max-w-2xl border-2">
             <h2 className="text-3xl font-semibold text-gray-800 mb-6">General Details</h2>
 
             <div className="flex flex-col space-y-6 w-full">

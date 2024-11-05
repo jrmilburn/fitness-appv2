@@ -8,17 +8,19 @@ datasource db {
 }
 
 model User {
-  id               String    @id @default(cuid())
-  email            String    @unique
+  id               String       @id @default(cuid())
+  email            String       @unique
   emailVerified    DateTime?
   name             String?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
   accounts         Account[]
   sessions         Session[]
   image            String?
   programs         Program[]
   currentProgramId String?
+  username         String?
+  BodyWeight       BodyWeight[]
 }
 
 model Account {
@@ -122,7 +124,7 @@ model Set {
   excercise   Excercise @relation(fields: [excerciseId], references: [id])
   excerciseId String
   updatedAt   DateTime? @updatedAt
-  createdAt DateTime @default(now())
+  createdAt   DateTime  @default(now())
   completed   Boolean   @default(false)
 }
 
@@ -132,4 +134,12 @@ model MuscleGroup {
   excercises Excercise[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime?   @updatedAt
+}
+
+model BodyWeight {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  weight    Float
+  userId    String
+  createdAt DateTime @default(now())
 }

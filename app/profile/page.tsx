@@ -1,4 +1,4 @@
-import { prisma } from '../lib/prisma';  // Assuming you're using Prisma
+import { prisma } from '../lib/prisma'; 
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from 'next/image'
@@ -19,10 +19,6 @@ export default async function ProfilePage() {
         id: user?.currentProgramId
       }
     })
-
-    console.log('SESSION: ', session);
-    console.log('USER: ', user);
-    console.log('PROGRAM: ', program);
 
   return (
     <div className='max-w-2xl mx-auto w-full h-[80%]'>

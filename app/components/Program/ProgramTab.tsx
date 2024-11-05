@@ -12,7 +12,7 @@ export default function ProgramTab({name, length, days, id, userProgramId}) {
                   </div>
                   <div className='flex flex-col space-y-4'>
                     <Link href={`/programs/${id}`}><button>View Program</button></Link>
-                    {id === userProgramId && <Link href={'/'}><button>Next Workout</button></Link>}
+                    {id === userProgramId && <Link href={'/workouts/current'}><button>Next Workout</button></Link>}
                   </div>
               </div>
             </div>
