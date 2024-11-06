@@ -29,7 +29,7 @@ export default async function Settings() {
                 <div key={user.id} className='flex flex-col w-full bg-gray-100 rounded p-4'>
                   <div className='flex justify-between items-center p-4'>
                     <h2 className='text-2xl'>{user.name}</h2>
-                    <Image src={`${session?.user?.image}`} width={64} height={64} className='rounded-full' alt="profile"/>
+                    <Image src={user?.image || '/avatar.svg'} width={64} height={64} className='rounded-full' alt="profile"/>
                   </div>
                 
                 <SettingsForm user={user} latestBodyWeight={latestBodyweight}/>                

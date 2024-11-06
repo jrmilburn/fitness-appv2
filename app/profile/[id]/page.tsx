@@ -14,11 +14,15 @@ export default async function Profile({ params }) {
         }
     })
 
-    const program = await prisma.program.findUnique({
-      where: {
-        id: user?.currentProgramId
-      }
-    })
+    let program = null;
+
+    if (user?.currentProgramId) {
+        program = await prisma.program.findUnique({
+            where: {
+                id: user.currentProgramId
+            }
+        });
+    }
 
   return (
     <>
@@ -27,7 +31,7 @@ export default async function Profile({ params }) {
             <div key={user.id} className='flex flex-col w-full bg-gray-100 rounded p-4'>
               <div className='flex justify-between items-center p-4'>
                 <h2 className='text-2xl'>{user.name}</h2>
-                <Image src={`${user?.image}`} width={64} height={64} className='rounded-full' alt="profile"/>
+                <Image src={user?.image || '/avatar.svg'} width={64} height={64} className='rounded-full' alt="profile"/>
               </div>
               <p className='p-4'>{user.email}</p>
               <h2 className='my-4 text-3xl'>Current Program</h2>

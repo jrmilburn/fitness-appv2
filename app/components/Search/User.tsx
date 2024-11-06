@@ -6,7 +6,7 @@ export default function User({ user }) {
         <div className='flex w-full justify-between items-center border rounded-xl shadow-sm  p-4'>
             <div className="flex items-center">
                 <Image
-                    src={user.image}
+                    src={user.image || '/avatar.svg'}
                     alt={`${user.name}'s profile`}
                     width={50}
                     height={50}

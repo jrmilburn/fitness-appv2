@@ -18,6 +18,7 @@ export default function ProgramExcercises({ program, setProgram }) {
 
         if(response.ok) {
             router.push('/workouts/current');
+            router.refresh();
         }
     };
 

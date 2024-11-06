@@ -1,23 +1,31 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import LandingPage from "../landingpage/page";
 
 export default function ProtectedRoute({ children }) {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const pathname = usePathname();
+
+  const unprotectedPaths = ["/landingpage/register", "/landingpage/login"];
+  const isUnprotectedPath = unprotectedPaths.includes(pathname);
 
   useEffect(() => {
-    if (status === "unauthenticated") {
+    if (status === "unauthenticated" && !isUnprotectedPath) {
       router.push("/landingpage");
     }
-  }, [status, router]);
+  }, [status, router, isUnprotectedPath]);
 
   if (status === "loading") {
     return <p>Loading...</p>;
   }
 
-  return status === "authenticated" ? children : <LandingPage />;
+  return status === "authenticated" || isUnprotectedPath ? (
+    children
+  ) : (
+    <LandingPage />
+  );
 }

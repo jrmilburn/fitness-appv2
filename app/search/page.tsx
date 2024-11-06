@@ -1,11 +1,15 @@
-'use client'
+'use client';
 
 import searchIcon from '../assets/search.svg';
 import Image from 'next/image';
 import Users from '../components/Search/Users';
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 
 export default function Search() {
+    const { data: session } = useSession();
+    const currentUserId = session?.user?.id; // Get the current user's ID
+
     const [query, setQuery] = useState('');
     const [users, setUsers] = useState([]);
 
@@ -13,12 +17,12 @@ export default function Search() {
         fetch('http://localhost:3000/api/users', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         })
-        .then(response => response.json())
-        .then(data => setUsers(data))
-    }, [])
+            .then((response) => response.json())
+            .then((data) => setUsers(data));
+    }, []);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -26,17 +30,16 @@ export default function Search() {
         const response = await fetch(`http://localhost:3000/api/users/${query}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+                'Content-Type': 'application/json',
+            },
+        });
 
         const users = await response.json();
-        
         setUsers(users);
     };
 
     return (
-        <div className="w-full h-full">
+        <div className="w-full h-full max-w-3xl mx-auto">
             <form className="w-[80%] mx-auto my-16 flex space-x-4" onSubmit={handleSearch}>
                 <input
                     type="text"
@@ -46,15 +49,10 @@ export default function Search() {
                     className="border-2 w-full p-4 rounded-xl text-xl"
                 />
                 <button type="submit">
-                    <Image
-                        priority
-                        src={searchIcon}
-                        alt="Search icon"
-                        className="h-8 w-8"
-                    />
+                    <Image priority src={searchIcon} alt="Search icon" className="h-8 w-8" />
                 </button>
             </form>
-            <Users users={users} />
+            <Users users={users} currentUserId={currentUserId} />
         </div>
     );
 }

@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { usePathname } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,11 +18,12 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }) {
+  const pathname = usePathname();
+
+  const hideNavbarPaths = ["/landingpage/register", "/landingpage/login"];
+  const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
+
   return (
     <html lang="en">
       <SessionProvider>
@@ -29,9 +31,9 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <ProtectedRoute>
-            <Navbar />
+            {shouldShowNavbar && <Navbar />}
             {children}
-            </ProtectedRoute>
+          </ProtectedRoute>
         </body>
       </SessionProvider>
     </html>

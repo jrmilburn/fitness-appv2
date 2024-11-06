@@ -10,17 +10,20 @@ datasource db {
 model User {
   id               String       @id @default(cuid())
   email            String       @unique
+  phone            String?
   emailVerified    DateTime?
   name             String?
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
-  accounts         Account[]
-  sessions         Session[]
   image            String?
-  programs         Program[]
-  currentProgramId String?
+  password         String?
   username         String?
+  currentProgramId String?
   BodyWeight       BodyWeight[]
+  programs         Program[]
+
+  accounts Account[]
+  sessions Session[]
 }
 
 model Account {
