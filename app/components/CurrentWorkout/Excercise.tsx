@@ -50,7 +50,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
         try {
 
             const response = await fetch(`http://localhost:3000/api/set/${setId}`, {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -121,9 +121,27 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
       };
     }, [isEditing]);
 
-    const handleDeleteExcercise = () => {
-
-    }
+    const handleDeleteExcercise = async () => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/excercises/${excercise.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to delete exercise');
+            }
+    
+            setWorkout(prev => ({
+                ...prev,
+                excercises: prev.excercises.filter(e => e.id !== excercise.id)
+            }));
+        } catch (error) {
+            console.error('Error deleting exercise:', error);
+        }
+    };
 
 
     return (
@@ -149,7 +167,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                             />
                     </button>
                     {isEditing && (
-                        <div ref={formRef} className='absolute top-[10%] translate-x-[-75%] z-50'>
+                        <div ref={formRef} className='absolute top-[10%] translate-x-[-70%] z-50 w-[175px]'>
                             <ExcerciseForm 
                                 onDelete={handleDeleteExcercise}/>
                         </div>

@@ -3,9 +3,11 @@ import { useState, useEffect } from 'react';
 
 export default function CompleteWorkout({ completed, workout, setWorkout }) {
     const [isFinished, setIsFinished] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [programCompleted, setProgramCompleted] = useState(false);
 
     const handleFinish = async () => {
-        setIsFinished(true);
+        setIsLoading(true);  // Show loading state
         setWorkout({ ...workout, completed: true });
 
         const response = await fetch(`http://localhost:3000/api/workouts/finish/${workout.id}`, {
@@ -17,38 +19,53 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
                 weekId: workout.weekId
             })
         });
-        console.log(response);
 
-        const newWorkout = await fetch(`http://localhost:3000/api/workouts/current`, {
+        const result = await response.json();
+
+        if (result.message === "Program finished") {
+            setProgramCompleted(true);
+            setIsLoading(false);
+            return;
+        }
+
+        // Fetch the next workout if the program is not finished
+        const newWorkoutResponse = await fetch(`http://localhost:3000/api/workouts/current`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         });
 
-        const workoutToUpdate = await newWorkout.json();
-
-        console.log('WORKOUT TO UPDATE: ', workoutToUpdate);
-
-        setWorkout(workoutToUpdate);
+        const newWorkout = await newWorkoutResponse.json();
+        setWorkout(newWorkout);
+        setIsLoading(false);
     };
 
     useEffect(() => {
         if (isFinished && workout.completed) {
-            setIsFinished(false);  // Reset to allow finishing other workouts if needed
+            setIsFinished(false);  // Reset if needed for future workouts
         }
     }, [workout.completed, isFinished]);
 
-    if (workout.completed) {
+    if (programCompleted) {
         return (
-            <>
-                <h2>Workout Completed</h2>
-                <button className="w-full max-w-2xl text-lg font-bold text-background bg-foreground p-4 rounded hover:opacity-75 transition-all duration-300 fixed bottom-10" onClick={handleFinish}>
-                    <Link href={`/workouts/current`}>
+            <div className="flex flex-col items-center space-y-4">
+                <h2 className="text-xl font-semibold">Program Completed</h2>
+                <Link href={`/create-program`} className="w-full max-w-2xl text-lg font-bold text-background bg-foreground p-4 rounded hover:opacity-75 transition-all duration-300 text-center">
+                        Create New Program
+                </Link>
+            </div>
+        );
+    }
+
+    if (workout.completed && isLoading === false) {
+        return (
+            <div className="flex flex-col items-center space-y-4">
+                <h2 className="text-xl font-semibold">Workout Completed</h2>
+                <Link href={`/workouts/current`} className="w-full max-w-2xl text-lg font-bold text-background bg-foreground p-4 rounded hover:opacity-75 transition-all duration-300 text-center">
                         View Current Workout
-                    </Link>
-                </button>
-            </>
+                </Link>
+            </div>
         );
     }
 
@@ -57,9 +74,10 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
             {completed && (
                 <button 
                     onClick={handleFinish} 
-                    className="w-full max-w-2xl text-lg font-bold text-background bg-foreground p-4 rounded hover:opacity-75 transition-all duration-300 fixed bottom-10"
+                    disabled={isLoading}  // Disable button while loading
+                    className={`w-full max-w-2xl text-lg font-bold text-background bg-foreground p-4 rounded hover:opacity-75 transition-all duration-300 fixed bottom-10 ${isLoading ? 'opacity-50' : ''}`}
                 >
-                    Finish Workout
+                    {isLoading ? 'Finishing...' : 'Finish Workout'}
                 </button> 
             )}
         </>

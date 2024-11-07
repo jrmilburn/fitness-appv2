@@ -28,3 +28,32 @@ export async function GET(
     return new NextResponse('Failed to fetch exercise', { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }  // Destructure params to get the `id`
+) {
+  const { id } = params;
+
+  try {
+
+    const sets = await prisma.set.deleteMany({
+      where: {
+        excerciseId: id
+      }
+    })
+
+    const excercise = await prisma.excercise.delete({
+      where: {
+        id: id
+      }
+    })
+    
+    return NextResponse.json(excercise);
+
+  } catch(error) {
+    console.error('Error deleting set:', error);
+    return new NextResponse('Failed to delete set', { status: 500 });
+  }
+
+}

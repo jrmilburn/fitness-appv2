@@ -3,7 +3,6 @@ import { prisma } from '../../../../lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../auth/[...nextauth]/route';
 
-
 export async function PUT(
   req: Request,
   { params }: { params: { id: string } }
@@ -11,9 +10,7 @@ export async function PUT(
   const { id } = params;
   const { weekId } = await req.json();
 
-
   try {
-
     const workout = await prisma.workout.update({
         where: {
             id: id
@@ -21,7 +18,7 @@ export async function PUT(
         data: {
             completed: true
         }
-    })
+    });
 
     const week = await prisma.week.findUnique({
       where: {
@@ -30,7 +27,7 @@ export async function PUT(
       include: {
         workouts: true
       }
-    })
+    });
 
     if (week && week.workouts.every(workout => workout.completed === true)) {
       console.log("All workouts for the week are completed!");
@@ -42,33 +39,38 @@ export async function PUT(
         data: {
           completed: true
         }
-      })
+      });
 
-      if(completedWeek){
+      if (completedWeek) {
         console.log(completedWeek);
       }
-
     } else {
       console.log("There are still incomplete workouts in the week.");
     }
 
-
     const userSession = await getServerSession(authOptions);
-
     const userEmail = userSession?.user.email;
+
+    const nextWorkout = await findNextWorkout(userEmail);
 
     const user = await prisma.user.findUnique({
       where: {
         email: userEmail
       }
-    })
+    });
 
-    const nextWorkout = await findNextWorkout(userEmail);
+    if (nextWorkout === "Program finished") {
 
-    if(nextWorkout === "Program finished") {
-      NextResponse.json(nextWorkout);
+      const finishedProgram = await prisma.program.update({
+        where: {
+          id: user?.currentProgramId
+        },
+        data: {
+          completed: true
+        }
+      })
 
-      return
+      return NextResponse.json({ message: "Program finished" }, { status: 200 });
     }
 
     const updateUserProgram = await prisma.program.update({
@@ -78,7 +80,7 @@ export async function PUT(
       data: {
         currentWeekId: nextWorkout.weekId
       }
-    })
+    });
 
     const updateUserWeek = await prisma.week.update({
       where: {
@@ -87,7 +89,7 @@ export async function PUT(
       data: {
         currentWorkoutId: nextWorkout.id
       }
-    })
+    });
 
     // If no exercise is found, return 404
     if (!workout) {
@@ -102,12 +104,11 @@ export async function PUT(
 }
 
 async function findNextWorkout(userEmail) {
-
   const user = await prisma.user.findUnique({
     where: {
       email: userEmail
     }
-  })
+  });
 
   const userProgram = await prisma.program.findUnique({
     where: {
@@ -120,27 +121,22 @@ async function findNextWorkout(userEmail) {
         }
       }
     }
-  })
+  });
 
   let firstIncompleteWorkout = null;
 
-  for (let i = 0; i < userProgram?.weeks?.length; i++ ) {
+  for (let i = 0; i < userProgram?.weeks?.length; i++) {
+    const week = userProgram.weeks.find(week => week.weekNo === i + 1);
+    firstIncompleteWorkout = week.workouts.find(workout => !workout.completed);
 
-    const week = userProgram.weeks.find(week => week.weekNo === i+1);
-    firstIncompleteWorkout = week.workouts.find(workout => workout.completed === false);
-
-    if(firstIncompleteWorkout){
+    if (firstIncompleteWorkout) {
       break;
     }
-
   }
 
-  if(!firstIncompleteWorkout){
-    return "Program finished"
+  if (!firstIncompleteWorkout) {
+    return "Program finished";
   }
 
   return firstIncompleteWorkout;
-
-
-    
 }
