@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
+import Image from 'next/image';
+import searchIcon from '../assets/search.svg';
+import settingsIcon from '../assets/settings.svg';
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -15,7 +18,7 @@ export default function Navbar() {
     isAuth: false,
     name: null,
     email: null,
-    image: defaultProfileImage,
+    image: null,
   });
 
   // Set "Current Workout" as the default selected link
@@ -28,7 +31,7 @@ export default function Navbar() {
         isAuth: true,
         name: session.user.name,
         email: session.user.email,
-        image: session.user.image || defaultProfileImage,
+        image: session.user.image,
       });
     } else {
       setIsAuth(false);
@@ -36,7 +39,7 @@ export default function Navbar() {
         isAuth: false,
         name: null,
         email: null,
-        image: defaultProfileImage,
+        image: null,
       });
     }
   }, [session]);
@@ -115,23 +118,11 @@ export default function Navbar() {
                   New Program
                 </Link>
               </li>
-              <li
-                className={`text-xl p-2 ${
-                  activeLink === "/history" ? "bg-gray-200 rounded-lg" : ""
-                }`}
-              >
-                <Link
-                  href="/personal-bests"
-                  onClick={() => setActiveLink("/personal-bests")}
-                >
-                  Personal Bests
-                </Link>
-              </li>
             </ul>
             <ul className="flex flex-col space-y-6 flex-grow-2">
               <p className="border-b-2">User</p>
               <li
-                className={`text-xl p-2 ${
+                className={`text-xl p-2 flex justify-between items-center ${
                   activeLink === "/profile" ? "bg-gray-200 rounded-lg" : ""
                 }`}
               >
@@ -142,9 +133,10 @@ export default function Navbar() {
                 >
                   Profile
                 </Link>
+                <Image src={auth?.image || '/avatar.svg'} width={32} height={32} className='rounded-full' alt="profile"/>
               </li>
               <li
-                className={`text-xl p-2 ${
+                className={`text-xl p-2 flex justify-between items-center ${
                   activeLink === "/search" ? "bg-gray-200 rounded-lg" : ""
                 }`}
               >
@@ -155,9 +147,10 @@ export default function Navbar() {
                 >
                   Search
                 </Link>
+                <Image src={searchIcon} width={32} height={32} className='rounded-full' alt="profile"/>
               </li>
               <li
-                className={`text-xl p-2 ${
+                className={`text-xl p-2 flex justify-between items-center ${
                   activeLink === "/settings" ? "bg-gray-200 rounded-lg" : ""
                 }`}
               >
@@ -168,6 +161,7 @@ export default function Navbar() {
                 >
                   Settings
                 </Link>
+                <Image src={settingsIcon} width={32} height={32} className='rounded-full' alt="profile"/>
               </li>
             </ul>
             {auth.isAuth ? (

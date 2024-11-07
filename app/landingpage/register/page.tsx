@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -52,29 +53,21 @@ export default function SignUp() {
 
     return (
         <div className="flex h-screen w-full font-sans bg-gray-100">
-            {/* Left Image Section */}
-            <div className="relative w-[clamp(600px,40%,1000px)] font-norse text-gray-100">
-                <Image
-                    src="/mediamodifier_image.png"
-                    alt="jfit background"
-                    layout="fill"
-                    objectFit="cover"
-                />
-                <div className="absolute top-1/3 w-full flex items-center justify-center bg-black bg-opacity-50 z-10 gap-4 p-4">
-                    <h2 className="text-7xl">JFIT</h2>
-                </div>
-            </div>
+            <Image
+                src="/auth-background.png"
+                alt="Background"
+                layout="fill"
+                objectFit="cover"
+                className="absolute inset-0 z-0"
+            />
+
 
             {/* Right Content Section */}
-            <div className="flex flex-col justify-center items-center flex-grow p-8 space-y-8">
-                <h1 className="text-2xl max-w-[50ch] leading-snug">
-                    Use your Google account or <br />
-                    Sign up <em>now</em> to get started.
-                </h1>
+            <div className="flex flex-col justify-center items-center flex-grow p-8 space-y-8 relative z-1">
 
                 <form className="w-full max-w-lg mx-auto" onSubmit={handleRegister}>
                     <div className="bg-white p-8 shadow-md flex flex-col space-y-4">
-                        <h1 className="text-3xl mb-4">JFIT</h1>
+                        <h1 className="text-2xl mb-6 font-bold">Register</h1>
                         <div className="flex gap-8">
                             {/* Left Form Fields */}
                             <div className="flex flex-col gap-4 flex-1">
@@ -85,7 +78,6 @@ export default function SignUp() {
                                     <input
                                         type="text"
                                         id="first-name"
-                                        placeholder="First Name"
                                         required
                                         value={firstName}
                                         onChange={(e) => setFirstName(e.target.value)}
@@ -99,7 +91,6 @@ export default function SignUp() {
                                     <input
                                         type="email"
                                         id="mail"
-                                        placeholder="joe@example.com"
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
@@ -130,7 +121,6 @@ export default function SignUp() {
                                     <input
                                         type="text"
                                         id="last-name"
-                                        placeholder="Last Name"
                                         required
                                         value={lastName}
                                         onChange={(e) => setLastName(e.target.value)}
@@ -139,12 +129,11 @@ export default function SignUp() {
                                 </div>
                                 <div className="flex flex-col">
                                     <label htmlFor="phone-number" className="font-semibold">
-                                        Phone Number <strong>*</strong>
+                                        Phone Number
                                     </label>
                                     <input
                                         type="text"
                                         id="phone-number"
-                                        placeholder="0437 123 987"
                                         required
                                         value={phone}
                                         onChange={(e) => setPhone(e.target.value)}
@@ -167,7 +156,7 @@ export default function SignUp() {
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" className="bg-green-700 text-white font-bold py-3 px-6 rounded mt-6 transition hover:bg-gray-100 hover:text-green-700 border border-green-700 mx-8">
+                        <button type="submit" className="bg-blue-500 text-white font-bold py-3 px-6 rounded mt-6 transition hover:bg-gray-100 hover:text-green-700 border border-green-700 mx-8">
                             Create Account
                         </button>
                         <button
@@ -187,12 +176,13 @@ export default function SignUp() {
                             </svg>
                             Sign in with Google
                         </button>
+                        <p className="text-center">
+                            Already have an account? <Link href="/landingpage/login" className="font-bold text-blue-500 hover:text-blue-700">Log in</Link>
+                        </p>
                     </div>
                     {error && <p className="text-red-500 mt-4">{error}</p>}
+
                 </form>
-                <p className="mx-8">
-                    Already have an account? <a href="#" className="font-bold text-green-700 hover:text-green-900">Log in</a>
-                </p>
             </div>
         </div>
     );

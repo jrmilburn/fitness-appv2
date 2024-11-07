@@ -3,6 +3,7 @@
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function LandingPage() {
   const { data: session } = useSession();
@@ -17,16 +18,21 @@ export default function LandingPage() {
       {/* Main Content Section */}
       <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl p-8 md:p-12">
         {/* Left Section */}
-        <div className="md:w-1/2 text-center md:text-left space-y-6">
+        <div className="md:w-1/2 text-center md:text-left space-y-8 flex flex-col">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-800">
             Welcome to JFit
           </h1>
           <p className="text-xl text-gray-600">
             Transform your fitness journey with personalized workouts and real-time progress tracking.
           </p>
-        <button>
-            
-        </button>
+          <Link href={'/landingpage/register'}>
+          <button className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition duration-300">
+          <span>Sign Up</span>
+          <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+          </svg>
+            </button>
+            </Link>
         </div>
 
         {/* Right Section with Fade Effect */}

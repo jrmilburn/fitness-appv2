@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import verteditIcon from '../../assets/edit-vert.svg'
+import Image from 'next/image'
+import SetForm from './SetForm';
 
-export default function Set({ setId, Rir, workout, setWorkout }) {
+export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }) {
   const [isChecked, setIsChecked] = useState(false);
   const [focusedInput, setFocusedInput] = useState(''); // State to track which input is focused
   const [weight, setWeight] = useState(null);
   const [reps, setReps] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const formRef = useRef(null);
 
   useEffect(() => {
     fetch(`http://localhost:3000/api/set/${setId}`, {
@@ -54,9 +59,38 @@ export default function Set({ setId, Rir, workout, setWorkout }) {
 
   };
 
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+  }
+
+  const handleClickOutside = (event) => {
+    if (formRef.current && !formRef.current.contains(event.target)) {
+      setIsEditing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (isEditing) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isEditing]);
+  
+
   return (
     <>
-      <div className="flex justify-between space-x-8 items-center">
+      <div className="flex justify-between space-x-8 items-center relative">
+        <button className='absolute left-[-1%]'>
+          <Image 
+            onClick={handleEditClick}
+            src={verteditIcon}
+            alt='edit set'
+          />
+        </button>
         <input
           type="number"
           placeholder={`Weight`}
@@ -100,6 +134,13 @@ export default function Set({ setId, Rir, workout, setWorkout }) {
             </svg>
           )}
         </button>
+        {isEditing && (
+          <div ref={formRef} className='absolute top-[10%] z-50'>
+            <SetForm 
+              onDelete={onDelete}
+              onAdd={onAdd}/>
+          </div>
+        )}
       </div>
 
       {/* Smooth Height Transition for Recommendations */}
@@ -109,34 +150,35 @@ export default function Set({ setId, Rir, workout, setWorkout }) {
         }`}
       >
 
-<div className="w-full h-7 overflow-hidden text-center">
-  <div
-    className={`transition-opacity transition-transform duration-500 ease-in-out ${
-      focusedInput === 'weight'
-        ? 'opacity-100 translate-y-0'
-        : focusedInput === 'reps' 
-        ? 'opacity -translate-y-full'
-        : 'opacity translate-y-full'
-    }`}
-  >
-    Recommended weight: 100kg
-  </div>
-
-  <div
-    className={`transition-opacity transition-transform duration-500 ease-in-out ${
-      focusedInput === 'reps'
-        ? 'opacity-100 -translate-y-full'
-        : focusedInput === 'weight'
-        ? 'opacity translate-y-0'
-        : 'opacity translate-y-full'
-    }`}
-  >
-    Recommended reps: 10
-  </div>
-</div>
-
-
+      <div className="w-full h-7 overflow-hidden text-center">
+        <div
+          className={`transition-opacity transition-transform duration-500 ease-in-out ${
+            focusedInput === 'weight'
+              ? 'opacity-100 translate-y-0'
+              : focusedInput === 'reps' 
+              ? 'opacity -translate-y-full'
+              : 'opacity translate-y-full'
+          }`}
+        >
+          Recommended weight: 100kg
+        </div>
+        
+        <div
+          className={`transition-opacity transition-transform duration-500 ease-in-out ${
+            focusedInput === 'reps'
+              ? 'opacity-100 -translate-y-full'
+              : focusedInput === 'weight'
+              ? 'opacity translate-y-0'
+              : 'opacity translate-y-full'
+          }`}
+        >
+          Recommended reps: 10
+        </div>
       </div>
+      </div>
+
+
+
     </>
   );
 }

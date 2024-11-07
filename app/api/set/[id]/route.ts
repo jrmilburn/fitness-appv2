@@ -58,3 +58,26 @@ export async function GET(  req: Request,
 
     
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }  // Destructure params to get the `id`
+) {
+  const { id } = params;
+
+  try {
+
+    const set = await prisma.set.delete({
+      where: {
+        id: id
+      }
+    })
+    
+    return NextResponse.json(set);
+
+  } catch(error) {
+    console.error('Error deleting set:', error);
+    return new NextResponse('Failed to delete set', { status: 500 });
+  }
+
+}

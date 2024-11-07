@@ -115,6 +115,7 @@ model Excercise {
   muscleGroupId String
   muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id])
   completed     Boolean     @default(false)
+  details       String?
 
   @@unique([workoutId, name])
 }
