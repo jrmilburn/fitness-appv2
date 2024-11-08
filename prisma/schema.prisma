@@ -123,8 +123,8 @@ model Excercise {
 model Set {
   id                String    @id @default(cuid())
   setNo             Int
-  reps              Int
-  weight            Int
+  reps              Int?
+  weight            Int?
   recommendedReps   Int?
   recommendedWeight Int?
   excercise         Excercise @relation(fields: [excerciseId], references: [id])

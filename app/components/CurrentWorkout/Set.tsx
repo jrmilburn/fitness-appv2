@@ -179,7 +179,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
           }`}
         >
           {recommendedReps && (
-            <p>Recommended reps: {recommendedReps}kg</p>
+            <p>Recommended reps: {recommendedReps}</p>
           )}
         </div>
       </div>
