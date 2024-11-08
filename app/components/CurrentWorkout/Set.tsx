@@ -8,6 +8,8 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
   const [focusedInput, setFocusedInput] = useState(''); // State to track which input is focused
   const [weight, setWeight] = useState(null);
   const [reps, setReps] = useState(null);
+  const [recommendedReps, setRecommendedReps] = useState(null);
+  const [recommendedWeight, setRecommendedWeight] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef(null);
 
@@ -20,7 +22,9 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
     })
     .then(response => response.json())
     .then(data => {
-      if(data.reps === 0) {
+      setRecommendedReps(data.recommendedReps || null);
+      setRecommendedWeight(data.recommendedWeight || null);
+      if(data?.reps === 0) {
         setReps(null)
       } else {
         setWeight(data.weight);
@@ -95,8 +99,8 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
           type="number"
           placeholder={`Weight`}
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onFocus={() => setFocusedInput('weight')} // Set state when weight input is focused
-          onBlur={() => setFocusedInput('')} // Reset state when input loses focus
+          onFocus={() => setFocusedInput('weight')}
+          onBlur={() => setFocusedInput('')}
           value={weight}
           onChange={(e) => setWeight(+e.target.value)}
           disabled={workout.completed}
@@ -106,8 +110,8 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
           type="number"
           placeholder={`${Rir} RIR`}
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          onFocus={() => setFocusedInput('reps')} // Set state when reps input is focused
-          onBlur={() => setFocusedInput('')} // Reset state when input loses focus
+          onFocus={() => setFocusedInput('reps')}
+          onBlur={() => setFocusedInput('')}
           value={reps}
           onChange={(e) => setReps(+e.target.value)}
           disabled={workout.completed}
@@ -160,7 +164,9 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
               : 'opacity translate-y-full'
           }`}
         >
-          Recommended weight: 100kg
+          {recommendedWeight && (
+            <p>Recommended weight: {recommendedWeight}kg</p>
+          )}
         </div>
         
         <div
@@ -172,7 +178,9 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
               : 'opacity translate-y-full'
           }`}
         >
-          Recommended reps: 10
+          {recommendedReps && (
+            <p>Recommended reps: {recommendedReps}kg</p>
+          )}
         </div>
       </div>
       </div>

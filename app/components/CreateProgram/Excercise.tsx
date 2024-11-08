@@ -12,7 +12,6 @@ export default function Excercise({ muscleId, muscleName, excercise, setProgram,
         setProgram((prev) => {
             const newProgram = { ...prev };
 
-            // Iterate over all weeks in the program
             newProgram.weeks.forEach((week) => {
                 week.workouts.forEach((session) => {
                     if (session.name === workout) {
@@ -66,7 +65,9 @@ export default function Excercise({ muscleId, muscleName, excercise, setProgram,
                     visible={showExcercises}
                     onClose={() => setShowExcercises(false)}
                     selectExcercise={handleSelectExcercise}
-                />
+                >
+                    <></>
+                </Excercises>
             )}
         </>
     );

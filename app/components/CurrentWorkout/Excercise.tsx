@@ -4,13 +4,18 @@ import infoIcon from '../../assets/info.svg'
 import horieditIcon from '../../assets/edit-hori.svg'
 import Image from 'next/image'
 import ExcerciseForm from './ExcerciseForm'
+import ExcerciseInfo from './ExcerciseInfo'
+import AddExcercise from './AddExcercise'
 
 
 export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
     const [muscle, setMuscle] = useState({});
     const [setsCompleted, setSetsComplete] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [infoShown, setInfoShown] = useState(false);
+    const [addExcerciseShown, setAddExcerciseShown] = useState(false);
     const formRef = useRef(null);
+    const infoRef = useRef(null);
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/musclegroups/${excercise.muscleGroupId}`, {
@@ -121,6 +126,16 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
       };
     }, [isEditing]);
 
+    const handleAddExcercise = async () => {
+
+        setAddExcerciseShown(true);
+
+    }
+
+    const handleReplaceExcercise = async () => {
+
+    }
+
     const handleDeleteExcercise = async () => {
         try {
             const response = await fetch(`http://localhost:3000/api/excercises/${excercise.id}`, {
@@ -143,6 +158,30 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
         }
     };
 
+    const handleInfoShown = () => {
+
+        setInfoShown(true);
+
+    }
+
+    const handleInfoClose = (event) => {
+        if (infoRef.current && !infoRef.current.contains(event.target)) {
+          setInfoShown(false);
+        }
+      };
+      
+      useEffect(() => {
+        if (infoShown) {
+          document.addEventListener('mousedown', handleInfoClose);
+        } else {
+          document.removeEventListener('mousedown', handleInfoClose);
+        }
+        return () => {
+          document.removeEventListener('mousedown', handleInfoClose);
+        };
+      }, [infoShown]);
+
+
 
     return (
         <div className={`w-[100%] max-w-2xl mx-auto p-8 flex flex-col ${setsCompleted ? 'border-2 border-green-400' : 'border-2 border-gray-200'}`}>
@@ -155,7 +194,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                 </div>
 
                 <div className='flex flex-col space-y-4 items-center relative'>
-                    <button>
+                    <button onClick={handleInfoShown}>
                         <Image 
                             src={infoIcon}
                             alt='info'/>
@@ -169,8 +208,28 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                     {isEditing && (
                         <div ref={formRef} className='absolute top-[10%] translate-x-[-70%] z-50 w-[175px]'>
                             <ExcerciseForm 
-                                onDelete={handleDeleteExcercise}/>
+                                onAdd={handleAddExcercise}
+                                onReplace={handleReplaceExcercise}
+                                onDelete={handleDeleteExcercise}
+                                workout={workout}
+                                setWorkout={setWorkout}
+                            />
                         </div>
+
+                    )}
+                    {infoShown && (
+                        <div ref={infoRef} className='absolute translate-x-[-70%] z-50 w-[250px] bg-white border-2 p-2'>
+                            <ExcerciseInfo 
+                                name={excercise.name}
+                                details={excercise.details}/>
+                        </div>
+                    )}
+                    {addExcerciseShown && (
+
+                        <AddExcercise 
+                            onClose={() => setAddExcerciseShown(false)}
+                            setWorkout={setWorkout}
+                            workout={workout}/>
 
                     )}
                 </div>

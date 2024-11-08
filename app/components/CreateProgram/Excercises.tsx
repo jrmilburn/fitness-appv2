@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Excercises({ muscle, visible, onClose, selectExcercise}) {
+export default function Excercises({ muscle, visible, onClose, selectExcercise, children}) {
 
     const [excercises, setExcercises] = useState([]);
 
@@ -33,13 +33,14 @@ export default function Excercises({ muscle, visible, onClose, selectExcercise})
         <>
             {visible && (
               <div 
-                className="fixed inset-0 flex items-center justify-center z-50" 
+                className="fixed inset-0 flex items-center justify-center z-40" 
                 onClick={handleOverlayClick}
               >
                 <div className="absolute inset-0 bg-black bg-opacity-50"></div>
             
                 {/* Modal Content */}
                 <div className="bg-white p-6 rounded shadow-lg w-[90%] max-w-md relative z-10">
+                  {children}
                   <h2 className="text-xl mb-4">Excercises</h2>
 
                     {excercises?.map((excercise) => (

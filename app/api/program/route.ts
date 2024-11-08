@@ -113,7 +113,24 @@ export async function POST(req) {
             create: { name: excercise.muscle },
           });
   
-          // Create or update Excercise
+          // Make sure to check for existing exercise with non-null `details`
+          const existingExercise = await prisma.excercise.findFirst({
+            where: {
+              name: excercise.excercise,
+              muscleGroupId: muscleGroup.id,
+              details: { not: null },
+            },
+          });
+
+          // Prepare exercise details, explicitly setting each field to match the schema
+          const excerciseDetails = {
+            name: excercise.excercise,
+            workoutId: createdWorkout.id,
+            muscleGroupId: muscleGroup.id,
+            details: existingExercise?.details || null,
+          };
+
+          // Use upsert with the correct fields
           const createdExcercise = await prisma.excercise.upsert({
             where: {
               workoutId_name: {
@@ -122,13 +139,10 @@ export async function POST(req) {
               },
             },
             update: {
+              ...excerciseDetails,
               updatedAt: new Date(),
             },
-            create: {
-              name: excercise.excercise,
-              workoutId: createdWorkout.id,
-              muscleGroupId: muscleGroup.id,
-            },
+            create: excerciseDetails,
           });
   
           // Add Sets to the Excercise
