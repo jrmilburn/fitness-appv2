@@ -14,8 +14,23 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
     const [isEditing, setIsEditing] = useState(false);
     const [infoShown, setInfoShown] = useState(false);
     const [addExcerciseShown, setAddExcerciseShown] = useState(false);
+    const [lastWeekData, setLastWeekData] = useState([]);
     const formRef = useRef(null);
     const infoRef = useRef(null);
+
+    const handleSetDataFetch = (data) => {
+        setLastWeekData(prevData => {
+            // Ensure no duplicate entries by checking setId
+            const existingIndex = prevData.findIndex(item => item.setId === data.setId);
+            if (existingIndex >= 0) {
+                // Update existing entry
+                const updatedData = [...prevData];
+                updatedData[existingIndex] = data;
+                return updatedData;
+            }
+            return [...prevData, data];
+        });
+    };
 
     useEffect(() => {
         fetch(`http://localhost:3000/api/musclegroups/${excercise.muscleGroupId}`, {
@@ -88,7 +103,6 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                     setNo: numSets + 1,
                     weight: 0,
                     reps: 0,
-                    completed: false
                 })
             });
             
@@ -218,10 +232,11 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
                     )}
                     {infoShown && (
-                        <div ref={infoRef} className='absolute translate-x-[-70%] z-50 w-[250px] bg-white border-2 p-2'>
+                        <div ref={infoRef} className='absolute translate-x-[-70%] z-50 w-[400px] bg-white p-2'>
                             <ExcerciseInfo 
                                 name={excercise.name}
-                                details={excercise.details}/>
+                                details={excercise.details}
+                                lastWeekData={lastWeekData}/>
                         </div>
                     )}
                     {addExcerciseShown && (
@@ -241,7 +256,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                 <h2>Reps</h2>
             </div>
             {excercise.sets.map((set, index) => (
-                <Set key={index} setId={set.id} Rir={weekRir} workout={workout} setWorkout={setWorkout} onDelete={() => handleDeleteSet(set.id)} onAdd={() => handleAddSet()} />
+                <Set key={index} setId={set.id} Rir={weekRir} workout={workout} setWorkout={setWorkout} onDelete={() => handleDeleteSet(set.id)} onAdd={() => handleAddSet()} onDataFetch={handleSetDataFetch} />
             ))}
 
             {setsCompleted && <p className="text-green-500 font-bold">All sets completed!</p>}

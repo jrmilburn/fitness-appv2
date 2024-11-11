@@ -49,6 +49,8 @@ export async function GET(  req: Request,
       }
     })
 
+    console.log(set);
+
     return NextResponse.json(set);
 
   } catch(error) {

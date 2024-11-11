@@ -61,7 +61,6 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
     if (workout.completed && isLoading === false) {
         return (
             <div className="flex flex-col items-center space-y-4">
-                <h2 className="text-xl font-semibold">Workout Completed</h2>
                 <Link href={`/workouts/current`} className="w-full max-w-2xl text-lg font-bold text-background bg-foreground p-4 rounded hover:opacity-75 transition-all duration-300 text-center">
                         View Current Workout
                 </Link>

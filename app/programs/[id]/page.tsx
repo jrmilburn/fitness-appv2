@@ -1,5 +1,7 @@
 import { prisma } from '../../lib/prisma';
 import ProgramView from '../../components/Program/ProgramView';
+import CopyProgram from '@/app/components/Program/CopyProgram';
+import ProgramExcercises from '@/app/components/CreateProgram/Programexcercises';
 
 export default async function Program({ params }) {
 
@@ -26,6 +28,8 @@ export default async function Program({ params }) {
             }
         }
     })
+
+    console.log(program);
     
     return (
 
@@ -40,6 +44,10 @@ export default async function Program({ params }) {
 
             <ProgramView 
                 week={currentWeek}/>
+
+            <CopyProgram 
+                program={program}/>
+
         </div>
 
     )

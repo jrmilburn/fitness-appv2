@@ -26,9 +26,8 @@ export default function ProgramTab({name, length, days, id, userProgramId}) {
                       <h2 className="text-xl">{name}</h2>
                       <p className="font-sm opacity-50">{length} Weeks - {days} Days / Week</p>
                   </div>
-                  <div className='flex flex-col space-y-4'>
+                  <div className='flex flex-col space-y-4 justify-center'>
                     <Link href={`/programs/${id}`}><button>View Program</button></Link>
-                    {id === userProgramId && <Link href={'/workouts/current'}><button>Next Workout</button></Link>}
                   </div>
                   </>
                 )}

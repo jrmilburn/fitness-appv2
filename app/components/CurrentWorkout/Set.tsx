@@ -1,17 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
-import verteditIcon from '../../assets/edit-vert.svg'
-import Image from 'next/image'
+import verteditIcon from '../../assets/edit-vert.svg';
+import Image from 'next/image';
 import SetForm from './SetForm';
 
-export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }) {
+export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, onDataFetch }) {
   const [isChecked, setIsChecked] = useState(false);
-  const [focusedInput, setFocusedInput] = useState(''); // State to track which input is focused
+  const [focusedInput, setFocusedInput] = useState(''); 
   const [weight, setWeight] = useState(null);
   const [reps, setReps] = useState(null);
   const [recommendedReps, setRecommendedReps] = useState(null);
+  const [lowerBoundWeight, setLowerBoundWeight] = useState(null);
   const [recommendedWeight, setRecommendedWeight] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const formRef = useRef(null);
+
+  // Helper function to round up to the nearest 2.5
+  const roundToNearest2_5 = (num) => {
+    return Math.ceil(num / 2.5) * 2.5;
+  };
 
   useEffect(() => {
     fetch(`http://localhost:3000/api/set/${setId}`, {
@@ -22,35 +28,42 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
     })
     .then(response => response.json())
     .then(data => {
+      console.log('SET DATA: ', data);
+      setIsChecked(data.completed);
       setRecommendedReps(data.recommendedReps || null);
-      setRecommendedWeight(data.recommendedWeight || null);
+      
+
+      const roundedWeight = data.recommendedWeight ? roundToNearest2_5(data.recommendedWeight) : null;
+      setRecommendedWeight(roundedWeight);
+      
+      const lowerBound = Math.floor((roundedWeight / 1.05) / 2.5) * 2.5;
+      setLowerBoundWeight(lowerBound);
+
+      if (onDataFetch) {
+        onDataFetch({
+          setId,
+          recommendedReps: data.recommendedReps,
+          recommendedWeight: roundedWeight,
+          lowerBoundWeight: lowerBound
+        });
+      }
+
       if(data?.reps === 0) {
-        setReps(null)
+        setReps(null);
       } else {
         setWeight(data.weight);
         setReps(data.reps);
         setIsChecked(data.completed);
       }
-
-    })
-  }, [setId])
-
-  useEffect(() => {
-    fetch(`http://localhost:3000/api/set/${setId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type' : 'application/json'
-        },
-        body: JSON.stringify({weight, reps, completed: isChecked})
-      });
-  }, [isChecked])
+    });
+  }, [setId]);
 
   const handleSubmit = async (e, setId) => {
     e.preventDefault();
     const newCheckedValue = !isChecked;
-
     setIsChecked(newCheckedValue);
-
+  
+    // Update the workout state
     setWorkout(prev => ({
       ...prev,
       excercises: prev.excercises.map(excercise => ({
@@ -60,12 +73,20 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
         )
       }))
     }));
-
+  
+    // Save the updated completed state to the server
+    await fetch(`http://localhost:3000/api/set/${setId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ weight, reps, completed: newCheckedValue })
+    });
   };
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);
-  }
+  };
 
   const handleClickOutside = (event) => {
     if (formRef.current && !formRef.current.contains(event.target)) {
@@ -83,7 +104,6 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isEditing]);
-  
 
   return (
     <>
@@ -117,7 +137,6 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
           disabled={workout.completed}
         />
 
-        {/* Custom Checkbox */}
         <button
           onClick={(e) => handleSubmit(e, setId)}
           className={`w-8 h-8 rounded-sm border-2 ${
@@ -147,46 +166,45 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd }
         )}
       </div>
 
-      {/* Smooth Height Transition for Recommendations */}
       <div
         className={`relative w-full mt-4 overflow-hidden transition-max-height duration-500 ease-in-out ${
           focusedInput ? 'max-h-20' : 'max-h-0'
         }`}
       >
-
-      <div className="w-full h-7 overflow-hidden text-center">
-        <div
-          className={`transition-opacity transition-transform duration-500 ease-in-out ${
-            focusedInput === 'weight'
-              ? 'opacity-100 translate-y-0'
-              : focusedInput === 'reps' 
-              ? 'opacity -translate-y-full'
-              : 'opacity translate-y-full'
-          }`}
-        >
-          {recommendedWeight && (
-            <p>Recommended weight: {recommendedWeight}kg</p>
-          )}
-        </div>
-        
-        <div
-          className={`transition-opacity transition-transform duration-500 ease-in-out ${
-            focusedInput === 'reps'
-              ? 'opacity-100 -translate-y-full'
-              : focusedInput === 'weight'
-              ? 'opacity translate-y-0'
-              : 'opacity translate-y-full'
-          }`}
-        >
-          {recommendedReps && (
-            <p>Recommended reps: {recommendedReps}</p>
-          )}
+        <div className="w-full h-7 overflow-hidden text-center">
+          <div
+            className={`transition-opacity transition-transform duration-500 ease-in-out ${
+              focusedInput === 'weight'
+                ? 'opacity-100 translate-y-0'
+                : focusedInput === 'reps' 
+                ? 'opacity -translate-y-full'
+                : 'opacity translate-y-full'
+            }`}
+          >
+            {recommendedWeight ? (
+              <p>Recommended weight: {lowerBoundWeight}kg - {recommendedWeight}kg</p>
+            ) : (
+              <p>Recommended {Rir} RIR</p>
+            )}
+          </div>
+          
+          <div
+            className={`transition-opacity transition-transform duration-500 ease-in-out ${
+              focusedInput === 'reps'
+                ? 'opacity-100 -translate-y-full'
+                : focusedInput === 'weight'
+                ? 'opacity translate-y-0'
+                : 'opacity translate-y-full'
+            }`}
+          >
+            {recommendedReps ? (
+              <p>Aim for {recommendedReps} reps this set</p>
+            ) : (
+              <p>Recommended {Rir} RIR</p>
+            )}
+          </div>
         </div>
       </div>
-      </div>
-
-
-
     </>
   );
 }
