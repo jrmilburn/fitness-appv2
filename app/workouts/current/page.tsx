@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
 import { useSession } from 'next-auth/react';
 import Excercise from '@/app/components/CurrentWorkout/Excercise';
 import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
@@ -12,9 +13,14 @@ export default function Workout() {
     const [completed, setCompleted] = useState(false);
     const [noWorkout, setNoWorkout] = useState(false);
 
+    const router = useRouter();
     const { data: session } = useSession();
 
     useEffect(() => {
+        // Refresh the router to ensure we have the latest data
+        router.refresh();
+
+        // Fetch the most recent workout data after refreshing
         fetch(`http://localhost:3000/api/workouts/current`, {
             method: 'GET',
             headers: {
@@ -23,8 +29,7 @@ export default function Workout() {
         })
         .then((response) => {
             if (!response.ok) {
-                // If response is not OK, trigger noWorkout state
-                setNoWorkout(true);
+                setNoWorkout(true); // Trigger noWorkout state if the response is not OK
                 return null;
             }
             return response.json();
@@ -38,9 +43,10 @@ export default function Workout() {
             console.error('Error fetching workout:', error);
             setNoWorkout(true);
         });
-    }, []);
+    }, [router]); // Only run on initial mount
 
     useEffect(() => {
+        // Check if all exercises are completed
         if (workout.excercises) {
             const allCompleted = workout.excercises.every(excercise => excercise.completed === true);
             setCompleted(allCompleted);

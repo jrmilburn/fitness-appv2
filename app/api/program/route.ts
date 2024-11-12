@@ -7,6 +7,8 @@ import { authOptions } from '../auth/[...nextauth]/route';
 
 export async function POST(req) {
 
+  console.log('REQUEST FOR PROGRAM POST: ', req.body);
+
   const userSession = await getServerSession(authOptions);
 
   const userEmail = userSession?.user.email;
@@ -116,7 +118,7 @@ export async function POST(req) {
           // Make sure to check for existing exercise with non-null `details`
           const existingExercise = await prisma.excercise.findFirst({
             where: {
-              name: excercise.excercise,
+              name: excercise.name,
               muscleGroupId: muscleGroup.id,
               details: { not: null },
             },
@@ -124,7 +126,7 @@ export async function POST(req) {
 
           // Prepare exercise details, explicitly setting each field to match the schema
           const excerciseDetails = {
-            name: excercise.excercise,
+            name: excercise.name,
             workoutId: createdWorkout.id,
             muscleGroupId: muscleGroup.id,
             details: existingExercise?.details || null,
@@ -135,7 +137,7 @@ export async function POST(req) {
             where: {
               workoutId_name: {
                 workoutId: createdWorkout.id,
-                name: excercise.excercise,
+                name: excercise.name,
               },
             },
             update: {

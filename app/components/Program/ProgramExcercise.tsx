@@ -1,12 +1,4 @@
-import { prisma } from '../../lib/prisma';
-
-export default async function ProgramExcercise({ excercise }) {
-    const muscleGroup = await prisma.muscleGroup.findUnique({
-        where: {
-            id: excercise.muscleGroupId
-        }
-    });
-
+export default function ProgramExcercise({ excercise, muscleGroup }) {
     return (
         <div className="bg-white shadow rounded-lg p-4 w-full space-y-2">
             {/* Muscle Group Title */}

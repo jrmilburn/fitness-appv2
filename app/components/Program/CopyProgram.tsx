@@ -26,9 +26,15 @@ export default function CopyProgram({ program }) {
                 // Loop through each day/workout in the week
                 for (let j = 0; j < programDays; j++) {
                     const existingWorkout = existingWeek?.workouts ? existingWeek.workouts[j] : null;
-                    const workout = existingWorkout
-                        ? { ...existingWorkout } // Copy the existing workout if it exists
-                        : { name: `Day ${j + 1}`, excercises: [] }; // Otherwise, create a new workout
+                    const workout = {
+                        name: existingWorkout ? existingWorkout.name : `Day ${j + 1}`,
+                        excercises: existingWorkout 
+                            ? existingWorkout.excercises.map(excercise => ({
+                                ...excercise,
+                                muscle: excercise.muscleGroup?.name || '' // Set muscle to the muscleGroup name or empty if not defined
+                            }))
+                            : [] 
+                    };
 
                     week.workouts.push(workout);
                 }
@@ -36,6 +42,7 @@ export default function CopyProgram({ program }) {
                 newProgram.weeks.push(week);
             }
 
+            console.log('Generated Program with Muscle Groups:', newProgram);
             setCopyProgram(newProgram);
         }
 

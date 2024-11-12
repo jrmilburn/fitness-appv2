@@ -12,6 +12,7 @@ export default function ProgramWorkout({ workout }) {
                     <ProgramExcercise
                         key={excercise.id}
                         excercise={excercise}
+                        muscleGroup={excercise.muscleGroup}
                     />
                 ))}
             </div>

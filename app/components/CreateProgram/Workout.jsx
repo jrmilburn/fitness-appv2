@@ -1,10 +1,18 @@
 import Musclegroups from './Musclegroups';
 import Excercise from './Excercise';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Workout({ workout, setProgram, excercises }) {
     const [muscleGroupsShown, setMuscleGroupsShown] = useState(false);
     const [muscleGroups, setMuscleGroups] = useState([]);
+
+    // Populate muscleGroups with all muscleGroup objects from excercises, including duplicates
+    useEffect(() => {
+        const allMuscleGroups = excercises.map((exercise) => exercise.muscleGroup);
+        setMuscleGroups(allMuscleGroups);
+    }, [excercises]);
+
+    console.log('excercises from workout: ', excercises);
 
     const addMuscleGroup = (muscleGroup) => {
         setMuscleGroups([...muscleGroups, muscleGroup]);
@@ -34,14 +42,14 @@ export default function Workout({ workout, setProgram, excercises }) {
                             excerciseindex={index}
                             muscleId={muscleGroup.id}
                             muscleName={muscleGroup.name}
-                            excercise={excercises}
+                            excercise={excercises[index]}
                             setProgram={setProgram}
                             workout={workout}
                             onDelete={() => removeMuscleGroup(index)} // Pass delete handler
                         />
                     ))}
                 </div>
-                <button className="bg-gray-200 p-2" onClick={showMuscleGroups}>
+                <button type="button" className="bg-gray-200 p-2" onClick={showMuscleGroups}>
                     Add Muscle Group +
                 </button>
             </div>

@@ -3,7 +3,7 @@ import Excercises from './Excercises';
 
 export default function Excercise({ muscleId, muscleName, excercise, setProgram, workout, excerciseindex, onDelete }) {
     const [showExcercises, setShowExcercises] = useState(false);
-    const [selectedExcercise, setSelectedExcercise] = useState(null);
+    const [selectedExcercise, setSelectedExcercise] = useState(excercise?.name);
 
     const handleSelectExcercise = (e, excercise) => {
         e.preventDefault();
@@ -18,12 +18,12 @@ export default function Excercise({ muscleId, muscleName, excercise, setProgram,
                         if (session.excercises.length <= excerciseindex) {
                             session.excercises.push({
                                 muscle: muscleName,
-                                excercise: excercise,
+                                name: excercise,
                             });
                         } else {
                             session.excercises[excerciseindex] = {
                                 muscle: muscleName,
-                                excercise: excercise,
+                                name: excercise,
                             };
                         }
                     }
