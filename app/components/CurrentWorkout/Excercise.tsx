@@ -9,7 +9,12 @@ import AddExcercise from './AddExcercise'
 
 
 export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
-    const [muscle, setMuscle] = useState({});
+
+    interface muscle {
+        name: string
+    }
+
+    const [muscle, setMuscle] = useState<muscle | null>(null);
     const [setsCompleted, setSetsComplete] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [infoShown, setInfoShown] = useState(false);
@@ -75,6 +80,10 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                     'Content-Type': 'application/json'
                 },
             });
+
+            if(response.ok) {
+                console.log(response);
+            }
 
         } catch (error) {
             console.error('Error deleting set:', error);
@@ -203,7 +212,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
             <div className='flex justify-between items-center'>
 
                 <div className='flex flex-col'>
-                    <p className="opacity-50 p-1">{muscle.name}</p>
+                    <p className="opacity-50 p-1">{muscle ? muscle.name : ''}</p>
                     <h2 className="font-bold text-xl p-1">{excercise.name}</h2>
                 </div>
 
@@ -225,8 +234,6 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                                 onAdd={handleAddExcercise}
                                 onReplace={handleReplaceExcercise}
                                 onDelete={handleDeleteExcercise}
-                                workout={workout}
-                                setWorkout={setWorkout}
                             />
                         </div>
 

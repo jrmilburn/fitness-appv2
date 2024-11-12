@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 
 export async function POST(req) {
 
-    const { muscleId, muscleName, excercise, workoutId } = await req.json();
+    const { muscleId, excercise, workoutId } = await req.json();
 
     const existingExercise = await prisma.excercise.findFirst({
         where: {

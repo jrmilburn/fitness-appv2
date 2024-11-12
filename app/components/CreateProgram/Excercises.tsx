@@ -25,7 +25,7 @@ export default function Excercises({ muscle, visible, onClose, selectExcercise, 
         .catch((error) => {
             console.error('Error:', error);
         });
-      }, []);
+      }, [muscle]);
 
       console.log(excercises);
 

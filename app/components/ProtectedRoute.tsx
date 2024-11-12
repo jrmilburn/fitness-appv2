@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import LandingPage from "../landingpage/page";
 
 export default function ProtectedRoute({ children }) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 

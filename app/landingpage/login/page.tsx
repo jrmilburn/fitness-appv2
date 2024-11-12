@@ -96,7 +96,7 @@ export default function Login() {
                             Sign in with Google
                 </button>
                 <p className="text-center">
-                    Don't have an account? <Link href="/landingpage/register" className="font-bold text-blue-500 hover:text-blue-700">Register</Link>
+                    Don&apos;t have an account? <Link href="/landingpage/register" className="font-bold text-blue-500 hover:text-blue-700">Register</Link>
                 </p>
             </div>
         </div>

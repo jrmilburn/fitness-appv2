@@ -4,7 +4,16 @@ import calendarIcon from '../../assets/edit-calendar.svg';
 import Workouts from './Workouts';
 
 export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek }) {
-    const [programWorkouts, setProgramWorkouts] = useState({});
+
+    interface ProgramWorkouts {
+        weeks: Week[];
+    }
+
+    interface Week {
+        weekNo: number;
+    }
+
+    const [programWorkouts, setProgramWorkouts] = useState<ProgramWorkouts | null>(null);
     const [workoutSelect, setWorkoutSelect] = useState(false);
 
     // Fetch the week data based on the weekId
@@ -23,7 +32,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
             })
             .catch(err => console.error('Failed to fetch week data', err));
         }
-    }, [weekId]);
+    }, [weekId, setWeek]);
 
     // Fetch the program workouts when the `week` is set
     useEffect(() => {
@@ -75,7 +84,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
                 <Workouts
                     shown={workoutSelect}
                     onClose={handleClose}
-                    weeks={programWorkouts?.weeks}
+                    weeks={programWorkouts?.weeks ?? []}
                     setProgram={setProgramWorkouts}
                     setWorkout={setWorkout}
                 />

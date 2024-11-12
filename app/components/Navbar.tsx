@@ -11,9 +11,7 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   const [signInForm, setSignInForm] = useState(false);
-  const [isAuth, setIsAuth] = useState(false);
-  const defaultProfileImage =
-    "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png";
+
   const [auth, setAuth] = useState({
     isAuth: false,
     name: null,
@@ -26,7 +24,6 @@ export default function Navbar() {
 
   useEffect(() => {
     if (session?.user) {
-      setIsAuth(true);
       setAuth({
         isAuth: true,
         name: session.user.name,
@@ -34,7 +31,6 @@ export default function Navbar() {
         image: session.user.image,
       });
     } else {
-      setIsAuth(false);
       setAuth({
         isAuth: false,
         name: null,

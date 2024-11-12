@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../../lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../auth/[...nextauth]/route';
+import { authOptions } from '../../../../lib/authOptions';
 
 export async function PUT(req, { params }) {
   const { id } = params;
@@ -95,7 +95,7 @@ export async function PUT(req, { params }) {
   }
 }
 
-async function findPreviousWeekSet(setId, completedWeek, nextWeek) {
+async function findPreviousWeekSet(setId, completedWeek) {
   // Retrieve details of the set in the next week
   const nextWeekSet = await prisma.set.findUnique({
     where: { id: setId },
@@ -169,7 +169,7 @@ async function updateNextWeekSets(completedWeek, nextWeek) {
       for (const set of excercise.sets) {
 
         // Find the corresponding set from the completed week
-        const prevSet = await findPreviousWeekSet(set.id, completedWeek, nextWeek);
+        const prevSet = await findPreviousWeekSet(set.id, completedWeek);
 
         console.log('PREV SET: ', prevSet);
 

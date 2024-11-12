@@ -37,7 +37,7 @@ export async function DELETE(
 
   try {
 
-    const sets = await prisma.set.deleteMany({
+    await prisma.set.deleteMany({
       where: {
         excerciseId: id
       }

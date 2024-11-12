@@ -1,6 +1,4 @@
-import AddExcercise from "./AddExcercise"
-
-export default function ExcerciseForm({ onDelete, onAdd, onReplace, workout, setWorkout }) {
+export default function ExcerciseForm({ onDelete, onAdd, onReplace }) {
 
     return (
 

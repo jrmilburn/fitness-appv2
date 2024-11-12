@@ -1,7 +1,6 @@
-import Loader from '../components/Loader';
 import { prisma } from '../lib/prisma';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '../lib/authOptions';
 import ProgramTab from '../components/Program/ProgramTab';
 
 export default async function Programs() {

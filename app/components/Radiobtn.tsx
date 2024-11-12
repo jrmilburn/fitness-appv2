@@ -1,4 +1,4 @@
-export default function RadioBtn({ id, name, text, onChange }) {
+export default function RadioBtn({ id, name, text, onChange, checked }) {
   return (
       <div className="flex space-x-6">
           <div className="relative">
@@ -9,6 +9,7 @@ export default function RadioBtn({ id, name, text, onChange }) {
                   name={name}
                   value={text}
                   className="hidden peer"
+                  checked={checked}
                   onChange={onChange}
               />
               

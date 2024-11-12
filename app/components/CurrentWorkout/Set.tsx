@@ -56,7 +56,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
         setIsChecked(data.completed);
       }
     });
-  }, [setId]);
+  }, [setId, onDataFetch]);
 
   const handleSubmit = async (e, setId) => {
     e.preventDefault();

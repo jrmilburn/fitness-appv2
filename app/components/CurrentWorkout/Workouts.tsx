@@ -1,5 +1,3 @@
-import Loader from "../Loader";
-
 export default function Workouts({ shown, onClose, weeks, setProgram, setWorkout }) {
 
     console.log('WEEKS: ', weeks);

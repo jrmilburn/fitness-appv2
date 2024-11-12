@@ -9,7 +9,6 @@ export default function AddExcercise({ onClose, setWorkout, workout }) {
 
     const [formState, setFormState] = useState(0);
     const [muscle, setMuscle] = useState(null);
-    const [excercise, setExcercise] = useState(null);
 
     const selectMuscleGroup = (muscle) => {
 
@@ -21,7 +20,6 @@ export default function AddExcercise({ onClose, setWorkout, workout }) {
 
     const handleSelectExcercise = async (e, addExcercise) => {
 
-        setExcercise(addExcercise);
 
         const requestBody = {
             muscleId: muscle.id,

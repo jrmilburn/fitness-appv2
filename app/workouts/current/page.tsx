@@ -2,19 +2,31 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import { useSession } from 'next-auth/react';
 import Excercise from '@/app/components/CurrentWorkout/Excercise';
 import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
 import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
 
 export default function Workout() {
+
+    interface Exercise {
+        id: string;
+        name: string;
+        completed: boolean;
+    }
+    
+    interface Workout {
+        id: string;
+        excercises: Exercise[];
+        weekId: string;
+        name: string;
+    }
+
     const [week, setWeek] = useState(null);
-    const [workout, setWorkout] = useState({});
+    const [workout, setWorkout] = useState<Workout | null>(null);
     const [completed, setCompleted] = useState(false);
     const [noWorkout, setNoWorkout] = useState(false);
 
     const router = useRouter();
-    const { data: session } = useSession();
 
     useEffect(() => {
         // Refresh the router to ensure we have the latest data
@@ -47,7 +59,7 @@ export default function Workout() {
 
     useEffect(() => {
         // Check if all exercises are completed
-        if (workout.excercises) {
+        if (workout?.excercises) {
             const allCompleted = workout.excercises.every(excercise => excercise.completed === true);
             setCompleted(allCompleted);
         }
