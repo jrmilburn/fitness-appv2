@@ -10,6 +10,7 @@ export default function LandingPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [isFading, setIsFading] = useState(false);
 
   // Redirect if session is available
   useEffect(() => {
@@ -18,18 +19,32 @@ export default function LandingPage() {
     }
   }, [session, router]);
 
-  // Hide splash screen after content is loaded
+  // Hide splash screen after content is loaded with additional 0.5s delay
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500); // Adjust the delay as needed
-    return () => clearTimeout(timer);
+    const loadTimer = setTimeout(() => {
+      setIsFading(true); // Start fade-out effect
+      setTimeout(() => setIsLoading(false), 500); // Remove splash screen after fade-out
+    }, 1000); // Adjust content load time as needed
+
+    return () => clearTimeout(loadTimer);
   }, []);
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen w-full bg-white">
-        <div className="animate-spin w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+      <div className={`fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
+        {/* Splash Screen Content */}
+        <div className="text-center">
+          <div className="animate-bounce">
+            <Image
+              src="/logo.png" // Replace with your logo path
+              alt="App logo"
+              width={80}
+              height={80}
+              className="mx-auto"
+            />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-700 mt-4">Welcome to JFit</h1>
+        </div>
       </div>
     );
   }
