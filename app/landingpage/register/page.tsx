@@ -161,7 +161,7 @@ export default function SignUp() {
                         </button>
                         <button
                             type="button"
-                            onClick={() => signIn('google')}
+                            onClick={() => signIn('google', { callbackUrl: "/workouts/current" })}
                             className="flex mx-8 items-center justify-center gap-2 px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition duration-300"
                         >
                             <svg
