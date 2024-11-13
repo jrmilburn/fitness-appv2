@@ -19,7 +19,7 @@ export default function UserProgram({ currentWeek, program}) {
     return (
         <>
 
-            <button onClick={handleClick}>
+            <button onClick={handleClick} className="bg-black p-4 text-white rounded-lg font-bold absolute bottom-5">
                 {copying ? 'Back' : 'Copy'}
             </button>
 

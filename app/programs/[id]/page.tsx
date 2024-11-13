@@ -14,7 +14,8 @@ async function fetchProgramData(id) {
                         }
                     }
                 }
-            }
+            },
+            user: true
         }
     });
 
@@ -24,7 +25,7 @@ async function fetchProgramData(id) {
               include: {
                   workouts: {
                       include: { excercises: { include: { sets: true } } }
-                  }
+                  },
               }
           })
         : null;
@@ -48,7 +49,7 @@ function ProgramWrapper({ program, currentWeek }) {
     return (
         <div className='w-full mx-auto p-8 overflow-y-auto'>
             <div className='w-full flex justify-between items-center border-b-2 p-2'>
-                <h2 className='text-2xl'>{program.name}</h2>
+                <h2 className='text-2xl'>{program.name} by {program.user.name}</h2>
                 <div className='flex flex-col space-y-4'>
                     <p>{program.length} Weeks</p>
                     <p>{program.days} Days</p>

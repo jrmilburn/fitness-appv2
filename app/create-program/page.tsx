@@ -23,7 +23,7 @@ export default function CreateProgram() {
 
         <main className="w-full ml-12 p-8 h-[100%] flex items-center">
 
-            {formPage === 1 ? (<Programlength setProgram={setProgram} onNext={onNext}/>) : (<Programexcercises program={program} setProgram={setProgram} />) }
+            {formPage === 1 ? (<Programlength setProgram={setProgram} onNext={onNext}/>) : (<Programexcercises program={program} setProgram={setProgram} type={0}/>) }
             
         </main>
 

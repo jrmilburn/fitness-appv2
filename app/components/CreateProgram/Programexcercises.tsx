@@ -4,7 +4,7 @@ import Workout from './Workout';
 import { useRouter } from "next/navigation";
 
 
-export default function ProgramExcercises({ program, setProgram }) {
+export default function ProgramExcercises({ program, setProgram, type }) {
 
     console.log(program);
 
@@ -26,11 +26,11 @@ export default function ProgramExcercises({ program, setProgram }) {
 
     return (
         <>
-            <form className="w-[80%] h-[80%] p-8 bg-white shadow-md rounded-lg overflow-x-auto ml-2 border-2">
+            <form className="w-[80%] h-[80%] p-4 bg-white shadow-md rounded overflow-x-auto border-2">
                 <h2 className="text-3xl font-semibold text-gray-800 mb-6">Exercises</h2>
 
                 {/* Workouts Container */}
-                <div className="flex space-x-4 w-full h-full p-4">
+                <div className="flex space-x-4 w-full p-4">
                     {program.weeks[0].workouts.map((workout, index) => (
                         <Workout
                             key={index}
@@ -40,13 +40,24 @@ export default function ProgramExcercises({ program, setProgram }) {
                         />
                     ))}
                 </div>
-                <button
+                {type === 0 ? (
+                    <button
                     type="button"
                     onClick={handleCreate}
                     className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4 right-4"
-                >
-                    Create Program
-                </button>
+                    >
+                        Create Program
+                    </button>
+                ) : (
+                    <button
+                    type="button"
+                    onClick={handleCreate}
+                    className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4 right-4"
+                    >
+                        Copy Program
+                    </button>
+                )}
+
             </form>
         </>
     );

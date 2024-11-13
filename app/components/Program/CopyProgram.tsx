@@ -55,6 +55,7 @@ export default function CopyProgram({ program }) {
                 <ProgramExcercises 
                     program={copyProgram}
                     setProgram={setCopyProgram}
+                    type={1}
                 />
             )}
         </>
