@@ -4,13 +4,34 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 export default function LandingPage() {
   const { data: session } = useSession();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (session?.user) {
-    router.push('/workouts/current');
+  // Redirect if session is available
+  useEffect(() => {
+    if (session?.user) {
+      router.push('/workouts/current');
+    }
+  }, [session, router]);
+
+  // Hide splash screen after content is loaded
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500); // Adjust the delay as needed
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen w-full bg-white">
+        <div className="animate-spin w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+      </div>
+    );
   }
 
   return (
@@ -26,13 +47,13 @@ export default function LandingPage() {
             Transform your fitness journey with personalized workouts and real-time progress tracking.
           </p>
           <Link href={'/landingpage/register'}>
-          <button className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition duration-300">
-          <span>Sign Up</span>
-          <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
-          </svg>
+            <button className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition duration-300">
+              <span>Sign Up</span>
+              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+              </svg>
             </button>
-            </Link>
+          </Link>
         </div>
 
         {/* Right Section with Fade Effect */}
