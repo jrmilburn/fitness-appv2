@@ -23,11 +23,6 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_ID!,
             clientSecret: process.env.GOOGLE_SECRET!,
-            authorization: {
-                params: {
-                    redirect_uri: "https://fitness-appv2.vercel.app/api/auth/callback/google"
-                }
-            }
         }),
         CredentialsProvider({
             name: "Credentials",
