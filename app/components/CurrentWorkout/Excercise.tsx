@@ -38,7 +38,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/musclegroups/${excercise.muscleGroupId}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/musclegroups/${excercise.muscleGroupId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
         try {
 
-            const response = await fetch(`http://localhost:3000/api/set/${setId}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set/${setId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
         const numSets = excercise.sets.length;
 
         try {
-            const response = await fetch(`http://localhost:3000/api/set`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -161,7 +161,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
     const handleDeleteExcercise = async () => {
         try {
-            const response = await fetch(`http://localhost:3000/api/excercises/${excercise.id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/excercises/${excercise.id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json'

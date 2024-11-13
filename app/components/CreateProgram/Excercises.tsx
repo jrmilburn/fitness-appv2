@@ -11,7 +11,7 @@ export default function Excercises({ muscle, visible, onClose, selectExcercise, 
       };
 
       useEffect(() => {
-        fetch(`http://localhost:3000/api/excercises/${muscle}`, {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/excercises/${muscle}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

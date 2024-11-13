@@ -20,7 +20,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
   };
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/set/${setId}`, {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set/${setId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -28,7 +28,6 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
     })
     .then(response => response.json())
     .then(data => {
-      console.log('SET DATA: ', data);
       setIsChecked(data.completed);
       setRecommendedReps(data.recommendedReps || null);
       
@@ -56,7 +55,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
         setIsChecked(data.completed);
       }
     });
-  }, [setId, onDataFetch]);
+  }, [setId]);
 
   const handleSubmit = async (e, setId) => {
     e.preventDefault();
@@ -75,7 +74,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
     }));
   
     // Save the updated completed state to the server
-    await fetch(`http://localhost:3000/api/set/${setId}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set/${setId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

@@ -11,7 +11,7 @@ export default function SettingsForm({ user, latestBodyWeight }) {
 
         console.log(user.id);
 
-        const response = await fetch(`http://localhost:3000/api/users/${user.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/users/${user.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

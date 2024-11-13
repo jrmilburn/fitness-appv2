@@ -19,7 +19,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
     // Fetch the week data based on the weekId
     useEffect(() => {
         if (weekId) {
-            fetch(`http://localhost:3000/api/weeks/${weekId}`, {
+            fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/weeks/${weekId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
     // Fetch the program workouts when the `week` is set
     useEffect(() => {
         if (week?.programId) {
-            fetch(`http://localhost:3000/api/program/${week.programId}`, {
+            fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/program/${week.programId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

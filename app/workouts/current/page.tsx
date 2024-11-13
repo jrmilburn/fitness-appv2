@@ -32,8 +32,10 @@ export default function Workout() {
         // Refresh the router to ensure we have the latest data
         router.refresh();
 
+        console.log(process.env.NEXT_PUBLIC_BASE_URL!);
+
         // Fetch the most recent workout data after refreshing
-        fetch(`http://localhost:3000/api/workouts/current`, {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/workouts/current`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,7 +65,7 @@ export default function Workout() {
             const allCompleted = workout.excercises.every(excercise => excercise.completed === true);
             setCompleted(allCompleted);
         }
-    }, [workout.excercises]);
+    }, [workout?.excercises]);
 
     if (noWorkout) {
         return (
@@ -76,7 +78,7 @@ export default function Workout() {
 
     return (
         <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>
-            {workout.weekId && (
+            {workout?.weekId && (
                 <WorkoutHeader 
                     name={workout.name}
                     weekId={workout.weekId}
@@ -85,7 +87,7 @@ export default function Workout() {
                     setWeek={setWeek}
                 />
             )}
-            {workout.excercises && workout.excercises.map(excercise => (
+            {workout?.excercises && workout?.excercises?.map(excercise => (
                 <Excercise 
                     key={excercise.id}
                     excercise={excercise}

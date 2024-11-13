@@ -13,7 +13,7 @@ export default function Musclegroups({ visible, onClose, onAdd }) {
       };
 
         useEffect(() => {
-            fetch("http://localhost:3000/api/musclegroups", {
+            fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/musclegroups`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

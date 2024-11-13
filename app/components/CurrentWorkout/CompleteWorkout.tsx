@@ -10,7 +10,7 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
         setIsLoading(true);  // Show loading state
         setWorkout({ ...workout, completed: true });
 
-        const response = await fetch(`http://localhost:3000/api/workouts/finish/${workout.id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/workouts/finish/${workout.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'  
@@ -29,7 +29,7 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
         }
 
         // Fetch the next workout if the program is not finished
-        const newWorkoutResponse = await fetch(`http://localhost:3000/api/workouts/current`, {
+        const newWorkoutResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/workouts/current`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
         if (isFinished && workout.completed) {
             setIsFinished(false);  // Reset if needed for future workouts
         }
-    }, [workout.completed, isFinished]);
+    }, [workout?.completed, isFinished]);
 
     if (programCompleted) {
         return (
@@ -58,7 +58,7 @@ export default function CompleteWorkout({ completed, workout, setWorkout }) {
         );
     }
 
-    if (workout.completed && isLoading === false) {
+    if (workout?.completed && isLoading === false) {
         return (
             <div className="flex flex-col items-center space-y-4">
                 <Link href={`/workouts/current`} className="w-full max-w-2xl text-lg font-bold text-background bg-foreground p-4 rounded hover:opacity-75 transition-all duration-300 text-center">

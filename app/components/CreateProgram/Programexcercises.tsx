@@ -11,7 +11,7 @@ export default function ProgramExcercises({ program, setProgram }) {
     const router = useRouter();
 
     const handleCreate = async () => {
-        const response = await fetch('http://localhost:3000/api/program', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/program`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

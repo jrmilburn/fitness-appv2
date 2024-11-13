@@ -28,7 +28,7 @@ export default function AddExcercise({ onClose, setWorkout, workout }) {
             workoutId: workout.id
         }
 
-        const response = await fetch(`http://localhost:3000/api/excercises`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/excercises`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

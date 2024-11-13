@@ -14,7 +14,7 @@ export default function Search() {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:3000/api/users', {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/users`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ export default function Search() {
     const handleSearch = async (e) => {
         e.preventDefault();
 
-        const response = await fetch(`http://localhost:3000/api/users/${query}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/users/${query}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
