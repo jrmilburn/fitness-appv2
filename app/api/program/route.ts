@@ -3,59 +3,45 @@ import { prisma } from '../../lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../lib/authOptions';
 
-
 export async function POST(req) {
-
   console.log('REQUEST FOR PROGRAM POST: ', req.body);
 
   const userSession = await getServerSession(authOptions);
-
   const userEmail = userSession?.user.email;
 
   const program = await req.json();
   const weeks = program.weeks;
+  
   const user = await prisma.user.findUnique({
     where: {
       email: userEmail
     }
-  })
-
+  });
   const userId = user?.id;
 
-  console.log(userId);
-  
+  // Calculate set counts and reps in reserve once
   weeks.forEach((week, weekIndex) => {
-    const totalWeeks = weeks.length; // Get the total number of weeks
-  
+    const totalWeeks = weeks.length;
     const setCount = (weekIndex === 0 || weekIndex === totalWeeks - 1)
       ? 2
       : 2 + Math.floor((2 * weekIndex) / (totalWeeks - 2));
-  
     const repsInReserve = (weekIndex === totalWeeks - 1)
       ? 8
       : 3 - Math.floor((3 * weekIndex) / (totalWeeks - 2));
-  
-    // Add repsInReserve to the week object
     week.repsInReserve = repsInReserve;
-  
+
     week.workouts.forEach((workout) => {
       workout.excercises.forEach((excercise, index) => {
         const sets = Array.from({ length: setCount }, () => ({
           reps: 0,
           weight: 0,
         }));
-  
-        workout.excercises[index] = {
-          ...excercise,
-          setCount: setCount,  // Set the calculated setCount
-          sets: sets,          // Assign the generated sets array
-        };
+        workout.excercises[index] = { ...excercise, setCount, sets };
       });
     });
   });
-  
+
   try {
-    // Create or update the Program
     const createdProgram = await prisma.program.create({
       data: {
         name: program.name,
@@ -64,10 +50,10 @@ export async function POST(req) {
         userId: userId,
       }
     });
-  
-    for (const [weekIndex, week] of weeks.entries()) {
-      // Create or update Week, including repsInReserve
-      const createdWeek = await prisma.week.upsert({
+
+    // Insert weeks in parallel
+    const createdWeeks = await Promise.all(weeks.map((week, weekIndex) => 
+      prisma.week.upsert({
         where: {
           programId_weekNo: {
             programId: createdProgram.id,
@@ -76,18 +62,21 @@ export async function POST(req) {
         },
         update: {
           updatedAt: new Date(),
-          repsInReserve: week.repsInReserve,  // Update repsInReserve
+          repsInReserve: week.repsInReserve,
         },
         create: {
           weekNo: weekIndex + 1,
           programId: createdProgram.id,
-          repsInReserve: week.repsInReserve,  // Set repsInReserve
+          repsInReserve: week.repsInReserve,
         },
-      });
-  
-      for (const [workIndex, workout] of week.workouts.entries()) {
-        // Create or update Workout
-        const createdWorkout = await prisma.workout.upsert({
+      })
+    ));
+
+    for (const [weekIndex, createdWeek] of createdWeeks.entries()) {
+      const week = weeks[weekIndex];
+      
+      const createdWorkouts = await Promise.all(week.workouts.map((workout, workIndex) =>
+        prisma.workout.upsert({
           where: {
             weekId_name: {
               weekId: createdWeek.id,
@@ -102,19 +91,19 @@ export async function POST(req) {
             weekId: createdWeek.id,
             workoutNo: workIndex + 1,
           },
-        });
-  
-        for (const excercise of workout.excercises) {
-          console.log(excercise);
-  
-          // Ensure the MuscleGroup exists or create it if necessary
+        })
+      ));
+
+      for (const [workIndex, createdWorkout] of createdWorkouts.entries()) {
+        const workout = week.workouts[workIndex];
+        
+        await Promise.all(workout.excercises.map(async (excercise) => {
           const muscleGroup = await prisma.muscleGroup.upsert({
             where: { name: excercise.muscle },
             update: {},
             create: { name: excercise.muscle },
           });
-  
-          // Make sure to check for existing exercise with non-null `details`
+
           const existingExercise = await prisma.excercise.findFirst({
             where: {
               name: excercise.name,
@@ -123,7 +112,6 @@ export async function POST(req) {
             },
           });
 
-          // Prepare exercise details, explicitly setting each field to match the schema
           const excerciseDetails = {
             name: excercise.name,
             workoutId: createdWorkout.id,
@@ -131,7 +119,6 @@ export async function POST(req) {
             details: existingExercise?.details || null,
           };
 
-          // Use upsert with the correct fields
           const createdExcercise = await prisma.excercise.upsert({
             where: {
               workoutId_name: {
@@ -145,31 +132,26 @@ export async function POST(req) {
             },
             create: excerciseDetails,
           });
-  
-          // Add Sets to the Excercise
-          for (const [setIndex, set] of excercise.sets.entries()) {
-            await prisma.set.create({
-              data: {
-                excerciseId: createdExcercise.id,
-                weight: set.weight,
-                reps: set.reps,
-                setNo: setIndex + 1,
-              },
-            });
-          }
-        }
+
+          // Insert sets in a batch
+          const setsData = excercise.sets.map((set, setIndex) => ({
+            excerciseId: createdExcercise.id,
+            weight: set.weight,
+            reps: set.reps,
+            setNo: setIndex + 1,
+          }));
+          await prisma.set.createMany({
+            data: setsData,
+          });
+        }));
       }
     }
-  
+
     await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        currentProgramId: createdProgram.id,
-      }
+      where: { id: userId },
+      data: { currentProgramId: createdProgram.id },
     });
-  
+
     const newWeek = await prisma.week.update({
       where: {
         programId_weekNo: {
@@ -184,18 +166,13 @@ export async function POST(req) {
         workouts: true,
       }
     });
-  
+
     const newProgram = await prisma.program.update({
-      where: {
-        id: createdProgram.id,
-      },
-      data: {
-        currentWeekId: newWeek.id,
-      }
+      where: { id: createdProgram.id },
+      data: { currentWeekId: newWeek.id },
     });
-  
+
     console.log(newProgram, newWeek);
-  
     return NextResponse.json(createdProgram);
   } catch (error) {
     console.error('Error saving program:', error);
