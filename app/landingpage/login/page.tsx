@@ -79,26 +79,22 @@ export default function Login() {
                 </button>
 
                 <button
-    type="button"
-    onClick={() =>
-        signIn("google", {
-            callbackUrl: "/workouts/current", // Redirect to a specific page after login
-        })
-    }
-    className="flex mx-auto items-center justify-center gap-2 px-6 py-3 w-full bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition duration-300"
->
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 48 48"
-        className="w-5 h-5"
-    >
-        <path fill="#4285F4" d="M24 9.5c3.2 0 5.8 1.1 7.8 3.1l5.8-5.8C33.8 3.5 29.2 1.5 24 1.5 14.8 1.5 7.2 7.8 4.5 16.2l6.9 5.4C13.2 15.2 18.2 9.5 24 9.5z" />
-        <path fill="#34A853" d="M46.5 24c0-1.6-.2-3.2-.5-4.7H24v9.4h12.7c-.5 2.5-1.9 4.6-3.9 6.1l6.1 4.7c3.6-3.3 5.6-8.1 5.6-13.5z" />
-        <path fill="#FBBC05" d="M10.5 28.2c-1-2.5-1-5.2 0-7.7l-6.9-5.4c-2.9 5.8-2.9 12.7 0 18.5l6.9-5.4z" />
-        <path fill="#EA4335" d="M24 46.5c5.2 0 9.8-1.7 13.1-4.7l-6.1-4.7c-1.7 1.1-3.8 1.8-6.1 1.8-5.8 0-10.8-3.7-12.6-8.9l-6.9 5.4c3.2 6.3 9.7 10.9 17.6 10.9z" />
-    </svg>
-    Sign in with Google
-</button>
+                            type="button"
+                            onClick={() => signIn('google')}
+                            className="flex mx-auto items-center justify-center gap-2 px-6 py-3 w-full bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition duration-300"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 48 48"
+                                className="w-5 h-5"
+                            >
+                                <path fill="#4285F4" d="M24 9.5c3.2 0 5.8 1.1 7.8 3.1l5.8-5.8C33.8 3.5 29.2 1.5 24 1.5 14.8 1.5 7.2 7.8 4.5 16.2l6.9 5.4C13.2 15.2 18.2 9.5 24 9.5z" />
+                                <path fill="#34A853" d="M46.5 24c0-1.6-.2-3.2-.5-4.7H24v9.4h12.7c-.5 2.5-1.9 4.6-3.9 6.1l6.1 4.7c3.6-3.3 5.6-8.1 5.6-13.5z" />
+                                <path fill="#FBBC05" d="M10.5 28.2c-1-2.5-1-5.2 0-7.7l-6.9-5.4c-2.9 5.8-2.9 12.7 0 18.5l6.9-5.4z" />
+                                <path fill="#EA4335" d="M24 46.5c5.2 0 9.8-1.7 13.1-4.7l-6.1-4.7c-1.7 1.1-3.8 1.8-6.1 1.8-5.8 0-10.8-3.7-12.6-8.9l-6.9 5.4c3.2 6.3 9.7 10.9 17.6 10.9z" />
+                            </svg>
+                            Sign in with Google
+                </button>
                 <p className="text-center">
                     Don&apos;t have an account? <Link href="/landingpage/register" className="font-bold text-blue-500 hover:text-blue-700">Register</Link>
                 </p>
