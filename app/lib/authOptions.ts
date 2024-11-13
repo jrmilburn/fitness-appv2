@@ -23,11 +23,6 @@ export const authOptions: NextAuthOptions = {
         GoogleProvider({
             clientId: process.env.GOOGLE_ID!,
             clientSecret: process.env.GOOGLE_SECRET!,
-            authorization: {
-                params: {
-                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/google`
-                }
-            }
         }),
         CredentialsProvider({
             name: "Credentials",
@@ -67,14 +62,16 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async jwt({ token, user }) {
-          if (user) {
-            token.id = user.id;
-          }
-          return token;
+            console.log("JWT Callback", { token, user });
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
         },
         async session({ session, token }) {
-          session.user.id = token.id as string;
-          return session;
+            console.log("Session Callback", { session, token });
+            session.user.id = token.id as string;
+            return session;
         },
     },
     pages: {
