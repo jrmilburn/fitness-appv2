@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import Excercise from '@/app/components/CurrentWorkout/Excercise';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import Exercise from '@/app/components/CurrentWorkout/Excercise';
 import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
 import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
 
@@ -25,6 +27,7 @@ export default function Workout() {
     const [workout, setWorkout] = useState<Workout | null>(null);
     const [completed, setCompleted] = useState(false);
     const [noWorkout, setNoWorkout] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     const router = useRouter();
 
@@ -52,10 +55,12 @@ export default function Workout() {
             if (data) {
                 setWorkout(data);
             }
+            setIsLoading(false); // Stop loading after data is fetched
         })
         .catch((error) => {
             console.error('Error fetching workout:', error);
             setNoWorkout(true);
+            setIsLoading(false); // Stop loading if there’s an error
         });
     }, [router]); // Only run on initial mount
 
@@ -78,7 +83,10 @@ export default function Workout() {
 
     return (
         <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>
-            {workout?.weekId && (
+            {/* Workout Header */}
+            {isLoading ? (
+                <Skeleton height={40} width={300} />
+            ) : workout?.weekId && (
                 <WorkoutHeader 
                     name={workout.name}
                     weekId={workout.weekId}
@@ -87,20 +95,34 @@ export default function Workout() {
                     setWeek={setWeek}
                 />
             )}
-            {workout?.excercises && workout?.excercises?.map(excercise => (
-                <Excercise 
-                    key={excercise.id}
-                    excercise={excercise}
-                    weekRir={week?.repsInReserve}
+
+            {/* Exercise List */}
+            {isLoading ? (
+                Array(3).fill(null).map((_, index) => (
+                    <Skeleton key={index} height={100} width="100%" />
+                ))
+            ) : (
+                workout?.excercises && workout.excercises.map(excercise => (
+                    <Exercise 
+                        key={excercise.id}
+                        excercise={excercise}
+                        weekRir={week?.repsInReserve}
+                        workout={workout}
+                        setWorkout={setWorkout}
+                    />
+                ))
+            )}
+
+            {/* Complete Workout Button */}
+            {isLoading ? (
+                <Skeleton height={50} width={200} />
+            ) : (
+                <CompleteWorkout 
+                    completed={completed}
                     workout={workout}
                     setWorkout={setWorkout}
                 />
-            ))}
-            <CompleteWorkout 
-                completed={completed}
-                workout={workout}
-                setWorkout={setWorkout}
-            />
+            )}
         </div>
     );
 }
