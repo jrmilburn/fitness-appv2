@@ -10,7 +10,7 @@ export default function ProtectedRoute({ children }) {
   const { status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
-  const [isFading, setIsFading] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
   const unprotectedPaths = ["/landingpage/register", "/landingpage/login"];
@@ -32,7 +32,7 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     // Only start fading out if loading is complete and the minimum time has passed
     if (status !== "loading" && minTimeElapsed) {
-      setIsFading(true);
+      setIsVisible(false);
     }
   }, [status, minTimeElapsed]);
 
@@ -42,12 +42,12 @@ export default function ProtectedRoute({ children }) {
       {(status === "authenticated" || isUnprotectedPath) ? children : <LandingPage />}
 
       {/* Splash screen overlay */}
-      {status === "loading" || !isFading ? (
+      {isVisible && (
         <div
           className={`fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-500 ${
-            isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+            isVisible ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{ zIndex: 50 }} // Ensure it overlays the main content
+          style={{ zIndex: 50, pointerEvents: isVisible ? 'auto' : 'none' }}
         >
           <div className="text-center">
             <div className="animate-bounce">
@@ -56,7 +56,7 @@ export default function ProtectedRoute({ children }) {
             <h1 className="text-2xl font-bold text-gray-700 mt-4">Welcome to JFit</h1>
           </div>
         </div>
-      ) : null}
+      )}
     </>
   );
 }
