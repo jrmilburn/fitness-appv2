@@ -65,10 +65,12 @@ export default function Navbar() {
     <nav className="h-full border-r bg-background shadow-lg min-w-80">
       <ul className="flex flex-col justify-between p-8 h-screen max-h-[100%] items-left">
         {/* Logo */}
-        <div className="w-full">
-          <Image src="/logo.jpg" alt="App logo" width={80} height={80} className="mx-auto" />
-          <h2 className="font-bold text-3xl">JFit</h2>
-        </div>
+        <Link href='/'>
+          <div className="w-full flex flex-col items-center">
+            <Image src="/logo.jpg" alt="App logo" width={80} height={80} className="mx-auto" />
+            <h2 className="font-bold text-3xl">JFit</h2>
+          </div>
+        </Link>
 
         {/* Logged Out State */}
         {!session ? (
