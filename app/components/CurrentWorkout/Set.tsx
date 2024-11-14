@@ -12,6 +12,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
   const [lowerBoundWeight, setLowerBoundWeight] = useState(null);
   const [recommendedWeight, setRecommendedWeight] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [sendingSet, setSendingSet] = useState(false);
   const formRef = useRef(null);
 
   // Helper function to round up to the nearest 2.5
@@ -59,6 +60,9 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
 
   const handleSubmit = async (e, setId) => {
     e.preventDefault();
+
+    setSendingSet(true);
+
     const newCheckedValue = !isChecked;
     setIsChecked(newCheckedValue);
   
@@ -81,6 +85,8 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
       },
       body: JSON.stringify({ weight, reps, completed: newCheckedValue })
     });
+
+    setSendingSet(false);
   };
 
   const handleEditClick = () => {
@@ -135,15 +141,38 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
           onChange={(e) => setReps(+e.target.value)}
           disabled={workout.completed}
         />
-
+        
         <button
           onClick={(e) => handleSubmit(e, setId)}
           className={`w-8 h-8 rounded-sm border-2 ${
             isChecked ? 'bg-green-500 border-blue-500' : 'border-gray-300'
           } flex items-center justify-center transition-all duration-300`}
-          disabled={workout.completed}
+          disabled={workout.completed || sendingSet} // Disable button while sending
         >
-          {isChecked && (
+          {sendingSet ? (
+            // Spinner
+            <svg
+              className="animate-spin h-5 w-5 text-blue-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+              ></path>
+            </svg>
+          ) : isChecked ? (
+            // Checkbox icon
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 text-white"
@@ -154,7 +183,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
-          )}
+          ) : null}
         </button>
         {isEditing && (
           <div ref={formRef} className='absolute top-[10%] z-50'>
