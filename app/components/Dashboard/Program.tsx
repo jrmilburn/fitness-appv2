@@ -37,7 +37,7 @@ export default async function DashboardProgram() {
       </div>
       
       <Link href={`/programs/${program.id}`}>
-      <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      <button className="mt-4 px-4 py-2 bg-black font-bold text-white rounded hover:bg-black-600">
         View Full Program
       </button>
       </Link>

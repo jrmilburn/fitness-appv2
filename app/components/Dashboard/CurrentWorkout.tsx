@@ -57,8 +57,8 @@ export default async function DashboardWorkout() {
         <div className="text-gray-800">{currentWorkout?.updatedAt ? currentWorkout.updatedAt.toLocaleDateString() : 'N/A'}</div>
       </div>
 
-      <Link href={`/workouts/${currentWorkout?.id}`}>
-        <button className="mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+      <Link href={`/workouts/current`}>
+        <button className="mt-4 px-4 py-2 bg-black text-white font-bold rounded hover:bg-black-600">
           View Workout Details
         </button>
       </Link>

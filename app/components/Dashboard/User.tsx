@@ -1,5 +1,6 @@
 import { prisma } from '../../lib/prisma'
 import Image from 'next/image'
+import Link from 'next/link'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/authOptions';
 
@@ -36,9 +37,11 @@ export default async function DashboardUser() {
         />
       )}
 
-      <button className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      <Link href='/profile'>
+      <button className="mt-4 px-4 py-2 bg-black text-white font-bold rounded hover:bg-black-600">
         Edit Profile
       </button>
+      </Link>
     </div>
   );
 }
