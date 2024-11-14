@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from 'next/image'
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useState, useEffect, useRef } from "react";
 import Image from 'next/image';
@@ -65,9 +66,7 @@ export default function Navbar() {
     <nav className="h-full border-r bg-background shadow-lg min-w-80">
       <ul className="flex flex-col justify-between p-8 h-screen max-h-[100%] items-left">
         {/* Logo */}
-        <h2 className="text-4xl font-semibold text-gray-800 mb-12 h-[10%]">
-          JFit
-        </h2>
+        <Image src="/logo.jpg" alt="App logo" width={80} height={80} className="mx-auto" />
 
         {/* Logged Out State */}
         {!session ? (
