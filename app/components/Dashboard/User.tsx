@@ -38,9 +38,7 @@ export default async function DashboardUser() {
       <div className="grid grid-cols-2 gap-4 text-lg mt-4">
         <div className="font-medium text-gray-600">Joined:</div>
         <div className="text-gray-800">{user?.createdAt?.toLocaleDateString() || 'N/A'}</div>
-        
-        <div className="font-medium text-gray-600">Last Updated:</div>
-        <div className="text-gray-800">{user?.updatedAt?.toLocaleDateString() || 'N/A'}</div>
+
       </div>
 
       <Link href="/profile">
