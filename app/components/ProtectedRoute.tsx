@@ -11,6 +11,7 @@ export default function ProtectedRoute({ children }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isFading, setIsFading] = useState(false);
+  const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
   const unprotectedPaths = ["/landingpage/register", "/landingpage/login"];
   const isUnprotectedPath = unprotectedPaths.includes(pathname);
@@ -22,10 +23,18 @@ export default function ProtectedRoute({ children }) {
   }, [status, router, isUnprotectedPath]);
 
   useEffect(() => {
-    if (status === "loading") {
-      setTimeout(() => setIsFading(true), 1000); // Delay for smoother transition
+    // Set a minimum display time for the splash screen (1 second)
+    const timer = setTimeout(() => setMinTimeElapsed(true), 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    // Only start fading out if loading is complete and the minimum time has passed
+    if (status !== "loading" && minTimeElapsed) {
+      setIsFading(true);
     }
-  }, [status]);
+  }, [status, minTimeElapsed]);
 
   return (
     <>
@@ -33,9 +42,9 @@ export default function ProtectedRoute({ children }) {
       {(status === "authenticated" || isUnprotectedPath) ? children : <LandingPage />}
 
       {/* Splash screen overlay */}
-      {status === "loading" && (
+      {status === "loading" || !isFading ? (
         <div
-          className={`fixed inset-0 flex items-center justify-center bg-white transition-all duration-500 ${
+          className={`fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-500 ${
             isFading ? 'opacity-0 pointer-events-none' : 'opacity-100'
           }`}
           style={{ zIndex: 50 }} // Ensure it overlays the main content
@@ -47,7 +56,7 @@ export default function ProtectedRoute({ children }) {
             <h1 className="text-2xl font-bold text-gray-700 mt-4">Welcome to JFit</h1>
           </div>
         </div>
-      )}
+      ) : null}
     </>
   );
 }
