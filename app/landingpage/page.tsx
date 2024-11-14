@@ -11,6 +11,7 @@ export default function LandingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isFading, setIsFading] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Redirect if session is available
   useEffect(() => {
@@ -78,7 +79,8 @@ export default function LandingPage() {
             alt="App preview"
             width={600}
             height={1000}
-            className="h-full w-auto object-contain"
+            className={`h-full w-auto object-contain transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            onLoad={() => setImageLoaded(true)} // Set imageLoaded to true once the image loads
           />
           {/* Gradient Overlay */}
           <div className="absolute left-0 top-0 h-full w-1/4 bg-gradient-to-l from-transparent to-white pointer-events-none"></div>
