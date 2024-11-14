@@ -72,12 +72,12 @@ export default function Workout() {
                 <h2>No Workout Available</h2>
                 <p>Please Create or Find a Program to Start a Workout</p>
                 <div className='flex'>
-                <button className='bg-black rounded-lg text-white font-bold'>
+                <button className='bg-black rounded-lg text-white font-bold p-4'>
                     <Link href='/create-program'>
                         Create
                     </Link>
                 </button>
-                <button className='bg-black rounded-lg text-white font-bold'>
+                <button className='bg-black rounded-lg text-white font-bold p-4'>
                     <Link href='/search'>
                         Search
                     </Link>
