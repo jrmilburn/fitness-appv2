@@ -22,13 +22,13 @@ export default async function Home() {
 
   return (
     <div className="grid grid-cols-2 grid-rows-2 min-h-screen gap-4 p-4 font-[family-name:var(--font-geist-sans)]">
-      <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-lg border-2">
+      <div className="w-full h-full flex items-center justify-center bg-white rounded-lg border-2">
         {user?.image ? (
           <Image
             src={user.image}
             alt="User profile picture"
-            width={120}
-            height={120}
+            width={240}
+            height={240}
             className="rounded-full"
           />
         ) : (
@@ -46,7 +46,7 @@ export default async function Home() {
         <DashboardProgram />
       </div>
       
-      <div className="col-span-2 w-full h-full">
+      <div className="w-full h-full">
         <DashboardUser />
       </div>
     </div>
