@@ -43,7 +43,8 @@ export default async function DashboardWorkout() {
 
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 bg-gray-100 rounded-lg border-2 w-80">
+    <div className="grid grid-cols-1 gap-4 p-4 rounded-lg border-2 w-80 h-full">
+        <h2 className='text-3xl font-bold'>Current Workout</h2>
       <h2 className="text-xl font-semibold">{currentWorkout?.name || 'Workout Name'}</h2>
       <p className="text-gray-700">Exercises: {currentWorkout?.excercises?.length || 'N/A'}</p>
       <p className="text-gray-700">Status: {currentWorkout?.completed ? 'Completed' : 'In Progress'}</p>
