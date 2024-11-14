@@ -4,13 +4,11 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function LandingPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFading, setIsFading] = useState(false);
 
   // Redirect if session is available
   useEffect(() => {
@@ -19,41 +17,8 @@ export default function LandingPage() {
     }
   }, [session, router]);
 
-  // Hide splash screen after content is loaded with additional 0.5s delay
-  useEffect(() => {
-    const loadTimer = setTimeout(() => {
-      setIsFading(true); // Start fade-out effect
-      setTimeout(() => setIsLoading(false), 500); // Remove splash screen after fade-out
-    }, 1000); // Adjust content load time as needed
-
-    return () => clearTimeout(loadTimer);
-  }, []);
-
   return (
     <div className="relative flex flex-col items-center justify-between h-screen w-full bg-white">
-      {/* Splash Screen Overlay */}
-      {isLoading && (
-        <div
-          className={`absolute inset-0 flex items-center justify-center bg-white transition-all duration-500 ${
-            isFading ? 'opacity-0 translate-y-full' : 'opacity-100 translate-y-0'
-          }`}
-          style={{ zIndex: 50 }}
-        >
-          <div className="text-center">
-            <div className="animate-bounce">
-              <Image
-                src="/logo.jpg"
-                alt="App logo"
-                width={80}
-                height={80}
-                className="mx-auto"
-              />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-700 mt-4">Welcome to JFit</h1>
-          </div>
-        </div>
-      )}
-
       {/* Main Content Section */}
       <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl p-8 md:p-12">
         {/* Left Section */}
