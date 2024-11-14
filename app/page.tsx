@@ -4,7 +4,7 @@ import DashboardUser from "./components/Dashboard/User";
 
 export default async function Home() {
   return (
-    <div className="grid grid-cols-2 grid-rows-2 min-h-screen gap-4 p-8 pb-20 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-cols-2 grid-rows-2 min-h-screen gap-4 p-4 font-[family-name:var(--font-geist-sans)]">
       <div className="w-full h-full">
         <DashboardWorkout />
       </div>
