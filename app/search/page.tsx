@@ -5,15 +5,19 @@ import Image from 'next/image';
 import Users from '../components/Search/Users';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function Search() {
     const { data: session } = useSession();
-    const currentUserId = session?.user?.id; // Get the current user's ID
+    const currentUserId = session?.user?.id;
 
     const [query, setQuery] = useState('');
     const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        setLoading(true); // Start loading
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/users`, {
             method: 'GET',
             headers: {
@@ -21,11 +25,15 @@ export default function Search() {
             },
         })
             .then((response) => response.json())
-            .then((data) => setUsers(data));
+            .then((data) => {
+                setUsers(data);
+                setLoading(false); // Stop loading
+            });
     }, []);
 
     const handleSearch = async (e) => {
         e.preventDefault();
+        setLoading(true); // Start loading when a search is triggered
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/users/${query}`, {
             method: 'GET',
@@ -36,10 +44,12 @@ export default function Search() {
 
         const users = await response.json();
         setUsers(users);
+        setLoading(false); // Stop loading
     };
 
     return (
         <div className="w-full h-full max-w-3xl mx-auto">
+            {/* Search Input and Button */}
             <form className="w-[80%] mx-auto my-16 flex space-x-4" onSubmit={handleSearch}>
                 <input
                     type="text"
@@ -52,7 +62,26 @@ export default function Search() {
                     <Image priority src={searchIcon} alt="Search icon" className="h-8 w-8" />
                 </button>
             </form>
-            <Users users={users} currentUserId={currentUserId} />
+
+            {/* Conditional rendering: Skeletons or Users */}
+            {loading ? (
+                <div className="w-[80%] mx-auto grid gap-6">
+                    {Array(5).fill(null).map((_, index) => (
+                        <div key={index} className="flex w-full justify-between items-center border rounded-xl shadow-sm p-4">
+                            <div className="flex items-center">
+                                <Skeleton circle={true} height={50} width={50} /> {/* Profile Image */}
+                                <div className="ml-4">
+                                    <Skeleton width={120} height={20} /> {/* Name */}
+                                    <Skeleton width={180} height={16} /> {/* Email */}
+                                </div>
+                            </div>
+                            <Skeleton width={100} height={36} /> {/* View Profile Button */}
+                        </div>
+                    ))}
+                </div>
+            ) : (
+                <Users users={users} currentUserId={currentUserId} />
+            )}
         </div>
     );
 }
