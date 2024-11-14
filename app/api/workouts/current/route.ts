@@ -27,6 +27,10 @@ export async function GET() {
 
     const currentProgram = await prisma.program.findUnique({
       where: { id: user.currentProgramId },
+      select: {
+        completed: true, // Include the completed status
+        currentWeekId: true,
+      },
     });
 
     if (!currentProgram) {
@@ -65,7 +69,11 @@ export async function GET() {
       return NextResponse.json({ error: 'Current workout not found in week' }, { status: 404 });
     }
 
-    return NextResponse.json(currentWorkout);
+    // Return both the currentWorkout data and the program's completed status
+    return NextResponse.json({
+      workout: currentWorkout,
+      programCompleted: currentProgram.completed,
+    });
   } catch (error) {
     console.error('Error fetching current workout:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

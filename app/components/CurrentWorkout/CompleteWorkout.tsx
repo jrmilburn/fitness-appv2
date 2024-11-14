@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 
-export default function CompleteWorkout({ completed, workout, setWorkout }) {
+export default function CompleteWorkout({ completed, workout, setWorkout, programComplete }) {
     const [isFinished, setIsFinished] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [programCompleted, setProgramCompleted] = useState(false);
+    const [programCompleted, setProgramCompleted] = useState(programComplete);
 
     const handleFinish = async () => {
         setIsLoading(true);  // Show loading state

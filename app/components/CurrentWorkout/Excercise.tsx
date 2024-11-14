@@ -222,7 +222,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                             src={infoIcon}
                             alt='info'/>
                     </button>
-                    <button onClick={handleEditClick}>
+                    <button onClick={handleEditClick} disabled={excercise.completed}>
                         <Image
                             src={horieditIcon}
                             alt='edit excercise'

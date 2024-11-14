@@ -113,7 +113,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
   return (
     <>
       <div className="flex justify-between space-x-8 items-center relative">
-        <button className='absolute left-[-1%]'>
+        <button className='absolute left-[-1%]' disabled={workout.completed}>
           <Image 
             onClick={handleEditClick}
             src={verteditIcon}
@@ -189,7 +189,8 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
           <div ref={formRef} className='absolute top-[10%] z-50'>
             <SetForm 
               onDelete={onDelete}
-              onAdd={onAdd}/>
+              onAdd={onAdd}
+            />
           </div>
         )}
       </div>

@@ -26,6 +26,7 @@ export default function Workout() {
     const [week, setWeek] = useState(null);
     const [workout, setWorkout] = useState<Workout | null>(null);
     const [completed, setCompleted] = useState(false);
+    const [programCompleted, setProgramCompleted] = useState(false);
     const [noWorkout, setNoWorkout] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -48,7 +49,8 @@ export default function Workout() {
         })
         .then((data) => {
             if (data) {
-                setWorkout(data);
+                setWorkout(data.workout);
+                setProgramCompleted(data.programCompleted);
             }
             setIsLoading(false);
         })
@@ -99,6 +101,7 @@ export default function Workout() {
                     setWorkout={setWorkout}
                     week={week}
                     setWeek={setWeek}
+                    //programCompleted={programCompleted}
                 />
             )}
 
@@ -151,6 +154,7 @@ export default function Workout() {
                     completed={completed}
                     workout={workout}
                     setWorkout={setWorkout}
+                    programComplete={programCompleted}
                 />
             )}
         </div>
