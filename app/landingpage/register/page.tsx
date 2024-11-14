@@ -52,18 +52,20 @@ export default function SignUp() {
     };
 
     return (
-        <div className="flex h-screen w-full font-sans bg-gray-100">
+        <div className="flex h-screen w-full font-sans bg-gray-100 relative">
             <Image
-                src="/auth-background.png"
+                src="/auth-background.webp" // Use WebP format for optimized performance
                 alt="Background"
                 layout="fill"
                 objectFit="cover"
                 className="absolute inset-0 z-0"
+                priority // Prioritize this image for faster initial load
+                placeholder="blur" // Apply a blur effect as the image loads
+                blurDataURL="data:image/webp;base64,[your-base64-encoded-placeholder]" // A low-res base64 placeholder for quicker loading
             />
 
-
             {/* Right Content Section */}
-            <div className="flex flex-col justify-center items-center flex-grow p-8 space-y-8 relative z-1">
+            <div className="flex flex-col justify-center items-center flex-grow p-8 space-y-8 relative z-10">
 
                 <form className="w-full max-w-lg mx-auto" onSubmit={handleRegister}>
                     <div className="bg-white p-8 shadow-md flex flex-col space-y-4">
