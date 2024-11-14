@@ -21,7 +21,7 @@ export default function CreateProgram() {
 
     return (
 
-        <main className="w-full ml-12 p-8 h-[100%] flex">
+        <main className="w-full ml-12 p-8 h-[100%] flex items-baseline">
 
             {formPage === 1 ? (<Programlength setProgram={setProgram} onNext={onNext}/>) : (<Programexcercises program={program} setProgram={setProgram} type={0}/>) }
             
