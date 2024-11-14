@@ -36,7 +36,7 @@ export default function LandingPage() {
         <div className="text-center">
           <div className="animate-bounce">
             <Image
-              src="/logo.png" // Replace with your logo path
+              src="/logo.jpg"
               alt="App logo"
               width={80}
               height={80}
