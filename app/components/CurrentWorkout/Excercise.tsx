@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Exercise from '@/app/components/CurrentWorkout/Excercise';
@@ -69,7 +70,19 @@ export default function Workout() {
         return (
             <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>
                 <h2>No Workout Available</h2>
-                <p>Please Create a Program to Start a Workout</p>
+                <p>Please Create or Find a Program to Start a Workout</p>
+                <div className='flex'>
+                <button className='bg-black rounded-lg text-white font-bold'>
+                    <Link href='/create-program'>
+                        Create
+                    </Link>
+                </button>
+                <button className='bg-black rounded-lg text-white font-bold'>
+                    <Link href='/search'>
+                        Search
+                    </Link>
+                </button>
+                </div>
             </div>
         );
     }

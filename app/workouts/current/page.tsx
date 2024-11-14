@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import Exercise from '@/app/components/CurrentWorkout/Excercise';
+import Excercise from '@/app/components/CurrentWorkout/Excercise';
 import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
 import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
 
@@ -103,7 +103,7 @@ export default function Workout() {
                 ))
             ) : (
                 workout?.excercises && workout.excercises.map(excercise => (
-                    <Exercise 
+                    <Excercise 
                         key={excercise.id}
                         excercise={excercise}
                         weekRir={week?.repsInReserve}
