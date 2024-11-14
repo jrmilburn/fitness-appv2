@@ -11,7 +11,6 @@ export default function LandingPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isFading, setIsFading] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Redirect if session is available
   useEffect(() => {
@@ -30,28 +29,31 @@ export default function LandingPage() {
     return () => clearTimeout(loadTimer);
   }, []);
 
-  if (isLoading) {
-    return (
-      <div className={`fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}>
-        {/* Splash Screen Content */}
-        <div className="text-center">
-          <div className="animate-bounce">
-            <Image
-              src="/logo.jpg"
-              alt="App logo"
-              width={80}
-              height={80}
-              className="mx-auto"
-            />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-700 mt-4">Welcome to JFit</h1>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="flex flex-col items-center justify-between h-screen w-full bg-white">
+    <div className="relative flex flex-col items-center justify-between h-screen w-full bg-white">
+      {/* Splash Screen Overlay */}
+      {isLoading && (
+        <div
+          className={`absolute inset-0 flex items-center justify-center bg-white transition-all duration-500 ${
+            isFading ? 'opacity-0 translate-y-full' : 'opacity-100 translate-y-0'
+          }`}
+          style={{ zIndex: 50 }}
+        >
+          <div className="text-center">
+            <div className="animate-bounce">
+              <Image
+                src="/logo.jpg"
+                alt="App logo"
+                width={80}
+                height={80}
+                className="mx-auto"
+              />
+            </div>
+            <h1 className="text-2xl font-bold text-gray-700 mt-4">Welcome to JFit</h1>
+          </div>
+        </div>
+      )}
+
       {/* Main Content Section */}
       <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-6xl p-8 md:p-12">
         {/* Left Section */}
@@ -72,15 +74,14 @@ export default function LandingPage() {
           </Link>
         </div>
 
-        {/* Right Section with Fade Effect */}
+        {/* Right Section with Image */}
         <div className="md:w-1/2 flex justify-center items-center mt-8 md:mt-0 relative">
           <Image
             src="/mediamodifier_image.png"
             alt="App preview"
             width={600}
             height={1000}
-            className={`h-full w-auto object-contain transition-opacity duration-500 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-            onLoad={() => setImageLoaded(true)} // Set imageLoaded to true once the image loads
+            className="h-full w-auto object-contain"
           />
           {/* Gradient Overlay */}
           <div className="absolute left-0 top-0 h-full w-1/4 bg-gradient-to-l from-transparent to-white pointer-events-none"></div>
