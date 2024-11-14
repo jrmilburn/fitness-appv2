@@ -3,30 +3,6 @@ import { prisma } from '../../lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../lib/authOptions';
 
-
-export async function GET() {
-
-  const userSession = await getServerSession(authOptions);
-
-  const userEmail = userSession?.user.email;
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: userEmail
-    }
-  })
-
-  const program = await prisma.program.findUnique({
-    where: {
-      id: user.currentProgramId
-    }
-  })
-
-  return NextResponse.json(program);
-
-
-}
-
 export async function POST(req) {
 
   console.log('REQUEST FOR PROGRAM POST: ', req.body);
