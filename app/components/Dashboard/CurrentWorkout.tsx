@@ -59,7 +59,7 @@ export default async function DashboardWorkout() {
 
       <Link href={`/workouts/current`}>
         <button className="mt-4 px-4 py-2 bg-black text-white font-bold rounded hover:bg-black-600">
-          View Workout Details
+          Current Workout
         </button>
       </Link>
     </div>

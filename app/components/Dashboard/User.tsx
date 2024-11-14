@@ -16,7 +16,7 @@ export default async function DashboardUser() {
 
   return (
     <div className="grid grid-cols-1 gap-4 p-4 bg-gray-100 rounded-lg border-2 w-full h-full">
-      <h2 className="text-xl font-semibold">{user?.name || 'User Name'}</h2>
+      <h2 className="text-3xl font-semibold">{user?.name || 'User Name'}</h2>
       <p className="text-gray-700">Username: {user?.username || 'N/A'}</p>
       <p className="text-gray-700">Email: {user?.email || 'N/A'}</p>
       <p className="text-gray-700">Phone: {user?.phone || 'N/A'}</p>
@@ -39,7 +39,7 @@ export default async function DashboardUser() {
 
       <Link href='/profile'>
       <button className="mt-4 px-4 py-2 bg-black text-white font-bold rounded hover:bg-black-600">
-        Edit Profile
+        Profile
       </button>
       </Link>
     </div>
