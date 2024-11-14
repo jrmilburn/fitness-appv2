@@ -21,7 +21,7 @@ export default async function DashboardProgram() {
   });
 
   return (
-    <div className="grid grid-cols-1 gap-4 p-4 rounded-lg border-2 w-80 h-full">
+    <div className="grid grid-cols-1 gap-4 p-4 rounded-lg border-2 w-full h-full">
         <h2 className='text-2xl font-bold'>Current Program</h2>
       <h2 className="text-xl font-semibold">{program?.name || 'Program Name'}</h2>
       <p className="text-gray-700">Length: {program?.length || 'N/A'} weeks</p>

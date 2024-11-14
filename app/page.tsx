@@ -1,5 +1,6 @@
 import DashboardProgram from "./components/Dashboard/Program";
 import DashboardWorkout from "./components/Dashboard/CurrentWorkout";
+import DashboardUser from "./components/Dashboard/User";
 
 export default async function Home() {
   return (
@@ -11,8 +12,9 @@ export default async function Home() {
         <div className="w-full h-full">
           <DashboardWorkout />
         </div>
-        <div className="bg-gray-400 w-full h-full">Item 3</div>
-        <div className="bg-gray-500 w-full h-full">Item 4</div>
+        <div className="w-full h-full">
+          <DashboardUser />
+        </div>
       </div>
     </div>
   );
