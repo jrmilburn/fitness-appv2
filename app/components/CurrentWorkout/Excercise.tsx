@@ -1,272 +1,145 @@
-import Set from './Set'
-import { useEffect, useState, useRef } from 'react'
-import infoIcon from '../../assets/info.svg'
-import horieditIcon from '../../assets/edit-hori.svg'
-import Image from 'next/image'
-import ExcerciseForm from './ExcerciseForm'
-import ExcerciseInfo from './ExcerciseInfo'
-import AddExcercise from './AddExcercise'
+'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from "next/navigation";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import Exercise from '@/app/components/CurrentWorkout/Excercise';
+import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
+import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
 
-export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
-
-    interface muscle {
-        name: string
+export default function Workout() {
+    interface Exercise {
+        id: string;
+        name: string;
+        completed: boolean;
+    }
+    
+    interface Workout {
+        id: string;
+        excercises: Exercise[];
+        weekId: string;
+        name: string;
     }
 
-    const [muscle, setMuscle] = useState<muscle | null>(null);
-    const [setsCompleted, setSetsComplete] = useState(false);
-    const [isEditing, setIsEditing] = useState(false);
-    const [infoShown, setInfoShown] = useState(false);
-    const [addExcerciseShown, setAddExcerciseShown] = useState(false);
-    const [lastWeekData, setLastWeekData] = useState([]);
-    const formRef = useRef(null);
-    const infoRef = useRef(null);
+    const [week, setWeek] = useState(null);
+    const [workout, setWorkout] = useState<Workout | null>(null);
+    const [completed, setCompleted] = useState(false);
+    const [noWorkout, setNoWorkout] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const handleSetDataFetch = (data) => {
-        setLastWeekData(prevData => {
-            // Ensure no duplicate entries by checking setId
-            const existingIndex = prevData.findIndex(item => item.setId === data.setId);
-            if (existingIndex >= 0) {
-                // Update existing entry
-                const updatedData = [...prevData];
-                updatedData[existingIndex] = data;
-                return updatedData;
-            }
-            return [...prevData, data];
-        });
-    };
+    const router = useRouter();
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/musclegroups/${excercise.muscleGroupId}`, {
+        router.refresh();
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/workouts/current`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         })
-        .then(response => response.json())
-        .then(data => setMuscle(data))
-        .catch(error => console.error('Error:', error));
-    }, [excercise.muscleGroupId]);
-
-    useEffect(() => {
-        if (excercise.sets && excercise.sets.length > 0) {
-
-            const allSetsCompleted = excercise.sets.every(set => set.completed === true);
-            setSetsComplete(allSetsCompleted);
-
-        }
-    }, [excercise.sets]);
-
-    useEffect(() => {
-            setWorkout(prev => ({
-                ...prev,
-                excercises: prev.excercises.map(e => (
-                    e.id === excercise.id ? { ...e, completed: setsCompleted } : e
-                ))
-            }));
-    }, [setsCompleted, excercise.id, setWorkout]);
-
-
-    const handleDeleteSet = async (setId) => {
-
-        const updatedSets = excercise.sets.filter(set => set.id !== setId);
-
-        try {
-
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set/${setId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            });
-
-            if(response.ok) {
-                console.log(response);
-            }
-
-        } catch (error) {
-            console.error('Error deleting set:', error);
-        }
-        setWorkout(prev => ({
-            ...prev,
-            excercises: prev.excercises.map(e => (
-                e.id === excercise.id ? { ...e, sets: updatedSets } : e
-            ))
-        }));
-
-    }
-
-    const handleAddSet = async () => {
-
-        const numSets = excercise.sets.length;
-
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    excerciseId: excercise.id,
-                    setNo: numSets + 1,
-                    weight: 0,
-                    reps: 0,
-                })
-            });
-            
-            const newSet = await response.json();
-    
-            setWorkout(prev => ({
-                ...prev,
-                excercises: prev.excercises.map(e => (
-                    e.id === excercise.id ? { ...e, sets: [...e.sets, newSet] } : e
-                ))
-            }));
-        } catch (error) {
-            console.error('Error adding new set:', error);
-        }
-    };
-
-    const handleEditClick = () => {
-        setIsEditing(!isEditing);
-    }
-    
-    const handleClickOutside = (event) => {
-      if (formRef.current && !formRef.current.contains(event.target)) {
-        setIsEditing(false);
-      }
-    };
-    
-    useEffect(() => {
-      if (isEditing) {
-        document.addEventListener('mousedown', handleClickOutside);
-      } else {
-        document.removeEventListener('mousedown', handleClickOutside);
-      }
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [isEditing]);
-
-    const handleAddExcercise = async () => {
-
-        setAddExcerciseShown(true);
-
-    }
-
-    const handleReplaceExcercise = async () => {
-
-    }
-
-    const handleDeleteExcercise = async () => {
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/excercises/${excercise.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-    
+        .then((response) => {
             if (!response.ok) {
-                throw new Error('Failed to delete exercise');
+                setNoWorkout(true);
+                return null;
             }
-    
-            setWorkout(prev => ({
-                ...prev,
-                excercises: prev.excercises.filter(e => e.id !== excercise.id)
-            }));
-        } catch (error) {
-            console.error('Error deleting exercise:', error);
+            return response.json();
+        })
+        .then((data) => {
+            if (data) {
+                setWorkout(data);
+            }
+            setIsLoading(false);
+        })
+        .catch((error) => {
+            console.error('Error fetching workout:', error);
+            setNoWorkout(true);
+            setIsLoading(false);
+        });
+    }, [router]);
+
+    useEffect(() => {
+        if (workout?.excercises) {
+            const allCompleted = workout.excercises.every(excercise => excercise.completed === true);
+            setCompleted(allCompleted);
         }
-    };
+    }, [workout?.excercises]);
 
-    const handleInfoShown = () => {
-
-        setInfoShown(true);
-
+    if (noWorkout) {
+        return (
+            <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>
+                <h2>No Workout Available</h2>
+                <p>Please Create a Program to Start a Workout</p>
+            </div>
+        );
     }
-
-    const handleInfoClose = (event) => {
-        if (infoRef.current && !infoRef.current.contains(event.target)) {
-          setInfoShown(false);
-        }
-      };
-      
-      useEffect(() => {
-        if (infoShown) {
-          document.addEventListener('mousedown', handleInfoClose);
-        } else {
-          document.removeEventListener('mousedown', handleInfoClose);
-        }
-        return () => {
-          document.removeEventListener('mousedown', handleInfoClose);
-        };
-      }, [infoShown]);
-
-
 
     return (
-        <div className={`w-[100%] max-w-2xl mx-auto p-8 flex flex-col ${setsCompleted ? 'border-2 border-green-400' : 'border-2 border-gray-200'}`}>
-            
-            <div className='flex justify-between items-center'>
+        <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-scroll h-screen w-full p-8'>
+            {/* Workout Header */}
+            {isLoading ? (
+                <Skeleton height={40} width={300} />
+            ) : workout?.weekId && (
+                <WorkoutHeader 
+                    name={workout.name}
+                    weekId={workout.weekId}
+                    setWorkout={setWorkout}
+                    week={week}
+                    setWeek={setWeek}
+                />
+            )}
 
-                <div className='flex flex-col'>
-                    <p className="opacity-50 p-1">{muscle ? muscle.name : ''}</p>
-                    <h2 className="font-bold text-xl p-1">{excercise.name}</h2>
-                </div>
-
-                <div className='flex flex-col space-y-4 items-center relative'>
-                    <button onClick={handleInfoShown}>
-                        <Image 
-                            src={infoIcon}
-                            alt='info'/>
-                    </button>
-                    <button onClick={handleEditClick}>
-                        <Image
-                            src={horieditIcon}
-                            alt='edit excercise'
-                            />
-                    </button>
-                    {isEditing && (
-                        <div ref={formRef} className='absolute top-[10%] translate-x-[-70%] z-50 w-[175px]'>
-                            <ExcerciseForm 
-                                onAdd={handleAddExcercise}
-                                onReplace={handleReplaceExcercise}
-                                onDelete={handleDeleteExcercise}
-                            />
+            {/* Exercise List */}
+            {isLoading ? (
+                Array(3).fill(null).map((_, index) => (
+                    <div key={index} className="w-[100%] max-w-2xl mx-auto p-8 flex flex-col border-2 border-gray-200">
+                        <div className="flex justify-between items-center">
+                            <div className="flex flex-col">
+                                <Skeleton width={100} height={16} className="mb-2" /> {/* Muscle Group */}
+                                <Skeleton width={150} height={24} /> {/* Exercise Name */}
+                            </div>
+                            <div className="flex flex-col space-y-4 items-center">
+                                <Skeleton circle={true} height={24} width={24} /> {/* Info Icon */}
+                                <Skeleton circle={true} height={24} width={24} /> {/* Edit Icon */}
+                            </div>
                         </div>
 
-                    )}
-                    {infoShown && (
-                        <div ref={infoRef} className='absolute translate-x-[-70%] z-50 w-[400px] bg-white p-2'>
-                            <ExcerciseInfo 
-                                name={excercise.name}
-                                details={excercise.details}
-                                lastWeekData={lastWeekData}/>
+                        <div className="w-[60%] flex justify-between mx-8 my-2">
+                            <Skeleton width={50} height={16} /> {/* Weight Label */}
+                            <Skeleton width={50} height={16} /> {/* Reps Label */}
                         </div>
-                    )}
-                    {addExcerciseShown && (
 
-                        <AddExcercise 
-                            onClose={() => setAddExcerciseShown(false)}
-                            setWorkout={setWorkout}
-                            workout={workout}/>
+                        {/* Set placeholders */}
+                        {Array(3).fill(null).map((_, i) => (
+                            <div key={i} className="w-full flex justify-between mx-8 my-2">
+                                <Skeleton width={80} height={20} /> {/* Set Weight */}
+                                <Skeleton width={40} height={20} /> {/* Set Reps */}
+                            </div>
+                        ))}
+                    </div>
+                ))
+            ) : (
+                workout?.excercises && workout.excercises.map(excercise => (
+                    <Exercise 
+                        key={excercise.id}
+                        excercise={excercise}
+                        weekRir={week?.repsInReserve}
+                        workout={workout}
+                        setWorkout={setWorkout}
+                    />
+                ))
+            )}
 
-                    )}
-                </div>
-
-            </div>
-
-            <div className="w-[60%] flex justify-between mx-8 my-2">
-                <h2>Weight</h2>
-                <h2>Reps</h2>
-            </div>
-            {excercise.sets.map((set, index) => (
-                <Set key={index} setId={set.id} Rir={weekRir} workout={workout} setWorkout={setWorkout} onDelete={() => handleDeleteSet(set.id)} onAdd={() => handleAddSet()} onDataFetch={handleSetDataFetch} />
-            ))}
-
-            {setsCompleted && <p className="text-green-500 font-bold">All sets completed!</p>}
+            {/* Complete Workout Button */}
+            {isLoading ? (
+                <Skeleton height={50} width={200} />
+            ) : (
+                <CompleteWorkout 
+                    completed={completed}
+                    workout={workout}
+                    setWorkout={setWorkout}
+                />
+            )}
         </div>
     );
 }
