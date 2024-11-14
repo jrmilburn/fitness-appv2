@@ -30,16 +30,16 @@ export default function Login() {
 
     return (
         <div className="relative flex items-center justify-center min-h-screen bg-gray-100 w-full">
-            <Image
-                src="/auth-background.webp" // Optimized WebP format for faster loading
-                alt="Background"
-                layout="fill"
-                objectFit="cover"
-                className="absolute inset-0 z-0"
-                priority // Ensures Next.js prioritizes this image
-                placeholder="blur" // Adds a blur placeholder while loading
-                blurDataURL="data:image/webp;base64,[your-base64-encoded-placeholder]" // A low-res base64 placeholder for faster initial load
-            />
+        <Image
+          src="/auth-background.webp" // Optimized WebP format for faster loading
+          alt="Background"
+          layout="fill"
+          objectFit="cover"
+          className="absolute inset-0 z-0"
+          priority // Ensures Next.js prioritizes this image
+          placeholder="blur" // Adds a blur placeholder while loading
+          blurDataURL="data:image/webp;base64,[your-base64-encoded-dark-placeholder]" // Use a dark base64 placeholder for the initial load
+        />
             <div className="relative z-10 bg-white p-8 rounded shadow-md w-full max-w-md flex flex-col space-y-4">
                 <h1 className="text-2xl font-bold mb-6">Login</h1>
                 

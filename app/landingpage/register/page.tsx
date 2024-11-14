@@ -54,14 +54,14 @@ export default function SignUp() {
     return (
         <div className="flex h-screen w-full font-sans bg-gray-100 relative">
             <Image
-                src="/auth-background.webp" // Use WebP format for optimized performance
-                alt="Background"
-                layout="fill"
-                objectFit="cover"
-                className="absolute inset-0 z-0"
-                priority // Prioritize this image for faster initial load
-                placeholder="blur" // Apply a blur effect as the image loads
-                blurDataURL="data:image/webp;base64,[your-base64-encoded-placeholder]" // A low-res base64 placeholder for quicker loading
+              src="/auth-background.webp" // Optimized WebP format for faster loading
+              alt="Background"
+              layout="fill"
+              objectFit="cover"
+              className="absolute inset-0 z-0"
+              priority // Ensures Next.js prioritizes this image
+              placeholder="blur" // Adds a blur placeholder while loading
+              blurDataURL="data:image/webp;base64,[your-base64-encoded-dark-placeholder]" // Use a dark base64 placeholder for the initial load
             />
 
             {/* Right Content Section */}
