@@ -24,6 +24,12 @@ export default async function Profile({ params }) {
         });
     }
 
+    const formattedDate = new Date(program?.createdAt).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+  });
+
   return (
     <>
         <div className='max-w-2xl mx-auto w-full h-[80%] relative'>
@@ -35,7 +41,7 @@ export default async function Profile({ params }) {
               </div>
               <p className='p-4'>{user.email}</p>
               <h2 className='my-4 text-3xl'>Current Program</h2>
-              <ProgramTab name={user?.name} length={program?.length} days={program?.days} id={program?.id} userProgramId={user?.currentProgramId}/>
+                        <ProgramTab name={user?.name} length={program?.length} days={program?.days} id={program?.id} userProgramId={user?.currentProgramId} created={formattedDate}/>
             </div>
             <button className='absolute top-[10%] left-[-20%]'>
                 <Link href='/search'>

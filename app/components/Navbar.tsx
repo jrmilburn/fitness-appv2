@@ -85,7 +85,7 @@ export default function Navbar() {
         ) : (
           <>
             {/* Navigation Links */}
-            <ul className="flex flex-col space-y-6 flex-grow-2">
+            <ul className="flex flex-col space-y-4 flex-grow-2">
               <p className="border-b-2 ">Training</p>
               <li
                 className={`text-xl p-2 ${
@@ -117,8 +117,43 @@ export default function Navbar() {
                   New Program
                 </Link>
               </li>
+              <li
+                className={`text-xl p-2 ${
+                  activeLink === "/programs"
+                    ? "bg-gray-200 rounded-lg"
+                    : ""
+                }`}
+              >
+                <Link
+                  href="/programs"
+                  className="nav-link"
+                  onClick={() => setActiveLink("/programs")}
+                >
+                  Programs
+                </Link>
+              </li>
             </ul>
-            <ul className="flex flex-col space-y-6 flex-grow-2">
+
+            <ul className="flex flex-col space-y-4 flex-grow-2">
+              <p className="border-b-2 ">Coaching</p>
+              <li
+                className={`text-xl p-2 ${
+                  activeLink === "/coaching/clients"
+                    ? "bg-gray-200 rounded-lg"
+                    : ""
+                }`}
+              >
+                <Link
+                  href="/coaching/clients"
+                  className="nav-link"
+                  onClick={() => setActiveLink("/coaching/clients")}
+                >
+                  Clients
+                </Link>
+              </li>
+            </ul>
+
+            <ul className="flex flex-col space-y-4 flex-grow-2">
               <p className="border-b-2">User</p>
               <li
                 className={`text-xl p-2 flex justify-between items-center ${

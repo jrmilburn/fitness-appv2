@@ -23,6 +23,12 @@ export default async function ProfilePage() {
         });
     }
 
+    const formattedDate = new Date(program?.createdAt).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    });
+
     return (
         <div className='max-w-2xl mx-auto w-full h-[80%]'>
             <h1 className='text-3xl m-4'>User Profile</h1>
@@ -47,6 +53,7 @@ export default async function ProfilePage() {
                         days={program?.days}
                         id={program?.id}
                         userProgramId={user?.currentProgramId}
+                        created={formattedDate}
                     />
                 ) : (
                     <p className="text-gray-500 p-4">No current program available.</p>
