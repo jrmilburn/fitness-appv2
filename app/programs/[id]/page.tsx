@@ -3,29 +3,34 @@ import { prisma } from '../../lib/prisma';
 import UserProgram from '@/app/components/Program/UserProgram';
 
 async function fetchProgramData(id) {
-    // Fetch the program with user details
     const program = await prisma.program.findUnique({
         where: { id },
-        include: { user: true }
-    });
-
-    // Fetch weeks separately, ordered by week number
-    const weeks = await prisma.week.findMany({
-        where: { programId: id },
-        orderBy: { weekNo: 'asc' },
         include: {
-            workouts: {
+            weeks: {
                 include: {
-                    excercises: { include: { muscleGroup: true } }
+                    workouts: {
+                        include: {
+                            excercises: { include: { muscleGroup: true } }
+                        }
+                    }
                 }
-            }
+            },
+            user: true
         }
     });
 
-    // Use the first week as the current week
-    const currentWeek = weeks[0] || null;
+    const currentWeek = program?.currentWeekId
+        ? await prisma.week.findFirst({
+              where: { weekNo: 1},
+              include: {
+                  workouts: {
+                      include: { excercises: { include: { sets: true } } }
+                  },
+              }
+          })
+        : null;
 
-    return { program: { ...program, weeks }, currentWeek };
+    return { program, currentWeek };
 }
 
 export default async function Program({ params }) {
