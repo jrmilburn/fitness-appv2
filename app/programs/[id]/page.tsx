@@ -13,24 +13,17 @@ async function fetchProgramData(id) {
                             excercises: { include: { muscleGroup: true } }
                         }
                     }
-                }
+                },
+                orderBy: { number: 'asc' }, // Ensures weeks are ordered from the first week onwards
             },
             user: true
         }
     });
 
-    const currentWeek = program?.currentWeekId
-        ? await prisma.week.findUnique({
-              where: { id: program.currentWeekId },
-              include: {
-                  workouts: {
-                      include: { excercises: { include: { sets: true } } }
-                  },
-              }
-          })
-        : null;
+    // Get the first week of the program, regardless of currentWeekId
+    const firstWeek = program?.weeks?.[0] || null;
 
-    return { program, currentWeek };
+    return { program, currentWeek: firstWeek };
 }
 
 export default async function Program({ params }) {

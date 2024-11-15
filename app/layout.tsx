@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { usePathname } from "next/navigation";
+import ChatIcon from "./components/ChatIcon";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         >
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}
+            <ChatIcon />
             {children}
           </ProtectedRoute>
         </body>

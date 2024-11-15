@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  COACH
+}
+
 model User {
   id               String       @id @default(cuid())
   email            String       @unique
@@ -21,9 +26,13 @@ model User {
   currentProgramId String?
   BodyWeight       BodyWeight[]
   programs         Program[]
+  role             Role         @default(USER)
 
   accounts Account[]
   sessions Session[]
+
+  coaches User[] @relation("UserCoach")
+  clients User[] @relation("UserCoach")
 }
 
 model Account {
