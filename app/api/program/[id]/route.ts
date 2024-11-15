@@ -40,3 +40,17 @@ export async function GET(
     return new NextResponse('Failed to fetch exercise', { status: 500 });
   }
 }
+
+export async function DELETE ( { params } ){
+
+  const { id } = await params;
+
+  const deleteProgram = await prisma.program.delete({
+    where: {
+      id: id
+    }
+  })
+
+  NextResponse.json(deleteProgram);
+
+}
