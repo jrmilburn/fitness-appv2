@@ -7,10 +7,17 @@ export default function ProgramsList({ initialPrograms, userProgramId }) {
 
   const handleDelete = async (id) => {
     try {
+
+        console.log(id);
+
       const response = await fetch(`/api/program/${id}`, {
         method: 'DELETE',
+        headers: {
+            'Content-Type' : 'application/json'
+        }
       });
       if (response.ok) {
+        console.log(response);
         setPrograms(programs.filter((program) => program.id !== id));
       } else {
         console.error('Failed to delete the program');
@@ -36,7 +43,7 @@ export default function ProgramsList({ initialPrograms, userProgramId }) {
             day: 'numeric',
           })}
           canDelete={true}
-          onDelete={handleDelete}
+          onDelete={() => handleDelete(program.id)}
         />
       ))}
     </div>
