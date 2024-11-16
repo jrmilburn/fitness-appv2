@@ -11,9 +11,19 @@ export default async function DashboardWorkout() {
     where: { email: userEmail },
   });
 
-  const currentProgram = await prisma.program.findUnique({
-    where: { id: user.currentProgramId },
-  });
+  let currentProgram;
+
+  if(user?.currentProgramId) {
+   currentProgram = await prisma.program.findUnique({
+      where: { id: user?.currentProgramId },
+    });
+  } else {
+    return (
+      <div>
+        No Workout Set
+      </div>
+    )
+  }
 
   const currentWeek = await prisma.week.findUnique({
     where: { id: currentProgram.currentWeekId },

@@ -13,6 +13,14 @@ export default async function DashboardProgram() {
     },
   });
 
+  if(!user.currentProgramId) {
+    return (
+      <div>
+        No Program
+      </div>
+    )
+  }
+
   const program = await prisma.program.findUnique({
     where: {
       id: user.currentProgramId,

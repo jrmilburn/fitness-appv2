@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { usePathname } from "next/navigation";
-import ChatIcon from "./components/ChatIcon";
+import ChatIcon from "./components/ChatIcon/ChatIcon";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

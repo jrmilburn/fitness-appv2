@@ -7,9 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User related db items
+
 enum Role {
   USER
   COACH
+}
+
+model CoachingRequest {
+  id        String   @id @default(cuid())
+  clientId  String
+  coachId   String
+  status    RequestStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  message   String?
+
+  client User @relation("coachingRequestsAsClient", fields: [clientId], references: [id])
+  coach  User @relation("coachingRequestsAsCoach", fields: [coachId], references: [id])
+
+  @@unique([clientId, coachId]) 
+}
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
 }
 
 model User {
@@ -31,8 +53,43 @@ model User {
   accounts Account[]
   sessions Session[]
 
-  coaches User[] @relation("UserCoach")
-  clients User[] @relation("UserCoach")
+  following UserFollow[] @relation("following")
+  followers UserFollow[] @relation("followers")
+
+  coaches UserCoach[] @relation("userCoach")
+  clients UserCoach[] @relation("userClient")
+
+  coachingRequestsAsClient CoachingRequest[] @relation("coachingRequestsAsClient")
+  coachingRequestsAsCoach  CoachingRequest[] @relation("coachingRequestsAsCoach")
+}
+
+model BodyWeight {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  weight    Float
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model UserFollow {
+  fromUserId String
+  toUserId   String
+  followedAt DateTime @default(now())
+
+  fromUser User @relation("following", fields: [fromUserId], references: [id])
+  toUser   User @relation("followers", fields: [toUserId], references: [id])
+
+  @@id([fromUserId, toUserId])
+}
+
+model UserCoach {
+  clientUserId String
+  coachUserId  String
+
+  client User? @relation("userClient", fields: [clientUserId], references: [id])
+  coach  User? @relation("userCoach", fields: [coachUserId], references: [id])
+
+  @@id([clientUserId, coachUserId])
 }
 
 model Account {
@@ -69,6 +126,8 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+//Program related db items
 
 model Program {
   id            String    @id @default(cuid())
@@ -149,12 +208,4 @@ model MuscleGroup {
   excercises Excercise[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime?   @updatedAt
-}
-
-model BodyWeight {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
-  weight    Float
-  userId    String
-  createdAt DateTime @default(now())
 }
