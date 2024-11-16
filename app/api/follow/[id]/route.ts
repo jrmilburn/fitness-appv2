@@ -1,73 +1,80 @@
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../../lib/authOptions';
-import { prisma } from '../../../lib/prisma'
+import { prisma } from '../../../lib/prisma';
 import { NextResponse } from 'next/server';
 
-export async function POST({ params }) {
+// POST handler
+export async function POST(request: Request, { params }: { params: { id: string } }) {
+  const { id } = params;
 
-    const { id } = params;
+  const userSession = await getServerSession(authOptions);
 
-    const followee = await prisma.user.findUnique({
-        where: {
-            id: id
-        }
-    })
+  if (!userSession) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
-    const userSession = await getServerSession(authOptions);
+  const userEmail = userSession.user.email;
 
-    const userEmail = userSession?.user.email;
-  
-    const follower = await prisma.user.findUnique({
-      where: {
-        email: userEmail
-      }
-    })
+  const follower = await prisma.user.findUnique({
+    where: {
+      email: userEmail,
+    },
+  });
 
-    try {
+  if (!follower) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
 
-        const follow = await prisma.userFollow.create({
-            data: {
-                fromUserId: follower.id,
-                toUserId: followee.id
-            }
-        })
+  try {
+    const follow = await prisma.userFollow.create({
+      data: {
+        fromUserId: follower.id,
+        toUserId: id,
+      },
+    });
 
-        NextResponse.json(follow)
-    } catch (error) {
-        console.error('Error following user:', error);
-    }
-  
+    return NextResponse.json(follow, { status: 201 });
+  } catch (error) {
+    console.error('Error following user:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
 
-export async function DELETE({ params }) {
+// DELETE handler
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+  const { id } = params;
 
-    const { id } = params;
+  const userSession = await getServerSession(authOptions);
 
-    const followee = await prisma.user.findUnique({
-        where: {
-            id: id
-        }
-    })
+  if (!userSession) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
-    const userSession = await getServerSession(authOptions);
+  const userEmail = userSession.user.email;
 
-    const userEmail = userSession?.user?.email;
+  const follower = await prisma.user.findUnique({
+    where: {
+      email: userEmail,
+    },
+  });
 
-    const follower = await prisma.user.findUnique({
-        where: {
-            email: userEmail
-        }
-    })
+  if (!follower) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
 
+  try {
     const deleteFollow = await prisma.userFollow.delete({
-        where: {
-            fromUserId_toUserId: {
-                fromUserId: follower.id,
-                toUserId: followee.id
-            }
-        }
-    })
+      where: {
+        fromUserId_toUserId: {
+          fromUserId: follower.id,
+          toUserId: id,
+        },
+      },
+    });
 
-    NextResponse.json(deleteFollow);
-
+    return NextResponse.json(deleteFollow, { status: 200 });
+  } catch (error) {
+    console.error('Error unfollowing user:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }

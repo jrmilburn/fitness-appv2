@@ -9,7 +9,7 @@ export default function ClientList({ clients }) {
 
     const handleDeleteClient = async (id) => {
         try {
-          const response = await fetch(`/api/clients/${id}`, {
+          const response = await fetch(`/api/coach/${id}`, {
             method: 'DELETE',
           });
           if (response.ok) {
