@@ -25,6 +25,7 @@ export default function RootLayout({ children }) {
   const hideNavbarPaths = ["/landingpage/register", "/landingpage/login"];
   const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
 
+
   return (
     <html lang="en">
       <SessionProvider>

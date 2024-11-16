@@ -1,6 +1,13 @@
 'use client';
 
-export default function ProfileActions({ userId, userName }) {
+import { useState } from 'react'
+
+export default function ProfileActions({ userId, userName, relationshipType }) {
+  
+  const [relation, setRelation] = useState(relationshipType);
+
+  console.log(relation);
+  
   const requestCoaching = async () => {
     try {
       const response = await fetch(`/api/coach/${userId}`, {
@@ -16,6 +23,7 @@ export default function ProfileActions({ userId, userName }) {
 
       if (response.ok) {
         alert('Coaching request sent successfully!');
+        setRelation('Pending Coach Request Sent');
       } else {
         const errorData = await response.json();
         alert(`Error: ${errorData.error || 'Failed to send request'}`);
@@ -32,12 +40,31 @@ export default function ProfileActions({ userId, userName }) {
 
   return (
     <div className="flex space-x-4 mt-4">
-      <button
+      {( relation === 'Pending Request (Check Notifications)' || relation === null) ? (
+          <button
+          className="bg-black text-white rounded-lg p-4 font-bold"
+          onClick={requestCoaching}
+        >
+          Request Coaching
+        </button>
+      ) : relation === 'Coaching' ? (
+        <button
         className="bg-black text-white rounded-lg p-4 font-bold"
         onClick={requestCoaching}
+        disabled={true}
       >
-        Request Coaching
+        Current Coach
       </button>
+      ) : (
+        <button
+        className="bg-black text-white rounded-lg p-4 font-bold"
+        onClick={requestCoaching}
+        disabled={true}
+      >
+        Pending...
+      </button>
+      )}
+
       <button
         className="bg-black text-white rounded-lg p-4 font-bold"
         onClick={handleFollow}

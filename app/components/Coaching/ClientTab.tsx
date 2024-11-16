@@ -31,7 +31,7 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient, onM
       {/* Client Information */}
       <div className="flex items-center space-x-4">
         <Image
-          src={client.client.profilePicture || '/avatar.svg'}
+          src={client.client.image || '/avatar.svg'}
           alt={`${client.client.name}'s profile`}
           className="w-16 h-16 rounded-full object-cover"
           width={64}

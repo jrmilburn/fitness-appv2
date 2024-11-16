@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ProgramTab from '../../components/Program/ProgramTab';
 import backIcon from '../../assets/back.svg';
-import ProfileActions from '../../components/Profile/Profileactions'; // Import the Client Component
+import ProfileActions from '../../components/Profile/Profileactions'; // Import ProfileActions Component
 
 export default async function Profile({ params }) {
   const session = await getServerSession(authOptions);
@@ -34,6 +34,26 @@ export default async function Profile({ params }) {
     });
   }
 
+  // Check for an existing coaching relationship
+  const coachingRequest = await prisma.coachingRequest.findFirst({
+    where: {
+      OR: [
+        { clientId: currentUser?.id, coachId: user?.id },
+        { clientId: user?.id, coachId: currentUser?.id },
+      ],
+    },
+  });
+
+  // Determine the type of relationship and its status
+  let relationshipType = null;
+  if (coachingRequest) {
+    if (coachingRequest.clientId === currentUser.id) {
+      relationshipType = coachingRequest.status === 'PENDING' ? 'Pending Coach Request Sent' : 'Coach';
+    } else if (coachingRequest.coachId === currentUser.id) {
+      relationshipType = coachingRequest.status === 'PENDING' ? 'Pending Request (Check Notifications)' : 'Coaching';
+    }
+  }
+
   const formattedDate = new Date(program?.createdAt).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
@@ -56,7 +76,16 @@ export default async function Profile({ params }) {
             <h2 className="text-2xl mt-2">{user.username || user.name}</h2>
 
             {user.id !== currentUser?.id && (
-              <ProfileActions userId={user.id} userName={user.username || user.name} />
+              <>
+                <ProfileActions
+                  userId={user.id}
+                  userName={user.username || user.name}
+                  relationshipType={relationshipType}
+                />
+                {relationshipType && (
+                  <p className="mt-2 text-gray-600 absolute bg-gray-300 left-5 p-2">{relationshipType}</p>
+                )}
+              </>
             )}
           </div>
 

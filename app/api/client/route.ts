@@ -22,15 +22,11 @@ export async function GET() {
 
   const notifications = await prisma.coachingRequest.findMany({
     where: {
-      OR: [
-        { coachId: user.id },
-        { clientId: user.id }
-      ]
+          coachId: user.id,
     },
     include: {
       client: true,
-      coach: true
-    }
+    },
   });
 
   return NextResponse.json(notifications);

@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { ChatAlt2Icon, XIcon } from '@heroicons/react/solid';
 import Notification from './Notification';
+import { useSession } from 'next-auth/react';
 
 export default function ChatIcon() {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
+
+   const { data: session } = useSession();
+
+   const user = session?.user;
 
   const toggleChat = () => setIsOpen(!isOpen);
 
@@ -42,21 +47,27 @@ export default function ChatIcon() {
         },
         body: JSON.stringify({ status: 'ACCEPTED' }),
       });
-
+  
       if (!response.ok) {
         console.error('Failed to accept request:', response.statusText);
         return;
       }
-
-      // Update notifications in state
+  
+      const updatedNotification = await response.json();
+  
+      // Update the status in the notifications array
       setNotifications((prev) =>
-        prev.filter((notification) => notification.id !== id)
+        prev.map((notification) =>
+          notification.id === id
+            ? { ...notification, status: 'ACCEPTED' }
+            : notification
+        )
       );
     } catch (error) {
       console.error('Error accepting request:', error);
     }
   };
-
+  
   const handleDecline = async (id) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/coach/${id}`, {
@@ -66,15 +77,21 @@ export default function ChatIcon() {
         },
         body: JSON.stringify({ status: 'DECLINED' }),
       });
-
+  
       if (!response.ok) {
         console.error('Failed to decline request:', response.statusText);
         return;
       }
-
-      // Update notifications in state
+  
+      const updatedNotification = await response.json();
+  
+      // Update the status in the notifications array
       setNotifications((prev) =>
-        prev.filter((notification) => notification.id !== id)
+        prev.map((notification) =>
+          notification.id === id
+            ? { ...notification, status: 'DECLINED' }
+            : notification
+        )
       );
     } catch (error) {
       console.error('Error declining request:', error);
@@ -109,9 +126,12 @@ export default function ChatIcon() {
               return (
               <Notification 
                 key={notification.id}
-                user={notification.client}
+                notification={notification}
+                currentUser={user}
                 onAccept={() => handleAccept(notification.id)}
                 onDecline={() => handleDecline(notification.id)}
+                inBound={user.id === notification.client.id}
+                status={notification.status}
               />
             )})}
           </div>
