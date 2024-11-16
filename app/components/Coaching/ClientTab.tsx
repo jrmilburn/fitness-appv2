@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import horieditIcon from '../../assets/edit-hori.svg';
 
-export default function ClientTab({ client, onAssignProgram, onDeleteClient, onMessageClient }) {
+export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -60,7 +60,7 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient, onM
           >
             <h2>{client.client.name}</h2>
          <button
-          onClick={() => onAssignProgram(client.id)}
+          onClick={() => onAssignProgram(client.client.id)}
           className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
         >
           Assign Program
@@ -70,12 +70,6 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient, onM
           className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
         >
           Delete Client
-        </button>
-        <button
-          onClick={() => onMessageClient(client.id)}
-          className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
-        >
-          Message Client
         </button>
           </div>
         )}

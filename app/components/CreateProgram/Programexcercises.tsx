@@ -24,6 +24,16 @@ export default function ProgramExcercises({ program, setProgram, type }) {
         }
     };
 
+    const handleSave = async () => {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/program/save`, {
+            method: 'POST',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify({program}),
+        })
+    }
+
     return (
         <>
             <form className="w-[80%] h-[80%] p-4 bg-white shadow-md rounded overflow-x-auto border-2">
@@ -44,17 +54,25 @@ export default function ProgramExcercises({ program, setProgram, type }) {
                     <button
                     type="button"
                     onClick={handleCreate}
-                    className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4 right-4"
+                    className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4 right-[45%]"
                     >
                         Create Program
+                    </button>
+                ) : type === 1 ? (
+                    <button
+                    type="button"
+                    onClick={handleCreate}
+                    className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4 right-[45%]"
+                    >
+                        Copy Program
                     </button>
                 ) : (
                     <button
                     type="button"
                     onClick={handleCreate}
-                    className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4 right-4"
+                    className="px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4 right-[45%]"
                     >
-                        Copy Program
+                        Assign Program
                     </button>
                 )}
 

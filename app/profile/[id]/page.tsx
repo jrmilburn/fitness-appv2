@@ -44,6 +44,17 @@ export default async function Profile({ params }) {
     },
   });
 
+  const following = await prisma.userFollow.findUnique({
+    where: {
+      fromUserId_toUserId: {
+        fromUserId: currentUser.id, // ID of the user who is checking
+        toUserId: user.id,   // ID of the user being checked
+      },
+    },
+  });
+
+  const isFollowing = !!following;
+
   // Determine the type of relationship and its status
   let relationshipType = null;
   if (coachingRequest) {
@@ -81,6 +92,7 @@ export default async function Profile({ params }) {
                   userId={user.id}
                   userName={user.username || user.name}
                   relationshipType={relationshipType}
+                  following={isFollowing}
                 />
                 {relationshipType && (
                   <p className="mt-2 text-gray-600 absolute bg-gray-300 left-5 p-2">{relationshipType}</p>

@@ -23,9 +23,31 @@ export default async function Clients() {
       },
     });
 
+    const programs = await prisma.program.findMany({
+        where: {
+            userId: user.id
+        },
+        include: {
+            weeks: {
+                include: {
+                    workouts: {
+                        include: {
+                            excercises: {
+                                include: {
+                                    muscleGroup: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+
     return (
             <ClientList 
-            clients={clients}/>
+            clients={clients}
+            programs={programs}/>
     )
 
 }

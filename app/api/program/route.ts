@@ -12,14 +12,28 @@ export async function POST(req) {
   const userEmail = userSession?.user.email;
 
   const program = await req.json();
-  const weeks = program.weeks;
-  const user = await prisma.user.findUnique({
-    where: {
-      email: userEmail
-    }
-  })
 
-  const userId = user?.id;
+  console.log('PROGRAM: ', program);
+
+  let userId;
+
+  if(!program.userId) {
+
+    console.log('NO USER ID');
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: userEmail
+      }
+    })
+  
+    userId = user?.id;
+
+  } else {
+    userId = program.userId;
+  }
+
+  const weeks = program.weeks;
 
   console.log(userId);
   

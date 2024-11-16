@@ -10,7 +10,7 @@ export default function ProgramsList({ initialPrograms, userProgramId }) {
 
         console.log(id);
 
-      const response = await fetch(`/api/program/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/program/${id}`, {
         method: 'DELETE',
         headers: {
             'Content-Type' : 'application/json'

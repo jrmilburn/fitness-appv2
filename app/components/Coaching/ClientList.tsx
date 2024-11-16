@@ -2,10 +2,16 @@
 
 import { useState } from "react";
 import ClientTab from "./ClientTab"
+import CoachPrograms from "./CoachPrograms";
 
-export default function ClientList({ clients }) {
+export default function ClientList({ clients, programs }) {
+
+    console.log(programs);
 
     const [initialClients, setInitialClients] = useState(clients);
+
+    const [programsShown, setProgramsShown] = useState(false);
+    const [clientId, setClientId] = useState(null);
 
     const handleDeleteClient = async (id) => {
         try {
@@ -22,6 +28,17 @@ export default function ClientList({ clients }) {
         }
       };
 
+    const handleAssignProgram = async (id) => {
+
+        setClientId(id);
+        setProgramsShown(true);
+
+    }
+
+    const handleModalClose = () => {
+        setProgramsShown(false);
+    }
+
     return (
 
         <div className="flex flex-col max-w-3xl mx-auto">
@@ -31,8 +48,15 @@ export default function ClientList({ clients }) {
                     key={client.id}
                     client={client}
                     onDeleteClient={handleDeleteClient}
+                    onAssignProgram={handleAssignProgram}
                 />
             ))}
+            {programsShown && (
+                <CoachPrograms 
+                    programs={programs}
+                    onClose={handleModalClose}
+                    clientId={clientId} />
+            )}
         </div>
 
     )
