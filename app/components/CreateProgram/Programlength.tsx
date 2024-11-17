@@ -40,6 +40,8 @@ export default function ProgramLength({ onNext, setProgram }) {
     };
 
     return (
+        <>
+        <h2 className='text-3xl w-full max-w-2xl mx-auto mt-4'>Create New</h2>
         <form onSubmit={handleSubmit} className="w-full p-8 bg-white shadow-md rounded-lg mx-auto max-w-2xl border-2">
             <h2 className="text-3xl font-semibold text-gray-800 mb-6">General Details</h2>
 
@@ -87,5 +89,6 @@ export default function ProgramLength({ onNext, setProgram }) {
                 </button>
             </div>
         </form>
+        </>
     );
 }

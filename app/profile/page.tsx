@@ -54,6 +54,7 @@ export default async function ProfilePage() {
                         id={program?.id}
                         userProgramId={user?.currentProgramId}
                         created={formattedDate}
+                        canDelete={false}
                     />
                 ) : (
                     <p className="text-gray-500 p-4">No current program available.</p>

@@ -71,35 +71,59 @@ export default async function Profile({ params }) {
     day: 'numeric',
   });
 
+  const followersCount = await prisma.userFollow.count({
+    where: {
+      toUserId: user.id, // The user being followed
+    },
+  });
+
+  const followingCount = await prisma.userFollow.count({
+    where: {
+      fromUserId: user.id
+    }
+  })
+
   return (
     <>
       <div className="max-w-2xl mx-auto w-full h-[80%] relative">
         <h1 className="text-3xl m-4">User Profile</h1>
         <div key={user.id} className="flex flex-col w-full bg-gray-100 rounded p-4">
-          <div className="flex flex-col items-center p-4">
-            <Image
-              src={user?.image || '/avatar.svg'}
-              width={64}
-              height={64}
-              className="rounded-full"
-              alt="profile"
+        <div className="flex flex-col items-center p-4">
+        <Image
+          src={user?.image || '/avatar.svg'}
+          width={64}
+          height={64}
+          className="rounded-full"
+          alt="profile"
+        />
+        <h2 className="text-2xl mt-2">{user.username || user.name}</h2>
+        
+        {/* Followers and Following */}
+        <div className="flex space-x-4 mt-2">
+          <p className="text-sm text-gray-600">
+            <span className="font-semibold">{followersCount}</span> Followers
+          </p>
+          <p className="text-sm text-gray-600">
+            <span className="font-semibold">{followingCount}</span> Following
+          </p>
+        </div>
+        
+        {user.id !== currentUser?.id && (
+          <>
+            <ProfileActions
+              userId={user.id}
+              userName={user.username || user.name}
+              relationshipType={relationshipType}
+              following={isFollowing}
             />
-            <h2 className="text-2xl mt-2">{user.username || user.name}</h2>
-
-            {user.id !== currentUser?.id && (
-              <>
-                <ProfileActions
-                  userId={user.id}
-                  userName={user.username || user.name}
-                  relationshipType={relationshipType}
-                  following={isFollowing}
-                />
-                {relationshipType && (
-                  <p className="mt-2 text-gray-600 absolute bg-gray-300 left-5 p-2">{relationshipType}</p>
-                )}
-              </>
+            {relationshipType && (
+              <p className="mt-2 text-gray-600 absolute bg-gray-300 left-5 p-2">
+                {relationshipType}
+              </p>
             )}
-          </div>
+          </>
+        )}
+      </div>
 
           <h2 className="my-4 text-3xl">Current Program</h2>
           <ProgramTab

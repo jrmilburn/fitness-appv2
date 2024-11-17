@@ -6,7 +6,7 @@ export default function ProfileActions({ userId, userName, relationshipType, fol
   const [relation, setRelation] = useState(relationshipType);
   const [isFollowing, setIsFollowing] = useState(following); // State to track follow status
 
-  console.log(relation);
+  console.log('RELATION: ', relation);
 
   const requestCoaching = async () => {
     try {
@@ -90,7 +90,7 @@ export default function ProfileActions({ userId, userName, relationshipType, fol
         >
           Request Coaching
         </button>
-      ) : relation === 'Coached' ? (
+      ) : relation === 'Coach' ? (
         <button
           className="bg-black text-white rounded-lg p-4 font-bold"
           onClick={requestCoaching}

@@ -1,48 +1,7 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../lib/prisma';  
+import { prisma } from '../../../lib/prisma';  
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../../lib/authOptions';
-
-export async function GET() {
-
-  const userSession = await getServerSession(authOptions);
-
-  const userEmail = userSession?.user.email;
-
-  const user = await prisma.user.findUnique({
-    where: {
-      email: userEmail
-    }
-  })
-
-  const programs = await prisma.program.findMany({
-    where: {
-      userId: user.id
-    },
-    include: {
-      weeks: {
-        include: {
-          workouts: {
-            include: {
-              excercises: {
-                include: {
-                  muscleGroup: true
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    orderBy: {
-      updatedAt: 'desc'
-    },
-    take: 3
-  })
-
-  return NextResponse.json(programs);
-
-}
+import { authOptions } from '../../../lib/authOptions';
 
 export async function POST(req) {
 
@@ -56,23 +15,15 @@ export async function POST(req) {
 
   console.log('PROGRAM: ', program);
 
-  let userId;
 
-  if(!program.userId) {
-
-    console.log('NO USER ID');
-
-    const user = await prisma.user.findUnique({
-      where: {
-        email: userEmail
-      }
-    })
-  
-    userId = user?.id;
-
-  } else {
-    userId = program.userId;
+const user = await prisma.user.findUnique({
+  where: {
+    email: userEmail
   }
+})
+  
+const userId = user?.id;
+
 
   const weeks = program.weeks;
 
@@ -214,15 +165,6 @@ export async function POST(req) {
         }
       }
     }
-  
-    await prisma.user.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        currentProgramId: createdProgram.id,
-      }
-    });
   
     const newWeek = await prisma.week.update({
       where: {

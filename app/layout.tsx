@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}
             <ChatIcon />
-            {children}
+              {children}
           </ProtectedRoute>
         </body>
       </SessionProvider>
