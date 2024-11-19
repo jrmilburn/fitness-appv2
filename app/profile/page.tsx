@@ -29,10 +29,6 @@ export default async function ProfilePage() {
         day: 'numeric',
     });
 
-    const onDelete = () => {
-
-    }
-
     return (
         <div className='max-w-2xl mx-auto w-full h-[80%]'>
             <h1 className='text-3xl m-4'>User Profile</h1>
