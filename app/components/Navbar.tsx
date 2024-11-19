@@ -108,6 +108,28 @@ export default function Navbar() {
             </li>
           </ul>
 
+          {/* Coaching Section */}
+          <ul className="flex flex-col space-y-4">
+            <p className="border-b-2 pb-2">Coaching</p>
+            <li
+              className={`text-xl p-2 ${
+                activeLink === "/coaching/clients"
+                  ? "bg-gray-200 rounded-lg"
+                  : ""
+              }`}
+            >
+              <Link
+                href="/coaching/clients"
+                onClick={() => {
+                  setActiveLink("/coaching/clients");
+                  setNavOpen(false);
+                }}
+              >
+                Clients
+              </Link>
+            </li>
+          </ul>
+
           {/* User Section */}
           {session ? (
             <div>
