@@ -9,7 +9,6 @@ import settingsIcon from "../assets/settings.svg";
 
 export default function Navbar() {
   const { data: session } = useSession();
-
   const [navOpen, setNavOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("/workouts/current");
 
@@ -71,7 +70,7 @@ export default function Navbar() {
                 href="/workouts/current"
                 onClick={() => {
                   setActiveLink("/workouts/current");
-                  setNavOpen(false); // Close Navbar after clicking a link
+                  setNavOpen(false);
                 }}
               >
                 Current Workout
@@ -114,7 +113,7 @@ export default function Navbar() {
             <div>
               <ul className="flex flex-col space-y-4">
                 <li
-                  className={`text-xl p-2 ${
+                  className={`text-xl p-2 flex justify-between items-center ${
                     activeLink === "/profile" ? "bg-gray-200 rounded-lg" : ""
                   }`}
                 >
@@ -127,9 +126,16 @@ export default function Navbar() {
                   >
                     Profile
                   </Link>
+                  <Image
+                    src={session.user.image || "/avatar.svg"}
+                    width={32}
+                    height={32}
+                    className="rounded-full"
+                    alt="Profile"
+                  />
                 </li>
                 <li
-                  className={`text-xl p-2 ${
+                  className={`text-xl p-2 flex justify-between items-center ${
                     activeLink === "/settings" ? "bg-gray-200 rounded-lg" : ""
                   }`}
                 >
@@ -142,6 +148,33 @@ export default function Navbar() {
                   >
                     Settings
                   </Link>
+                  <Image
+                    src={settingsIcon}
+                    width={24}
+                    height={24}
+                    alt="Settings Icon"
+                  />
+                </li>
+                <li
+                  className={`text-xl p-2 flex justify-between items-center ${
+                    activeLink === "/search" ? "bg-gray-200 rounded-lg" : ""
+                  }`}
+                >
+                  <Link
+                    href="/search"
+                    onClick={() => {
+                      setActiveLink("/search");
+                      setNavOpen(false);
+                    }}
+                  >
+                    Search
+                  </Link>
+                  <Image
+                    src={searchIcon}
+                    width={24}
+                    height={24}
+                    alt="Search Icon"
+                  />
                 </li>
               </ul>
               <button
