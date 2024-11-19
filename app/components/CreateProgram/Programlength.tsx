@@ -1,7 +1,8 @@
 import Radiobtn from '../Radiobtn';
 import { useState, useEffect } from 'react';
+import { FiArrowLeft } from 'react-icons/fi';
 
-export default function ProgramLength({ onNext, setProgram }) {
+export default function ProgramLength({ onNext, setProgram, onPrevious }) {
     const [programLength, setProgramLength] = useState(null);
     const [programDays, setProgramDays] = useState(null);
     const [programName, setProgramName] = useState('');
@@ -41,7 +42,15 @@ export default function ProgramLength({ onNext, setProgram }) {
 
     return (
         <>
-        <h2 className='text-3xl w-full max-w-2xl mx-auto mt-4'>Create New</h2>
+        <div className="w-full max-w-2xl mx-auto mt-4 relative">
+                <button
+                    onClick={onPrevious}
+                    className="absolute left-0 top-0 p-2 text-gray-700 hover:text-gray-900 focus:outline-none translate-x-[-100%]"
+                >
+                    <FiArrowLeft size={24} />
+                </button>
+                <h2 className="text-3xl text-center">Create New</h2>
+            </div>
         <form onSubmit={handleSubmit} className="w-full p-8 bg-white shadow-md rounded-lg mx-auto max-w-2xl border-2">
             <h2 className="text-3xl font-semibold text-gray-800 mb-6">General Details</h2>
 

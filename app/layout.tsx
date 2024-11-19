@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-y-hidden`}
         >
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}
