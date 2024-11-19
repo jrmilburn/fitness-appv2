@@ -49,6 +49,10 @@ export default function CopyProgram({ program }) {
         createProgram(program.name, program.length, program.days);
     }, [program.name, program.length, program.days, program.weeks]);
 
+    const onPrevious = () => {
+
+    }
+
     return (
         <>
             {copyProgram && (
@@ -56,6 +60,7 @@ export default function CopyProgram({ program }) {
                     program={copyProgram}
                     setProgram={setCopyProgram}
                     type={1}
+                    onPrevious={onPrevious}
                 />
             )}
         </>
