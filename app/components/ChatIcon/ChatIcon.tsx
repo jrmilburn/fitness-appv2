@@ -52,10 +52,7 @@ export default function ChatIcon() {
         console.error('Failed to accept request:', response.statusText);
         return;
       }
-  
-      const updatedNotification = await response.json();
-  
-      // Update the status in the notifications array
+    
       setNotifications((prev) =>
         prev.map((notification) =>
           notification.id === id

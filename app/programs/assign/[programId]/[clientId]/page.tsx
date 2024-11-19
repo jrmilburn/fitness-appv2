@@ -37,9 +37,7 @@ async function fetchProgramData(id) {
 
 export default async function Program({ params }) {
     const { programId, clientId } = params;
-    const { program, currentWeek } = await fetchProgramData(programId);
-
-    console.log('CLIENT ID: ', clientId);
+    const { program } = await fetchProgramData(programId);
 
     if (!program) {
         return <div>Program not found</div>;
