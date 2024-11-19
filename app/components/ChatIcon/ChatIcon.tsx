@@ -125,7 +125,6 @@ export default function ChatIcon() {
                 currentUser={user}
                 onAccept={() => handleAccept(notification.id)}
                 onDecline={() => handleDecline(notification.id)}
-                status={notification.status}
               />
             )})}
           </div>
