@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import searchIcon from "../assets/search.svg";
 import settingsIcon from "../assets/settings.svg";
