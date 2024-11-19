@@ -4,12 +4,6 @@ import fs from 'fs';
 import { join } from 'path';
 import { Busboy } from 'busboy';
 
-export const config = {
-    api: {
-        bodyParser: false, // Disable Next.js default body parser
-    },
-};
-
 export async function PUT(req: Request, { params }: { params: { id: string } }) {
     const { id } = params;
 
