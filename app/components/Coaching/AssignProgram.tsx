@@ -49,7 +49,11 @@ export default function AssignProgram({ program, clientId }) {
         }
 
         createProgram(program.name, program.length, program.days, clientId);
-    }, [program.name, program.length, program.days, program.weeks]);
+    }, [program.name, program.length, program.days, program.weeks, clientId]);
+
+    const onPrevious = () => {
+
+    }
 
     return (
         <>
@@ -58,6 +62,7 @@ export default function AssignProgram({ program, clientId }) {
                     program={copyProgram}
                     setProgram={setCopyProgram}
                     type={2}
+                    onPrevious={onPrevious}
                 />
             )}
             <button
