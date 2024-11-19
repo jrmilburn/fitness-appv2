@@ -82,9 +82,7 @@ export default function ChatIcon() {
         console.error('Failed to decline request:', response.statusText);
         return;
       }
-  
-      const updatedNotification = await response.json();
-  
+    
       // Update the status in the notifications array
       setNotifications((prev) =>
         prev.map((notification) =>
@@ -130,7 +128,6 @@ export default function ChatIcon() {
                 currentUser={user}
                 onAccept={() => handleAccept(notification.id)}
                 onDecline={() => handleDecline(notification.id)}
-                inBound={user.id === notification.client.id}
                 status={notification.status}
               />
             )})}

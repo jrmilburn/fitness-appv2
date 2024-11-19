@@ -1,7 +1,6 @@
 // pages/program.js
 import AssignProgram from '@/app/components/Coaching/AssignProgram';
 import { prisma } from '../../../../lib/prisma';
-import UserProgram from '@/app/components/Program/UserProgram';
 
 async function fetchProgramData(id) {
 
