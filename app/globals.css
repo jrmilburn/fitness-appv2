@@ -16,7 +16,7 @@
 }
 
 html, body {
-  height: 100%; /* Ensures the elements span the full height */
+  height: 100dvh; /* Ensures the elements span the full height */
 }
 
 body {
