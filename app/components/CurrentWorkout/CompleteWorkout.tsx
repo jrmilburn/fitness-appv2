@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default function CompleteWorkout({ completed, workout, setWorkout, programComplete }) {
     const [isLoading, setIsLoading] = useState(false);
