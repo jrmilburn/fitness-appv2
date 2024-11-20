@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
   // Service Worker Update Logic
   useEffect(() => {
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/service-worker.js").then((registration) => {
+      navigator.serviceWorker.register("/sw.js").then((registration) => {
         registration.onupdatefound = () => {
           const newWorker = registration.installing;
 
@@ -58,10 +58,9 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#fff" />
-        <link rel="icon" href="/icon-192x192.png" sizes="192x192" />
-        <link rel="apple-touch-icon" href="/icon-512x512.png" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <link rel="icon" href="/icon.jpg" sizes="192x192" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-status-bar-style" content="black" />
       </head>
       <SessionProvider>
         <body
