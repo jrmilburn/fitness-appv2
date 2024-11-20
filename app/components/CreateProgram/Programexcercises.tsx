@@ -25,7 +25,7 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
     };
 
     const handleSave = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/program/save`, {
+        /*const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/program/save`, {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json'
@@ -35,7 +35,9 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
 
         if(response.ok) {
             router.push('/programs');
-        }
+        }*/
+
+        console.log(program);
     }
 
     return (
