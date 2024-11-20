@@ -7,6 +7,9 @@ import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { usePathname } from "next/navigation";
 import ChatIcon from "./components/ChatIcon/ChatIcon";
+import { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,6 +27,30 @@ export default function RootLayout({ children }) {
 
   const hideNavbarPaths = ["/landingpage/register", "/landingpage/login"];
   const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
+
+  // Service Worker Update Logic
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/service-worker.js").then((registration) => {
+        registration.onupdatefound = () => {
+          const newWorker = registration.installing;
+
+          newWorker.onstatechange = () => {
+            if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+              // Notify user about the new version
+              toast.info("A new version is available. Click to refresh.", {
+                position: "bottom-center", // Correct position format
+                autoClose: false,
+                onClick: () => {
+                  window.location.reload();
+                },
+              });
+            }
+          };
+        };
+      });
+    }
+  }, []);
 
   return (
     <html lang="en">
@@ -59,6 +86,9 @@ export default function RootLayout({ children }) {
 
             <ChatIcon />
           </ProtectedRoute>
+
+          {/* Toast Notifications */}
+          <ToastContainer />
         </body>
       </SessionProvider>
     </html>
