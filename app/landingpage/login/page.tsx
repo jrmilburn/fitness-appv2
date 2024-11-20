@@ -85,6 +85,7 @@ export default function Login() {
                     type="button"
                     onClick={() => signIn('google', { callbackUrl: "/workouts/current" })}
                     className="flex mx-auto items-center justify-center gap-2 px-6 py-3 w-full bg-black text-white font-semibold rounded-lg hover:bg-gray-800 transition duration-300"
+                    disabled={true}
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +97,7 @@ export default function Login() {
                         <path fill="#FBBC05" d="M10.5 28.2c-1-2.5-1-5.2 0-7.7l-6.9-5.4c-2.9 5.8-2.9 12.7 0 18.5l6.9-5.4z" />
                         <path fill="#EA4335" d="M24 46.5c5.2 0 9.8-1.7 13.1-4.7l-6.1-4.7c-1.7 1.1-3.8 1.8-6.1 1.8-5.8 0-10.8-3.7-12.6-8.9l-6.9 5.4c3.2 6.3 9.7 10.9 17.6 10.9z" />
                     </svg>
-                    Sign in with Google
+                    Disabled
                 </button>
                 
                 <p className="text-center">
