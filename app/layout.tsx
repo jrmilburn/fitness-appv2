@@ -84,7 +84,7 @@ export default function RootLayout({ children }) {
               {children}
             </div>
 
-            <ChatIcon />
+            {shouldShowNavbar && <ChatIcon />}
           </ProtectedRoute>
 
           {/* Toast Notifications */}
