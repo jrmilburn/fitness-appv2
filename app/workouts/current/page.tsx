@@ -48,11 +48,10 @@ export default function Workout() {
             return response.json();
         })
         .then((data) => {
-            if (data) {
-                setWorkout(data.workout);
-                setProgramCompleted(data.programCompleted);
-            }
+            setWorkout(data?.workout);
+            setProgramCompleted(data?.programCompleted);
             setIsLoading(false);
+            console.log(data.workout);
         })
         .catch((error) => {
             console.error('Error fetching workout:', error);

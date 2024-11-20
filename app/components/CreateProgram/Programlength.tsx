@@ -37,7 +37,7 @@ export default function ProgramLength({ onNext, setProgram, onPrevious }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         createProgram(programName, programLength, programDays);
-        onNext();
+        onNext(1);
     };
 
     return (

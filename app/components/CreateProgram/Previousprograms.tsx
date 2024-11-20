@@ -30,7 +30,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
       (program) => program.id === id
     );
     setProgram(selectedProgram);
-    onNext();
+    onNext(2);
   };
 
   const toggleSummary = (programId) => {

@@ -14,6 +14,12 @@ export default function Navbar() {
 
   const toggleNav = () => setNavOpen(!navOpen);
 
+  const enableFullscreen = () => {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    }
+  }
+
   return (
     <div className="relative">
       {/* Top Bar for Small Screens */}
@@ -25,6 +31,13 @@ export default function Navbar() {
             <h2 className="font-bold text-lg relative">JFit <em className="absolute text-xs">Classic</em></h2>
           </div>
         </Link>
+
+        <button
+          className="fullscreen-button"
+          onClick={enableFullscreen}
+        >
+          Go Fullscreen
+        </button>
 
         {/* Hamburger Button */}
         <button
