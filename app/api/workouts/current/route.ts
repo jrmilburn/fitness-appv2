@@ -61,6 +61,7 @@ export async function GET() {
           include: {
             sets: { orderBy: { createdAt: 'asc' } },
           },
+          orderBy: { createdAt: 'asc' }, // Order exercises by creation time
         },
       },
     });

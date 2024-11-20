@@ -3,8 +3,6 @@ import AssignProgram from '@/app/components/Coaching/AssignProgram';
 import { prisma } from '../../../../lib/prisma';
 
 async function fetchProgramData(id) {
-
-
     const program = await prisma.program.findUnique({
         where: { id },
         include: {
@@ -12,7 +10,10 @@ async function fetchProgramData(id) {
                 include: {
                     workouts: {
                         include: {
-                            excercises: { include: { muscleGroup: true } }
+                            excercises: {
+                                include: { muscleGroup: true },
+                                orderBy: { createdAt: 'asc' } // Order exercises by creation time
+                            }
                         }
                     }
                 }
@@ -23,11 +24,16 @@ async function fetchProgramData(id) {
 
     const currentWeek = program?.currentWeekId
         ? await prisma.week.findFirst({
-              where: { weekNo: 1},
+              where: { weekNo: 1 },
               include: {
                   workouts: {
-                      include: { excercises: { include: { sets: true } } }
-                  },
+                      include: { 
+                          excercises: { 
+                              include: { sets: true },
+                              orderBy: { createdAt: 'asc' } // Order exercises in the current week
+                          } 
+                      }
+                  }
               }
           })
         : null;
