@@ -56,7 +56,7 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
         {isMenuOpen && (
           <div
             ref={menuRef}
-            className="absolute right-0 mt-2 bg-white shadow-lg rounded p-4 space-y-2 z-50 w-[200px]"
+            className="fixed sm:absolute right-0 mt-2 bg-white shadow-lg rounded p-4 space-y-2 z-50 w-[200px]"
           >
             <h2>{client.client.name}</h2>
          <button

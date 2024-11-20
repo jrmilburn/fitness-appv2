@@ -30,8 +30,8 @@ export default function CreateProgram() {
 
             {formPage === 0 ? (
                 <div className='flex flex-col space-y-4 w-full h-screen overflow-y-auto'>
-                    <PreviousPrograms setProgram={setProgram} onNext={onNext} />
-                    <ProgramTemplates setProgram={setProgram} onNext={onNext} />
+                    <PreviousPrograms setProgram={setProgram} onNext={() => onNext(2)} />
+                    <ProgramTemplates setProgram={setProgram} onNext={() => onNext(2)} />
                 </div>
             ) : formPage === 1 ? (
                 <div className='flex flex-col space-y-4 w-full h-screen overflow-y-auto'>

@@ -25,17 +25,30 @@ export default function RootLayout({ children }) {
   const hideNavbarPaths = ["/landingpage/register", "/landingpage/login"];
   const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
 
-
   return (
     <html lang="en">
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-y-hidden`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased w-full`}
         >
           <ProtectedRoute>
-            {shouldShowNavbar && <Navbar />}
-            <ChatIcon />
+            {/* Top Bar and Navbar */}
+            {shouldShowNavbar && (
+              <div className="relative">
+                <Navbar />
+              </div>
+            )}
+
+            {/* Content Area */}
+            <div
+              className={`${
+                shouldShowNavbar ? "pt-16 md:pt-0 w-full" : ""
+              } overflow-y-hidden`}
+            >
               {children}
+            </div>
+
+            <ChatIcon />
           </ProtectedRoute>
         </body>
       </SessionProvider>

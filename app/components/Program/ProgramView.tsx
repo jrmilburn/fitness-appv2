@@ -4,9 +4,9 @@ import ProgramWorkout from './ProgramWorkout';
 
 export default function ProgramView({ week }) {
     return (
-        <div className="p-4 max-w-4xl bg-white overflow-y-auto border-2 rounded space-y-6 h-[80%] ">
+        <div className="p-4 w-full h-full bg-white overflow-y-auto border-2 rounded space-y-6 ">
             {/* Week Title */}
-            <h2 className='text-3xl font-semibold text-gray-800'>Week {week.weekNo}</h2>
+            <h2 className='text-2xl sm:text-3xl font-semibold text-gray-800'>Week {week.weekNo}</h2>
 
             {/* Workout Container */}
             <div className='flex space-x-6 overflow-x-auto'>

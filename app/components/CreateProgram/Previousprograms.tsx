@@ -38,9 +38,9 @@ export default function PreviousPrograms({ setProgram, onNext }) {
   };
 
   return (
-    <div className="flex flex-col max-w-2xl w-full mx-auto space-y-4 pt-8">
-      <div className="flex justify-between">
-        <h2 className="text-left text-3xl">Select from previous programs</h2>
+    <div className="flex flex-col w-full space-y-4 p-4 sm:max-w-screen-sm sm:mx-auto">
+      <div className="flex justify-between w-full">
+        <h2 className="text-left text-2xl sm:text-3xl">Previous programs</h2>
         <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded" onClick={() => onNext(1)}>New +</button>
       </div>
 

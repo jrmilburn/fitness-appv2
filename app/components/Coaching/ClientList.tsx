@@ -41,7 +41,7 @@ export default function ClientList({ clients, programs }) {
 
     return (
 
-        <div className="flex flex-col max-w-3xl mx-auto">
+        <div className="flex flex-col max-w-screen-sm mx-auto">
             <h2 className="my-4 text-3xl">Clients</h2>
             {initialClients.map((client) => (
                 <ClientTab 

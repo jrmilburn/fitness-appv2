@@ -42,16 +42,16 @@ export default function ProgramLength({ onNext, setProgram, onPrevious }) {
 
     return (
         <>
-        <div className="w-full max-w-2xl mx-auto mt-4 relative">
+        <div className="w-full max-w-screen-sm mx-auto mt-4 relative flex justify-between sm:block">
                 <button
                     onClick={onPrevious}
-                    className="absolute left-0 top-0 p-2 text-gray-700 hover:text-gray-900 focus:outline-none translate-x-[-100%]"
+                    className="sm:absolute sm:left-0 sm:top-0 p-2 text-gray-700 hover:text-gray-900 focus:outline-none sm:translate-x-[-100%]"
                 >
                     <FiArrowLeft size={24} />
                 </button>
-                <h2 className="text-3xl text-center">Create New</h2>
+                <h2 className="text-3xl text-center w-full">Create New</h2>
             </div>
-        <form onSubmit={handleSubmit} className="w-full p-8 bg-white shadow-md rounded-lg mx-auto max-w-2xl border-2">
+        <form onSubmit={handleSubmit} className="w-full p-4 sm:p-8 bg-white sm:shadow-md rounded-lg mx-auto max-w-screen-sm sm:border-2">
             <h2 className="text-3xl font-semibold text-gray-800 mb-6">General Details</h2>
 
             <div className="flex flex-col space-y-6 w-full">

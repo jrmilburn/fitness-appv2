@@ -34,7 +34,7 @@ export default function ProgramTemplates({ setProgram, onNext }) {
       (program) => program.id === id
     );
     setProgram(selectedProgram);
-    onNext();
+    onNext(2);
   };
 
   const toggleSummary = (programId) => {
@@ -42,8 +42,8 @@ export default function ProgramTemplates({ setProgram, onNext }) {
   };
 
   return (
-    <div className="flex flex-col max-w-2xl w-full mx-auto space-y-4 py-8">
-      <h2 className="text-left text-3xl">JFIT Templates</h2>
+    <div className="flex flex-col w-full space-y-4 p-4 sm:max-w-screen-sm sm:mx-auto">
+      <h2 className="text-left text-2xl sm:text-3xl">JFIT Templates</h2>
 
       {isLoading ? (
         <>

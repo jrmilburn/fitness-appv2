@@ -207,7 +207,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
 
     return (
-        <div className={`w-[100%] max-w-2xl mx-auto p-8 flex flex-col ${setsCompleted ? 'border-2 border-green-400' : 'border-2 border-gray-200'}`}>
+        <div className={`w-[100%] max-w-screen-sm mx-auto p-8 flex flex-col ${setsCompleted ? 'border-2 border-green-400' : 'border-2 border-gray-200'}`}>
             
             <div className='flex justify-between items-center'>
 
@@ -239,7 +239,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
                     )}
                     {infoShown && (
-                        <div ref={infoRef} className='absolute translate-x-[-70%] z-50 w-[400px] bg-white p-2'>
+                        <div ref={infoRef} className='absolute translate-x-[-50%] md:translate-x-[-70%] z-50 w-[400px] bg-white p-2'>
                             <ExcerciseInfo 
                                 name={excercise.name}
                                 details={excercise.details}

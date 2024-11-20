@@ -50,7 +50,7 @@ export default function Search() {
     return (
         <div className="w-full h-full max-w-3xl mx-auto">
             {/* Search Input and Button */}
-            <form className="w-[80%] mx-auto my-16 flex space-x-4" onSubmit={handleSearch}>
+            <form className="sm:w-[80%] w-[90%] mx-auto my-16 flex space-x-4" onSubmit={handleSearch}>
                 <input
                     type="text"
                     placeholder="Search for users..."
@@ -65,9 +65,9 @@ export default function Search() {
 
             {/* Conditional rendering: Skeletons or Users */}
             {loading ? (
-                <div className="w-[80%] mx-auto grid gap-6">
+                <div className="w-full sm:w-[80%] mx-auto grid gap-6">
                     {Array(5).fill(null).map((_, index) => (
-                        <div key={index} className="flex w-full justify-between items-center border rounded-xl shadow-sm p-4">
+                        <div key={index} className="flex w-full justify-between items-center border rounded-xl shadow-sm">
                             <div className="flex items-center">
                                 <Skeleton circle={true} height={50} width={50} /> {/* Profile Image */}
                                 <div className="ml-4">

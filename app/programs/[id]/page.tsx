@@ -47,7 +47,7 @@ export default async function Program({ params }) {
 // Separate client wrapper for UserProgram
 function ProgramWrapper({ program, currentWeek }) {
     return (
-        <div className='w-full mx-auto p-8 overflow-y-auto'>
+        <div className='w-full mx-auto md:p-8 overflow-y-auto h-full'>
             <div className='w-full flex justify-between items-center border-b-2 p-2'>
                 <h2 className='text-2xl'>{program.name} by {program.user.name}</h2>
                 <div className='flex flex-col space-y-4'>
