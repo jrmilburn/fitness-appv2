@@ -14,12 +14,6 @@ export default function Navbar() {
 
   const toggleNav = () => setNavOpen(!navOpen);
 
-  const enableFullscreen = () => {
-    if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-    }
-  }
-
   return (
     <div className="relative">
       {/* Top Bar for Small Screens */}
