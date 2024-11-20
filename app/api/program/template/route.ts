@@ -1,19 +1,20 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../lib/prisma';  
+import { prisma } from '../../../lib/prisma';
 
 export async function GET() {
-
   const user = await prisma.user.findUnique({
     where: {
-      email: 'admin@jfit.com.au'
-    }
-  })
+      email: 'admin@jfit.com.au',
+    },
+  });
 
-  console.log('USER: ', user);
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
 
   const programs = await prisma.program.findMany({
     where: {
-      userId: user.id
+      userId: user.id,
     },
     include: {
       weeks: {
@@ -22,19 +23,18 @@ export async function GET() {
             include: {
               excercises: {
                 include: {
-                  muscleGroup: true
-                }
-              }
-            }
-          }
-        }
-      }
+                  muscleGroup: true,
+                },
+              },
+            },
+          },
+        },
+      },
     },
     orderBy: {
-      updatedAt: 'desc'
+      updatedAt: 'desc',
     },
-  })
+  });
 
   return NextResponse.json(programs);
-
 }
