@@ -29,9 +29,9 @@ export default function LandingPage() {
           <p className="text-xl text-gray-600">
             Transform your fitness journey with personalized workouts and real-time progress tracking.
           </p>
-          <Link href={'/landingpage/register'}>
+          <Link href={'/landingpage/login'}>
             <button className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-700 transition duration-300">
-              <span>Sign Up</span>
+              <span>Log in</span>
               <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
               </svg>
