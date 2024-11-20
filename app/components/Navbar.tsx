@@ -19,7 +19,7 @@ export default function Navbar() {
       {/* Top Bar for Small Screens */}
       <div className="fixed top-0 left-0 w-full h-16 bg-white flex items-center justify-between px-4 shadow-md md:hidden z-50">
         {/* App Logo */}
-        <Link href="/">
+        <Link href="/workouts/current">
           <div className="flex items-center space-x-2 sm:hidden">
             <Image src="/logo.jpg" alt="App Logo" width={32} height={32} />
             <h2 className="font-bold text-lg relative">JFit <em className="absolute text-xs">Classic</em></h2>
