@@ -26,7 +26,7 @@ body {
   display: flex;
   flex-direction: column; /* Allows stacking content vertically */
   width: 100%;
-  min-height: 100vh; /* Ensures the body takes the full height of the viewport */
+  min-height: 100dvh; /* Ensures the body takes the full height of the viewport */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   overflow: auto; /* Allows scrolling if content exceeds height */
 }
