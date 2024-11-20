@@ -1,19 +1,31 @@
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import horieditIcon from '../../assets/edit-hori.svg';
+import { useRouter } from 'next/navigation';
 
 export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
+  
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
 
-    console.log(client);
-
-  // Close the menu if clicked outside
   const handleClickOutside = (event) => {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setIsMenuOpen(false);
     }
   };
+
+  const onViewProgram = (clientId) => {
+
+    router.push(`/programs/client/${clientId}`)
+
+  }
+
+  const onViewWorkout = (clientId) => {
+
+    router.push(`/workouts/current/${clientId}`)
+
+  }
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -64,6 +76,18 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
           className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
         >
           Assign Program
+        </button>
+        <button
+          onClick={() => onViewProgram(client.client.id)}
+          className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
+        >
+          View Program
+        </button>
+        <button
+          onClick={() => onViewWorkout(client.client.id)}
+          className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
+          >
+          View Next Workout
         </button>
         <button
           onClick={() => onDeleteClient(client.id)}

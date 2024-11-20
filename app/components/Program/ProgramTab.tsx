@@ -30,9 +30,18 @@ export default function ProgramTab({
           <>
             <div>
               <h2 className="text-xl">{name}</h2>
-              <p className="text-sm opacity-50">{name} has no current program</p>
+              <p className="text-sm opacity-50">Saved</p>
             </div>
-            <div className="flex flex-col space-y-4"></div>
+            <div className="flex flex-col space-y-4 justify-center">
+              <Link href={`/programs/${id}`}>
+                <button>View Program</button>
+              </Link>
+              {canDelete && id !== userProgramId && onDelete && (
+                <button onClick={onDelete}>
+                  Delete
+                </button>
+              )}
+            </div>
           </>
         ) : (
           <>

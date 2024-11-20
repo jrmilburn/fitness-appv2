@@ -2,15 +2,19 @@
 
 import Workout from './Workout';
 import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import Loader from '../Loader';
 
 
 export default function ProgramExcercises({ program, setProgram, type, onPrevious }) {
 
-    console.log(program);
-
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
     const handleCreate = async () => {
+
+        setIsLoading(true);
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/program`, {
             method: 'POST',
             headers: {
@@ -19,13 +23,18 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
             body: JSON.stringify(program),
         });
 
+        setIsLoading(false);
+
         if(response.ok) {
             router.push('/workouts/current');
         }
     };
 
     const handleSave = async () => {
-        /*const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/program/save`, {
+
+        setIsLoading(true);
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/program/save`, {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json'
@@ -33,15 +42,28 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
             body: JSON.stringify(program),
         })
 
+        setIsLoading(false);
+
         if(response.ok) {
             router.push('/programs');
-        }*/
+        }
 
-        console.log(program);
     }
 
     return (
         <>
+
+            {isLoading && (
+                <div className="fixed inset-0 bg-black/50 z-40 backdrop-blur-md flex items-center justify-center">
+                    <div className="text-white text-lg flex items-center">
+                        <span className='text-3xl font-bold'>Generating program</span>
+                        <Loader 
+                            size={10}
+                            color="#fff"/>
+                    </div>
+                </div>
+            )}
+
             <form className="w-[100%] h-screen p-4 bg-white shadow-md rounded overflow-x-auto border-2">
                 <h2 className="text-3xl text-gray-800 mb-6"><strong>{program.name}</strong> Exercises</h2>
 

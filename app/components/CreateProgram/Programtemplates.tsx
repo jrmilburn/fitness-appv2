@@ -21,6 +21,7 @@ export default function ProgramTemplates({ setProgram, onNext }) {
       .then((data) => {
         setProgramTemplates(data);
         setIsLoading(false);
+        console.log('PROGRAMS: ', data);
       })
       .catch((error) => {
         console.error("Error fetching templates:", error);

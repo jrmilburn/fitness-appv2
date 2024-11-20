@@ -44,7 +44,7 @@ export default function Workouts({ shown, onClose, weeks, setProgram, setWorkout
                         
                             {week.workouts?.sort((a,b) => a.workoutNo - b.workoutNo)
                             .map((workout) => (
-                              <div key={workout.id} className="w-20 h-12 bg-gray-200 flex items-center justify-center">
+                              <div key={workout.id} className="w-12 h-12 bg-gray-200 flex items-center justify-center">
                                 <button
                                   className="w-full h-full hover:bg-gray-100 transition-all duration-300"
                                   onClick={() => handleSetProgram(week.id, workout.id)}

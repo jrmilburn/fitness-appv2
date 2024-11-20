@@ -5,7 +5,7 @@ import { authOptions } from '../../../lib/authOptions';
 
 export async function POST(req) {
 
-  console.log('REQUEST FOR PROGRAM POST: ', req.body);
+  console.log('REQUEST FOR PROGRAM POST: ', await req.body);
 
   const userSession = await getServerSession(authOptions);
 
@@ -114,9 +114,9 @@ const userId = user?.id;
   
           // Ensure the MuscleGroup exists or create it if necessary
           const muscleGroup = await prisma.muscleGroup.upsert({
-            where: { name: excercise.muscle },
+            where: { name: excercise.muscle || excercise.muscleGroup.name },
             update: {},
-            create: { name: excercise.muscle },
+            create: { name: excercise.muscle || excercise.muscleGroup.name },
           });
   
           // Make sure to check for existing exercise with non-null `details`
