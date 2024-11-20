@@ -32,13 +32,6 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <button
-          className="fullscreen-button"
-          onClick={enableFullscreen}
-        >
-          Go Fullscreen
-        </button>
-
         {/* Hamburger Button */}
         <button
           className="flex flex-col items-center justify-center space-y-1 w-8 h-8 bg-white text-white rounded-md"
