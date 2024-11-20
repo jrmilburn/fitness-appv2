@@ -18,12 +18,12 @@ export default function SignUp() {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState(null);
 
-    return(
+   /* return(
         <div>
             <p>Please email jrmilburn@outlook.com for enquiries</p>
             <p>Already have an account?<Link href='/landingpage/login'>Log in</Link></p>
         </div>
-    )
+    )*/
 
     const handleRegister = async (e) => {
         e.preventDefault();
