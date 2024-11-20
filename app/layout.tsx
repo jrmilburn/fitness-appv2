@@ -16,6 +16,7 @@ const geistSans = localFont({
   variable: "--font-geist-sans",
   weight: "100 900",
 });
+
 const geistMono = localFont({
   src: "./fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
@@ -28,27 +29,30 @@ export default function RootLayout({ children }) {
   const hideNavbarPaths = ["/landingpage/register", "/landingpage/login"];
   const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
 
-  // Service Worker Update Logic
   useEffect(() => {
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/sw.js").then((registration) => {
-        registration.onupdatefound = () => {
-          const newWorker = registration.installing;
+      navigator.serviceWorker
+        .register("/sw.js")
+        .then((registration) => {
+          registration.onupdatefound = () => {
+            const newWorker = registration.installing;
 
-          newWorker.onstatechange = () => {
-            if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-              // Notify user about the new version
-              toast.info("A new version is available. Click to refresh.", {
-                position: "bottom-center", // Correct position format
-                autoClose: false,
-                onClick: () => {
-                  window.location.reload();
-                },
-              });
-            }
+            newWorker.onstatechange = () => {
+              if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                toast.info("A new version is available. Click to refresh.", {
+                  position: "bottom-center",
+                  autoClose: false,
+                  onClick: () => {
+                    window.location.reload();
+                  },
+                });
+              }
+            };
           };
-        };
-      });
+        })
+        .catch((error) => {
+          console.error("Service Worker registration failed:", error);
+        });
     }
   }, []);
 
@@ -57,36 +61,32 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#fff" />
-        <link rel="icon" href="/icon.jpg" sizes="192x192" />
+        <meta name="theme-color" content="#000" />
+        <link rel="icon" href="/logo.jpg" sizes="192x192" />
         <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="mobile-web-app-status-bar-style" content="black" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
       </head>
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased w-full`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row min-h-screen`}
         >
           <ProtectedRoute>
-            {/* Top Bar and Navbar */}
-            {shouldShowNavbar && (
-              <div className="relative">
-                <Navbar />
-              </div>
-            )}
+            {/* Navbar */}
+            {shouldShowNavbar && <Navbar />}
 
-            {/* Content Area */}
-            <div
-              className={`${
-                shouldShowNavbar ? "pt-16 md:pt-0 w-full" : ""
-              } overflow-y-hidden`}
+            {/* Main Content */}
+            <main
+              className={`flex-grow ${
+                shouldShowNavbar ? "pt-16" : ""
+              } overflow-y-auto z-0`}
             >
               {children}
-            </div>
+            </main>
 
+            {/* Chat Icon */}
             {shouldShowNavbar && <ChatIcon />}
           </ProtectedRoute>
 
-          {/* Toast Notifications */}
           <ToastContainer />
         </body>
       </SessionProvider>
