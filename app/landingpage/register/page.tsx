@@ -60,7 +60,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className="flex flex-col sm:flex-row h-screen w-full font-sans bg-gray-100 relative">
+        <div className="flex flex-col sm:flex-row h-screen w-full font-sans bg-gray-100 justify-center items-center relative">
             {/* Background Image */}
             <div className="hidden sm:block sm:w-1/2">
                 <Image
