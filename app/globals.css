@@ -16,24 +16,32 @@
 }
 
 html, body {
-  height: 100dvh; /* Ensures the elements span the full height */
-  margin
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
 }
 
 body {
+  background-color: var(--background);
   color: var(--foreground);
-  background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
   display: flex;
-  flex-direction: column; /* Allows stacking content vertically */
-  width: 100%;
-  min-height: 100dvh; /* Ensures the body takes the full height of the viewport */
+  flex-direction: column;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  overflow-y: auto;   /* Allows vertical scrolling */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-  overflow: auto; /* Allows scrolling if content exceeds height */
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+/* Ensure full height for dynamic viewport height issues on iOS */
+html, body {
+  min-height: -webkit-fill-available; /* Fallback for older iOS versions */
+  height: 100dvh; /* Modern dynamic viewport height unit */
 }
