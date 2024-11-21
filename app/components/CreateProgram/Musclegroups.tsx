@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 export default function Musclegroups({ visible, onClose, onAdd, muscleGroups, setMuscleGroups }) {
 
