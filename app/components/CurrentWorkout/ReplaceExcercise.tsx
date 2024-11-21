@@ -8,13 +8,14 @@ import backIcon from "../../assets/back.svg";
 export default function ReplaceExcercise({ onClose, setWorkout, workout, excercise }) {
   const [formState, setFormState] = useState(0);
   const [muscle, setMuscle] = useState(null);
+  const [muscleGroups, setMuscleGroups] = useState([])
 
   const selectMuscleGroup = (muscle) => {
     setMuscle(muscle);
     setFormState(1);
   };
 
-  const handleSelectExcercise = async (e, replaceExcercise) => {
+  const handleSelectExcercise = async (replaceExcercise) => {
     const requestBody = {
       muscleId: muscle.id,
       muscleName: muscle.name,
@@ -52,7 +53,7 @@ export default function ReplaceExcercise({ onClose, setWorkout, workout, excerci
   return (
     <>
       {formState === 0 ? (
-        <Musclegroups visible={true} onAdd={selectMuscleGroup} onClose={onClose} />
+        <Musclegroups visible={true} onAdd={selectMuscleGroup} onClose={onClose} setMuscleGroups={setMuscleGroups} muscleGroups={muscleGroups} />
       ) : (
         <>
           <Excercises
@@ -60,6 +61,8 @@ export default function ReplaceExcercise({ onClose, setWorkout, workout, excerci
             onClose={onClose}
             muscle={muscle.id}
             selectExcercise={handleSelectExcercise}
+            muscleGroups={muscleGroups}
+            workoutId={workout.id}
           >
             <button onClick={handleBack} className="absolute z-50 right-10">
               <Image src={backIcon} alt="back" />

@@ -122,6 +122,23 @@ export default function Navbar() {
                 Programs
               </Link>
             </li>
+            <li
+              className={`text-xl p-2 ${
+                activeLink === "/excercises/custom"
+                  ? "bg-gray-200 rounded-lg"
+                  : ""
+              }`}
+            >
+              <Link
+                href="/excercises/custom"
+                onClick={() => {
+                  setActiveLink("/excercises/custom");
+                  setNavOpen(false);
+                }}
+              >
+                Custom Excercises
+              </Link>
+            </li>
           </ul>
 
           <ul className="flex flex-col space-y-4">

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 export default function Workout({ workout, setProgram, excercises }) {
     const [muscleGroupsShown, setMuscleGroupsShown] = useState(false);
     const [muscleGroups, setMuscleGroups] = useState([]);
+    const [selectedMuscleGroups, setSelectedMuscleGroups] = useState([]);
 
     // Populate muscleGroups with all muscleGroup objects from excercises, including duplicates
     useEffect(() => {
@@ -53,7 +54,7 @@ export default function Workout({ workout, setProgram, excercises }) {
                     Add Muscle Group +
                 </button>
             </div>
-            <Musclegroups visible={muscleGroupsShown} onClose={() => setMuscleGroupsShown(false)} onAdd={addMuscleGroup} />
+            <Musclegroups visible={muscleGroupsShown} onClose={() => setMuscleGroupsShown(false)} onAdd={addMuscleGroup} setMuscleGroups={setSelectedMuscleGroups} muscleGroups={selectedMuscleGroups} />
         </>
     );
 }

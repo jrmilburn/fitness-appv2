@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-export default function Musclegroups({ visible, onClose, onAdd }) {
+export default function Musclegroups({ visible, onClose, onAdd, muscleGroups, setMuscleGroups }) {
 
-    const [muscleGroups, setMuscleGroups] = useState([]);
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {

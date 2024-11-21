@@ -9,6 +9,7 @@ export default function AddExcercise({ onClose, setWorkout, workout }) {
 
     const [formState, setFormState] = useState(0);
     const [muscle, setMuscle] = useState(null);
+    const [muscleGroups, setMuscleGroups] = useState([]);
 
     const selectMuscleGroup = (muscle) => {
 
@@ -62,7 +63,9 @@ export default function AddExcercise({ onClose, setWorkout, workout }) {
             <Musclegroups
                 visible={true}
                 onAdd={selectMuscleGroup}
-                onClose={onClose} />
+                onClose={onClose}
+                setMuscleGroups={setMuscleGroups}
+                muscleGroups={muscleGroups} />
             </>
         ) : (
             <>
@@ -71,6 +74,8 @@ export default function AddExcercise({ onClose, setWorkout, workout }) {
                 onClose={onClose}
                 muscle={muscle.id}
                 selectExcercise={handleSelectExcercise}
+                muscleGroups={muscleGroups}
+                workoutId={workout.id}
             >
                 <button onClick={handleBack} className="absolute z-50 right-10">
                     <Image 
