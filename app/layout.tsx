@@ -79,9 +79,9 @@ export default function RootLayout({ children }) {
             {/* Navbar */}
             {shouldShowNavbar && <Navbar />}
 
-            <PullToRefresh
+            {/*<PullToRefresh
               onRefresh={refreshData}
-            >
+            >*/}
             {/* Main Content */}
             <main
               className={`flex-grow max-h-screen ${
@@ -90,7 +90,7 @@ export default function RootLayout({ children }) {
             >
               {children}
             </main>
-            </PullToRefresh>
+            {/*</PullToRefresh>*/}
 
             {/* Chat Icon */}
             {shouldShowNavbar && <ChatIcon />}

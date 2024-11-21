@@ -45,7 +45,7 @@ const PullToRefresh = ({ onRefresh, children }) => {
         }}
       >
         <div
-          className={`text-sm text-gray-600 transition-transform ${
+          className={`text-sm text-gray-600 transition-transform relative ${
             isPulling ? "opacity-100" : "opacity-0"
           }`}
         >
@@ -59,7 +59,7 @@ const PullToRefresh = ({ onRefresh, children }) => {
       <div
         className={`transform ${
           isPulling ? `translate-y-${pullDistance}` : "translate-y-0"
-        } transition-transform duration-300`}
+        } transition-transform duration-300 z-0 relative flex-grow max-h-screen`}
       >
         {children}
       </div>
