@@ -10,7 +10,7 @@ import ChatIcon from "./components/ChatIcon/ChatIcon";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import PullToRefresh from "./components/PullToRefresh";
+import * as PullToRefresh from "pulltorefreshjs"; // Updated import
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,6 +29,17 @@ export default function RootLayout({ children }) {
 
   const hideNavbarPaths = ["/landingpage/register", "/landingpage/login"];
   const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
+
+  useEffect(() => {
+    PullToRefresh.init({
+      mainElement: "body",
+      onRefresh: async () => {
+        console.log("Pull-to-refresh triggered");
+        window.location.reload();
+      },
+    });
+
+  }, []);
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -57,14 +68,13 @@ export default function RootLayout({ children }) {
     }
   }, []);
 
-  const refreshData = async () => {
-    window.location.reload();
-  }
-
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
+        />
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#fff" />
         <link rel="icon" href="/logo.jpg" sizes="192x192" />
@@ -76,23 +86,16 @@ export default function RootLayout({ children }) {
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row min-h-screen`}
         >
           <ProtectedRoute>
-            {/* Navbar */}
             {shouldShowNavbar && <Navbar />}
 
-            {/*<PullToRefresh
-              onRefresh={refreshData}
-            >*/}
-            {/* Main Content */}
             <main
-              className={`flex-grow max-h-screen ${
+              className={`flex-grow ${
                 shouldShowNavbar ? "pt-16 md:pt-0" : ""
-              } overflow-y-auto z-0`}
+              } z-0`}
             >
               {children}
             </main>
-            {/*</PullToRefresh>*/}
 
-            {/* Chat Icon */}
             {shouldShowNavbar && <ChatIcon />}
           </ProtectedRoute>
 

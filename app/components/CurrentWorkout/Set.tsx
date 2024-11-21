@@ -126,21 +126,28 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           onFocus={() => setFocusedInput('weight')}
           onBlur={() => setFocusedInput('')}
-          value={weight}
-          onChange={(e) => setWeight(+e.target.value)}
+          value={weight !== null ? weight : ''}
+          onChange={(e) => {
+            const value = e.target.value;
+            setWeight(value === '' ? null : +value);
+          }}
           disabled={workout.completed}
         />
-
+        
         <input
           type="number"
           placeholder={`${Rir} RIR`}
           className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           onFocus={() => setFocusedInput('reps')}
           onBlur={() => setFocusedInput('')}
-          value={reps}
-          onChange={(e) => setReps(+e.target.value)}
+          value={reps !== null ? reps : ''}
+          onChange={(e) => {
+            const value = e.target.value;
+            setReps(value === '' ? null : +value);
+          }}
           disabled={workout.completed}
         />
+
         
         <button
           onClick={(e) => handleSubmit(e, setId)}
