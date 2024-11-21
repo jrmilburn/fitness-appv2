@@ -92,8 +92,8 @@ export default function Workout({ params }) {
     }
 
     return (
-        <div className='mx-auto flex flex-col items-center overflow-y-auto h-screen w-full sm:p-8 pb-48'>
-            <div className='flex flex-col items-center mb-32 w-full'>
+        <div className='mx-auto flex flex-col items-center overflow-y-auto h-screen w-full sm:p-8 pb-48 scroll-smooth'>
+            
             {/* Workout Header */}
             {isLoading ? (
                 <Skeleton height={40} width={300} />
@@ -160,7 +160,6 @@ export default function Workout({ params }) {
                     programComplete={programCompleted}
                 />
             )}
-            </div>
         </div>
     );
 }
