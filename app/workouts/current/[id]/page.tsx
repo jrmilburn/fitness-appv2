@@ -92,7 +92,7 @@ export default function Workout({ params }) {
     }
 
     return (
-        <div className='mx-auto my-auto flex flex-col items-center overflow-y-scroll h-screen w-full sm:p-8'>
+        <div className='mx-auto my-auto flex flex-col items-center overflow-y-scroll h-screen w-full sm:p-8 pb-8'>
             {/* Workout Header */}
             {isLoading ? (
                 <Skeleton height={40} width={300} />
