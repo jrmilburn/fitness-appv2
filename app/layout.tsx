@@ -32,14 +32,17 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     PullToRefresh.init({
-      mainElement: "body",
+      mainElement: "body", // Target the body
       onRefresh: async () => {
         console.log("Pull-to-refresh triggered");
         window.location.reload();
       },
+      shouldPullToRefresh: () => window.scrollY === 0, // Only trigger at the top
     });
-
+  
+    return () => PullToRefresh.destroy(); // Cleanup on unmount
   }, []);
+  
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
