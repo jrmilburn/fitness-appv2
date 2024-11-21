@@ -46,3 +46,7 @@ html, body {
   min-height: -webkit-fill-available; /* Fallback for older iOS versions */
   height: 100dvh; /* Modern dynamic viewport height unit */
 }
+
+main {
+  padding-bottom: 2rem;
+}

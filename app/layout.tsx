@@ -83,14 +83,14 @@ export default function RootLayout({ children }) {
       </head>
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row min-h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-hidden`}
         >
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}
 
             <main
               className={`flex-grow ${
-                shouldShowNavbar ? "pt-16 md:pt-0" : ""
+                shouldShowNavbar ? "py-16 md:py-0" : ""
               } z-0`}
             >
               {children}
