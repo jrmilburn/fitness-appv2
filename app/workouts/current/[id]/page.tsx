@@ -92,7 +92,7 @@ export default function Workout({ params }) {
     }
 
     return (
-        <div className='mx-auto flex flex-col items-center overflow-y-auto h-screen w-full sm:p-8 pb-24 scroll-smooth'>
+        <div className='mx-auto flex flex-col items-center overflow-y-auto h-screen w-full sm:p-8 pb-24 scroll-smooth overscroll-none'>
             
             {/* Workout Header */}
             {isLoading ? (
