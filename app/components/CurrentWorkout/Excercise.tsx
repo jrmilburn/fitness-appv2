@@ -6,6 +6,7 @@ import Image from 'next/image'
 import ExcerciseForm from './ExcerciseForm'
 import ExcerciseInfo from './ExcerciseInfo'
 import AddExcercise from './AddExcercise'
+import ReplaceExcercise from './ReplaceExcercise'
 
 
 export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
@@ -19,6 +20,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
     const [isEditing, setIsEditing] = useState(false);
     const [infoShown, setInfoShown] = useState(false);
     const [addExcerciseShown, setAddExcerciseShown] = useState(false);
+    const [replaceExcerciseShown, setReplaceExcerciseShown] = useState(false);
     const [lastWeekData, setLastWeekData] = useState([]);
     const formRef = useRef(null);
     const infoRef = useRef(null);
@@ -157,6 +159,8 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
     const handleReplaceExcercise = async () => {
 
+        setReplaceExcerciseShown(true);
+
     }
 
     const handleDeleteExcercise = async () => {
@@ -254,6 +258,15 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                             workout={workout}/>
 
                     )}
+                    {replaceExcerciseShown && (
+
+                        <ReplaceExcercise 
+                            onClose={() => setReplaceExcerciseShown(false)}
+                            setWorkout={setWorkout}
+                            workout={workout}
+                            excercise={excercise}/>
+
+                    )}
                 </div>
 
             </div>
@@ -262,7 +275,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                 <h2>Weight</h2>
                 <h2>Reps</h2>
             </div>
-            {excercise.sets.map((set, index) => (
+            {excercise?.sets?.map((set, index) => (
                 <Set key={index} setId={set.id} Rir={weekRir} workout={workout} setWorkout={setWorkout} onDelete={() => handleDeleteSet(set.id)} onAdd={() => handleAddSet()} onDataFetch={handleSetDataFetch} />
             ))}
 

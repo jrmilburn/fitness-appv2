@@ -57,3 +57,37 @@ export async function DELETE(
   }
 
 }
+
+export async function PUT(  req: Request,
+  { params }: { params: { id: string } }) {
+
+    const { id } = params;
+    const { muscleId, newExcercise } = await req.json();
+
+    try {
+
+      const replaceExcercise = await prisma.excercise.update({
+        where: {
+          id: id
+        },
+        data: {
+          muscleGroupId: muscleId,
+          name: newExcercise,
+
+        },
+        include: {
+          sets: true
+        }
+      })
+
+      console.log(replaceExcercise);
+
+      return NextResponse.json(replaceExcercise);
+
+    } catch (err) {
+
+      return NextResponse.json(err);
+
+    }
+
+  }
