@@ -12,7 +12,8 @@ export async function POST(req: Request) {
         const newExcercise = await prisma.excercise.create({
             data: {
                 name: name,
-                muscleGroupId: muscleGroupId
+                muscleGroupId: muscleGroupId,
+                custom: true
             }
         });
 
@@ -23,6 +24,7 @@ export async function POST(req: Request) {
                     name: name,
                     workoutId: workoutId,
                     muscleGroupId: muscleGroupId,
+                    custom: true
                 }
             });
 
@@ -51,6 +53,24 @@ export async function POST(req: Request) {
 
         return NextResponse.json(err);
 
+    }
+
+}
+
+export async function GET() {
+
+    try {
+
+        const customExcercises = await prisma.excercise.findMany({
+            where: {
+                custom: true
+            }
+        })
+
+        return NextResponse.json(customExcercises);
+
+    } catch(err) {
+        return NextResponse.json(err);
     }
 
 }

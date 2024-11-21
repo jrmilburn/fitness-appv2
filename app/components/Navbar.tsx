@@ -124,15 +124,15 @@ export default function Navbar() {
             </li>
             <li
               className={`text-xl p-2 ${
-                activeLink === "/excercises/custom"
+                activeLink === "/custom-excercises"
                   ? "bg-gray-200 rounded-lg"
                   : ""
               }`}
             >
               <Link
-                href="/excercises/custom"
+                href="/custom-excercises"
                 onClick={() => {
-                  setActiveLink("/excercises/custom");
+                  setActiveLink("/custom-excercises");
                   setNavOpen(false);
                 }}
               >

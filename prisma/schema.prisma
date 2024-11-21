@@ -186,6 +186,7 @@ model Excercise {
   muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id])
   completed     Boolean     @default(false)
   details       String?
+  custom        Boolean     @default(false)
 
   @@unique([workoutId, name])
 }
