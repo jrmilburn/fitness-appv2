@@ -39,7 +39,7 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
   }, [isMenuOpen]);
 
   return (
-    <div className="w-full bg-gray-100 p-4 rounded shadow-md flex items-center justify-between relative">
+    <div className="w-full bg-white p-4 rounded shadow-md flex items-center justify-between relative border-b-2">
       {/* Client Information */}
       <div className="flex items-center space-x-4">
         <Image
