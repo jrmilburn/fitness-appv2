@@ -10,6 +10,7 @@ import ChatIcon from "./components/ChatIcon/ChatIcon";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PullToRefresh from "./components/PullToRefresh";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -56,6 +57,10 @@ export default function RootLayout({ children }) {
     }
   }, []);
 
+  const refreshData = async () => {
+    window.location.reload();
+  }
+
   return (
     <html lang="en">
       <head>
@@ -74,14 +79,18 @@ export default function RootLayout({ children }) {
             {/* Navbar */}
             {shouldShowNavbar && <Navbar />}
 
+            <PullToRefresh
+              onRefresh={refreshData}
+            >
             {/* Main Content */}
             <main
-              className={`flex-grow ${
+              className={`flex-grow max-h-screen ${
                 shouldShowNavbar ? "pt-16 md:pt-0" : ""
-              } overflow-y-hidden z-0`}
+              } overflow-y-auto z-0`}
             >
               {children}
             </main>
+            </PullToRefresh>
 
             {/* Chat Icon */}
             {shouldShowNavbar && <ChatIcon />}
