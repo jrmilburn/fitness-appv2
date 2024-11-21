@@ -30,7 +30,7 @@ const PullToRefresh = ({ onRefresh, children }) => {
 
   return (
     <div
-      className="relative overflow-y-scroll h-screen bg-gray-100"
+      className="relative overflow-y-scroll w-full h-screen bg-gray-100"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
