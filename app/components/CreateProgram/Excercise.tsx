@@ -65,6 +65,8 @@ export default function Excercise({ muscleId, muscleName, excercise, setProgram,
                     visible={showExcercises}
                     onClose={() => setShowExcercises(false)}
                     selectExcercise={handleSelectExcercise}
+                    muscleGroups={null}
+                    workoutId={null}
                 >
                     <></>
                 </Excercises>
