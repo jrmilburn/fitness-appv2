@@ -96,7 +96,7 @@ export default function RootLayout({ children }) {
 
             <main
               className={`flex-grow ${
-                shouldShowNavbar ? "md:pt-0" : ""
+                shouldShowNavbar ? "sm:ml-80" : ""
               } z-0`}
             >
               {children}

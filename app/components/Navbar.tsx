@@ -53,7 +53,7 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 h-full w-full bg-white md:w-64 shadow-lg transform transition-transform duration-300 z-40 ${
           navOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 md:static md:w-80`}
+        } md:translate-x-0 md:fixed md:w-80`}
       >
         <ul className="flex flex-col justify-between p-8 h-screen max-h-[100%]">
           {/* Logo */}

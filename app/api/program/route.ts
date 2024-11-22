@@ -58,25 +58,37 @@ export async function POST(req) {
 
   let userId;
 
+  const user = await prisma.user.findUnique({
+    where: {
+      email: userEmail
+    }
+  })
+
   if(!program.userId) {
 
     console.log('NO USER ID');
-
-    const user = await prisma.user.findUnique({
-      where: {
-        email: userEmail
-      }
-    })
   
     userId = user?.id;
 
   } else {
-    userId = program.userId;
+
+    const adminUser = await prisma.user.findUnique({
+      where: {
+        email: 'admin@jfit.com.au'
+      }
+    })
+
+    if(adminUser.id === program.userId) {
+      
+      userId = user.id
+
+    } else {
+      userId = program.userId;
+    }
   }
 
   const weeks = program.weeks;
 
-  console.log(userId);
   
   weeks.forEach((week, weekIndex) => {
     const totalWeeks = weeks.length; // Get the total number of weeks
