@@ -40,7 +40,6 @@ export default function RootLayout({ children }) {
       shouldPullToRefresh: () => window.scrollY === 0, // Only trigger at the top
     });
   
-    return () => PullToRefresh.destroy(); // Cleanup on unmount
   }, []);
   
 
