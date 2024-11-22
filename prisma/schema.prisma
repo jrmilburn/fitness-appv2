@@ -3,8 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // User related db items
@@ -195,9 +195,9 @@ model Set {
   id                String    @id @default(cuid())
   setNo             Int
   reps              Int?
-  weight            Int?
+  weight            Float?
   recommendedReps   Int?
-  recommendedWeight Int?
+  recommendedWeight Float?
   excercise         Excercise @relation(fields: [excerciseId], references: [id], onDelete: Cascade)
   excerciseId       String
   updatedAt         DateTime? @updatedAt
