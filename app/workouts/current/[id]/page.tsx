@@ -104,7 +104,6 @@ export default function Workout({ params }) {
                     setWorkout={setWorkout}
                     week={week}
                     setWeek={setWeek}
-                    //programCompleted={programCompleted}
                 />
             )}
 
