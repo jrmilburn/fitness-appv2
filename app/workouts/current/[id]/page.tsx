@@ -72,7 +72,7 @@ export default function Workout({ params }) {
 
     if (noWorkout) {
         return (
-            <div className='mx-auto my-auto flex flex-col items-center space-y-16 overflow-y-auto h-screen w-full p-8'>
+            <div className='mx-auto my-auto flex flex-col items-center space-y-16 h-screen w-full p-8'>
                 <h2>No Workout Available</h2>
                 <p>Please Create or Find a Program to Start a Workout</p>
                 <div className='flex'>
@@ -92,7 +92,7 @@ export default function Workout({ params }) {
     }
 
     return (
-        <div className='mx-auto flex flex-col items-center overflow-y-auto h-screen w-full sm:p-8 pb-24 scroll-smooth overscroll-none'>
+        <div className='mx-auto flex flex-col items-center h-screen w-full sm:p-8 pb-24'>
             
             {/* Workout Header */}
             {isLoading ? (

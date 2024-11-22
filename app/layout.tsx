@@ -32,16 +32,21 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     PullToRefresh.init({
-      mainElement: "body", // Target the body
+      mainElement: "#main-content", // Updated selector
       onRefresh: async () => {
         console.log("Pull-to-refresh triggered");
         window.location.reload();
       },
-      shouldPullToRefresh: () => window.scrollY === 0, // Only trigger at the top
+      shouldPullToRefresh: () => {
+        const main = document.getElementById("main-content");
+        return main ? main.scrollTop === 0 : false;
+      }, // Only trigger at the top of the main element
     });
-  
+
+    return () => {
+      PullToRefresh.destroyAll(); // Cleanup on unmount
+    };
   }, []);
-  
 
   useEffect(() => {
     if ("serviceWorker" in navigator) {
@@ -73,26 +78,19 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover"
-        />
-        <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#fff" />
-        <link rel="icon" href="/logo.jpg" sizes="192x192" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        {/* ... your head content ... */}
       </head>
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-hidden`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row max-h-screen h-screen`}
         >
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}
 
             <main
-              className={`flex-grow ${
-                shouldShowNavbar ? "py-16 md:py-0" : ""
+              id="main-content" // Added ID for specificity
+              className={`flex-grow overflow-auto scroll-smooth ${
+                shouldShowNavbar ? "mt-16 md:mt-0" : ""
               } z-0`}
             >
               {children}
