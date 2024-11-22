@@ -10,7 +10,7 @@ import ChatIcon from "./components/ChatIcon/ChatIcon";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import * as PullToRefresh from "pulltorefreshjs"; // Updated import
+import * as PullToRefresh from "pulltorefreshjs";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,15 +32,14 @@ export default function RootLayout({ children }) {
 
   useEffect(() => {
     PullToRefresh.init({
-      mainElement: "#main-content", // Updated selector
-      onRefresh: async () => {
+      mainElement: "body", // Revert back to targeting the body
+      onRefresh: () => {
         console.log("Pull-to-refresh triggered");
         window.location.reload();
       },
       shouldPullToRefresh: () => {
-        const main = document.getElementById("main-content");
-        return main ? main.scrollTop === 0 : false;
-      }, // Only trigger at the top of the main element
+        return window.scrollY === 0;
+      }, // Check if the window is scrolled to the top
     });
 
     return () => {
@@ -82,14 +81,13 @@ export default function RootLayout({ children }) {
       </head>
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row max-h-screen h-screen`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-auto`}
         >
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}
 
             <main
-              id="main-content" // Added ID for specificity
-              className={`flex-grow overflow-auto scroll-smooth ${
+              className={`flex-grow ${
                 shouldShowNavbar ? "mt-16 md:mt-0" : ""
               } z-0`}
             >
