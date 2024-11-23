@@ -186,8 +186,8 @@ export default function LandingPage() {
           {/* Contact Information */}
           <div className="text-center md:text-left w-full md:w-auto">
             <p className="font-semibold text-white">Contact Us</p>
-            <p>Email: support@jfit.com</p>
-            <p>Phone: +1 (555) 123-4567</p>
+            <p>Email: admin@jfit.com.au</p>
+            <p>Phone: 0412 337 616</p>
           </div>
 
           {/* Footer Links */}

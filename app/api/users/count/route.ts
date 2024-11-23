@@ -1,10 +1,8 @@
 
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';  // Adjust the path to your prisma file
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../../lib/authOptions';  // Adjust the path as needed
 
-export async function GET(req) {
+export async function GET() {
     try {
 
         const userCount = await prisma.user.count();
