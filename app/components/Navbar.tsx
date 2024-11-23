@@ -5,7 +5,6 @@ import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
 import {
-  FireIcon,
   LightningBoltIcon,
   PlusCircleIcon,
   ClipboardListIcon,
@@ -17,7 +16,6 @@ import {
 } from "@heroicons/react/outline";
 
 export default function Navbar() {
-  const { data: session } = useSession();
   const [navOpen, setNavOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("/workouts/current");
 
