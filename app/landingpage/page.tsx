@@ -4,11 +4,13 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function LandingPage() {
   const { data: session } = useSession();
   const router = useRouter();
+  const [userCount, setUserCount] = useState(0);
+  const [displayedCount, setDisplayedCount] = useState(0);
 
   // Redirect if session is available
   useEffect(() => {
@@ -16,6 +18,63 @@ export default function LandingPage() {
       router.push('/workouts/current');
     }
   }, [session, router]);
+
+  // Fetch user count
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/count`, {
+      method: 'GET',
+      headers: {
+        'Content-Type':'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => setUserCount(data.count))
+    .catch(error => console.error('Error fetching user count:', error));
+  }, []); // Run only once on component mount
+
+  // Animate the count-up effect with 1.5s delay
+  useEffect(() => {
+    let animationFrameId;
+    let startTime;
+    let delayTimeout;
+    const duration = 800; // Adjusted duration for faster animation
+
+    // Ease-out cubic function
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+
+    const animateCount = (timestamp) => {
+      if (!startTime) {
+        startTime = timestamp;
+      }
+      const progress = timestamp - startTime;
+      const rawProgress = Math.min(progress / duration, 1);
+      const easedProgress = easeOutCubic(rawProgress);
+      const currentCount = Math.floor(easedProgress * userCount);
+      setDisplayedCount(currentCount);
+
+      if (progress < duration) {
+        animationFrameId = requestAnimationFrame(animateCount);
+      } else {
+        setDisplayedCount(userCount); // Ensure it finishes at the exact count
+      }
+    };
+
+    if (userCount > 0) {
+      delayTimeout = setTimeout(() => {
+        animationFrameId = requestAnimationFrame(animateCount);
+      }, 1500); // 1.5 seconds delay
+    }
+
+    // Cleanup function
+    return () => {
+      if (delayTimeout) {
+        clearTimeout(delayTimeout);
+      }
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
+  }, [userCount]);
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-gradient-to-b from-white to-gray-100">
@@ -34,12 +93,24 @@ export default function LandingPage() {
             <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
               Transform your fitness journey with personalized workouts and real-time progress tracking.
             </p>
+
+            {/* User Count */}
+            {userCount > 0 && (
+              <div className="mt-6">
+                <p className="text-xl md:text-2xl text-gray-700 font-semibold">
+                  Join <span className="text-blue-600">{displayedCount}</span> users who have transformed their fitness journey!
+                </p>
+              </div>
+            )}
+
             {/* Key Features */}
             <ul className="mt-6 space-y-4 text-gray-700">
               <li className="flex items-center">
                 <svg
                   className="w-6 h-6 text-blue-600 mr-2"
-                  fill="currentColor"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
                   viewBox="0 0 24 24"
                 >
                   <path d="M5 13l4 4L19 7" />
@@ -49,7 +120,9 @@ export default function LandingPage() {
               <li className="flex items-center">
                 <svg
                   className="w-6 h-6 text-blue-600 mr-2"
-                  fill="currentColor"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
                   viewBox="0 0 24 24"
                 >
                   <path d="M5 13l4 4L19 7" />
@@ -59,7 +132,9 @@ export default function LandingPage() {
               <li className="flex items-center">
                 <svg
                   className="w-6 h-6 text-blue-600 mr-2"
-                  fill="currentColor"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3"
                   viewBox="0 0 24 24"
                 >
                   <path d="M5 13l4 4L19 7" />
@@ -117,13 +192,13 @@ export default function LandingPage() {
 
           {/* Footer Links */}
           <div className="flex flex-wrap gap-4 justify-center md:justify-start w-full md:w-auto">
-            <Link href="/privacy-policy" className='hover:text-white'>
+            <Link href="/privacy-policy" className="hover:text-white">
               Privacy Policy
             </Link>
-            <Link href="/terms" className='hover:text-white'>
+            <Link href="/terms" className="hover:text-white">
               Terms of Service
             </Link>
-            <Link href="/contact" className='hover:text-white'>
+            <Link href="/contact" className="hover:text-white">
               Contact
             </Link>
           </div>

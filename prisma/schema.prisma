@@ -168,7 +168,7 @@ model Workout {
   weekId             String
   name               String
   updatedAt          DateTime?   @updatedAt
-  excercises         Excercise[] // No `onDelete` here; it's specified in `Excercise`
+  excercises         Excercise[] 
   currentExcerciseId String?
   completed          Boolean     @default(false)
 
