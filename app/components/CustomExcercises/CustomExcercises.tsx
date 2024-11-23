@@ -3,6 +3,10 @@
 import { useState } from 'react'
 import CustomExcercise from "./CustomExcercise"
 import NewExcercise from '../CreateProgram/NewExcercise';
+import {
+    PlusCircleIcon,
+  } from "@heroicons/react/outline";
+
 
 export default function CustomExcercises({ excercises, muscleGroups }) {
 
@@ -33,7 +37,7 @@ export default function CustomExcercises({ excercises, muscleGroups }) {
 
             <div className="flex w-full justify-between border-b-2 p-4">
                 <h2 className="text-3xl">Custom Excercises</h2>
-                <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded" onClick={() => setNewShown(true)}>New +</button>
+                <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded flex gap-2" onClick={() => setNewShown(true)}>New <PlusCircleIcon className="h-6 w-6 text-gray-600" /></button>
             </div>
 
             {customExcercises.map(excercise => (

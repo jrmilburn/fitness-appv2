@@ -1,10 +1,8 @@
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import calendarIcon from '../../assets/edit-calendar.svg';
+import { AiOutlineCalendar } from 'react-icons/ai'; // Aesthetic Calendar Icon
 import Workouts from './Workouts';
 
 export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek }) {
-
     interface ProgramWorkouts {
         weeks: Week[];
     }
@@ -61,22 +59,20 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
         setWorkoutSelect(false);
     };
 
-    console.log('PROGRAM WORKOUTS: ', programWorkouts);
-
     return (
-        <div className="w-[100%] max-w-2xl mx-auto bg-gray-200 p-4">
+        <div className="w-[100%] max-w-screen-sm mx-auto bg-gray-200 p-4">
             <div className="w-[100%] flex justify-between p-2">
                 <div>
                     <p className="font-sm opacity-50">Whole Body</p>
                     <h2 className="text-xl">Week {week?.weekNo} {name}</h2>
                 </div>
                 <div className="flex flex-col justify-end">
-                    <button className="w-8 h-8 hover:scale-105 transition-all duration-300" onClick={selectWorkout}>
-                        <Image
-                            priority
-                            src={calendarIcon}
-                            alt="Choose current workout"
-                        />
+                    <button
+                        className="w-8 h-8 hover:scale-105 transition-all duration-300"
+                        onClick={selectWorkout}
+                    >
+                        <AiOutlineCalendar className="w-8 h-8 text-black hover:text-blue-700 transition-all duration-300" />
+                        {/* React-Icons Calendar */}
                     </button>
                 </div>
             </div>

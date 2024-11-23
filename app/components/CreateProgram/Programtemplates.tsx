@@ -4,6 +4,10 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import {
+  PlusCircleIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/outline";
 
 export default function ProgramTemplates({ setProgram, onNext }) {
   const [programTemplates, setProgramTemplates] = useState([]);
@@ -73,20 +77,22 @@ export default function ProgramTemplates({ setProgram, onNext }) {
                   Created: {new Date(program.createdAt).toLocaleDateString()}
                 </p>
               </div>
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col space-y-2 items-center">
                 <button
                   onClick={() => onSelect(program.id)}
-                  className="text-black p-2 rounded hover:bg-blue-600"
+                  className="text-black p-2 rounded hover:bg-gray-200"
                 >
-                  Select Program
+                  <PlusCircleIcon className="h-8 w-8 text-gray-600 hover:text-gray-800 transition duration-300" />
                 </button>
                 <button
                   onClick={() => toggleSummary(program.id)}
                   className="text-black p-2 rounded hover:bg-gray-200"
                 >
-                  {expandedProgramId === program.id
-                    ? "Hide Summary"
-                    : "View Summary"}
+                  {expandedProgramId === program.id ? (
+                    <ChevronUpIcon className="h-6 w-6 text-gray-600 transition-all duration-300" />
+                  ) : (
+                    <ChevronUpIcon className="h-6 w-6 text-gray-600 transition-all duration-300 rotate-180" />
+                  )}
                 </button>
               </div>
             </div>

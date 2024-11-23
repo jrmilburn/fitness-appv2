@@ -1,10 +1,11 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-
+import {
+  PlusCircleIcon,
+  ChevronUpIcon,
+} from "@heroicons/react/outline";
 
 export default function PreviousPrograms({ setProgram, onNext }) {
   const [previousPrograms, setPreviousPrograms] = useState([]);
@@ -41,7 +42,12 @@ export default function PreviousPrograms({ setProgram, onNext }) {
     <div className="flex flex-col w-full space-y-4 p-4 sm:max-w-screen-sm sm:mx-auto">
       <div className="flex justify-between w-full">
         <h2 className="text-left text-2xl sm:text-3xl">Previous programs</h2>
-        <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded" onClick={() => onNext(1)}>New +</button>
+        <button
+          className="font-bold border-2 p-2 hover:bg-gray-100 rounded flex gap-2"
+          onClick={() => onNext(1)}
+        >
+          New <PlusCircleIcon className="h-6 w-6 text-gray-600" />
+        </button>
       </div>
 
       {isLoading ? (
@@ -58,10 +64,9 @@ export default function PreviousPrograms({ setProgram, onNext }) {
           >
             <div className="w-full flex justify-between items-start">
               <div>
-              <Link href={`/programs/${program.id}`}>
-                <h2 className="text-xl font-bold">{program.name}</h2>
+                <Link href={`/programs/${program.id}`}>
+                  <h2 className="text-xl font-bold">{program.name}</h2>
                 </Link>
-  
                 <p className="text-sm opacity-50">
                   {program.length} Weeks - {program.days} Days / Week
                 </p>
@@ -70,24 +75,27 @@ export default function PreviousPrograms({ setProgram, onNext }) {
                 </p>
               </div>
               <div className="flex flex-col space-y-2">
-              <button
+                <button
                   onClick={() => onSelect(program.id)}
-                  className="text-black p-2 rounded hover:bg-blue-600"
+                  className="p-2 rounded hover:bg-gray-200 flex justify-center"
+                  aria-label="Select Program"
                 >
-                  Select Program
+                  <PlusCircleIcon className="h-8 w-8 text-gray-600 hover:text-gray-800 transition duration-300" />
                 </button>
                 <button
                   onClick={() => toggleSummary(program.id)}
-                  className="text-black p-2 rounded hover:bg-gray-200"
+                  className="p-2 rounded hover:bg-gray-200 flex justify-center"
+                  aria-label="Toggle Summary"
                 >
-                  {expandedProgramId === program.id
-                    ? "Hide Summary"
-                    : "View Summary"}
+                  {expandedProgramId === program.id ? (
+                    <ChevronUpIcon className="h-6 w-6 text-gray-600 transition-all duration-300" />
+                  ) : (
+                    <ChevronUpIcon className="h-6 w-6 text-gray-600 transition-all duration-300 rotate-180" />
+                  )}
                 </button>
-  
               </div>
             </div>
-  
+
             {/* Summary Dropdown */}
             <div
               className={`transition-all duration-300 ease-in-out ${
@@ -128,8 +136,6 @@ export default function PreviousPrograms({ setProgram, onNext }) {
           </div>
         ))
       )}
-
-
     </div>
   );
 }

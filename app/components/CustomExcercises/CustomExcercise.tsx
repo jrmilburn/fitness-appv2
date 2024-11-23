@@ -1,3 +1,7 @@
+import {
+    TrashIcon
+  } from "@heroicons/react/outline";
+
 export default function CustomExcercise({ excercise, onDelete }) {
 
     console.log(excercise);
@@ -9,7 +13,7 @@ export default function CustomExcercise({ excercise, onDelete }) {
                 <p className="opacity-60 text-sm">{excercise.muscleGroup.name}</p>
                 <p className="opacity-60 text-sm">{new Date(excercise.createdAt).toLocaleDateString()}</p>
             </div>
-            <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded" onClick={onDelete}>Delete</button>
+            <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded" onClick={onDelete}><TrashIcon className="h-6 w-6 text-gray-600" /></button>
         </div>
     )
 
