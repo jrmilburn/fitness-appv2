@@ -5,21 +5,25 @@ import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
 
-    const session = await getServerSession(authOptions);
-    const userId = session.user.id;
+    const userSession = await getServerSession(authOptions);
+    const userEmail = userSession?.user.email;
+    const user = await prisma.user.findUnique({
+        where: {
+            email: userEmail
+        }
+    })
+
 
     try {
 
     const { name, workoutId, muscleGroupId,  } = await req.json();
-
-    console.log('CREATE EXCERCISE: ', name, workoutId, muscleGroupId);
 
         const newExcercise = await prisma.excercise.create({
             data: {
                 name: name,
                 muscleGroupId: muscleGroupId,
                 custom: true,
-                createdById: userId
+                createdById: user.id
             }
         });
 
@@ -31,7 +35,7 @@ export async function POST(req: Request) {
                     workoutId: workoutId,
                     muscleGroupId: muscleGroupId,
                     custom: true,
-                    createdById: userId
+                    createdById: user.id
                 }
             });
 
@@ -66,19 +70,20 @@ export async function POST(req: Request) {
 
 export async function GET() {
 
-    const session = await getServerSession(authOptions);
-    const userId = session.user.id;
-
     try {
 
-        const customExcercises = await prisma.excercise.findMany({
-            where: {
-                custom: true,
-                createdById: userId
-            }
-        })
+    const userSession = await getServerSession(authOptions);
+    const userEmail = userSession?.user.email;
+    const user = await prisma.user.findUnique({
+        where: {
+            email: userEmail
+        },
+        include: {
+            excercises: true
+        }
+    })
 
-        return NextResponse.json(customExcercises);
+        return NextResponse.json(user.excercises);
 
     } catch(err) {
         return NextResponse.json(err);

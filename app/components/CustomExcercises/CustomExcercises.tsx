@@ -45,7 +45,7 @@ export default function CustomExcercises({ excercises, muscleGroups }) {
 
             {newShown && (
                 <div className='fixed inset-0 bg-black bg-opacity-50 z-40'>
-                    <div className='bg-white p-4 absolute m-4 top-1/2 z-50 opacity-100 translate-y-[-50%]'>
+                    <div className='bg-white p-4 absolute m-4 top-1/2 left-1/2 z-50 opacity-100 translate-y-[-50%] translate-x-[-50%]'>
                         <NewExcercise 
                         workoutId={null}
                         muscleGroups={muscleGroups} 

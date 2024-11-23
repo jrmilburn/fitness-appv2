@@ -64,7 +64,7 @@ model User {
   coachingRequestsAsClient CoachingRequest[] @relation("coachingRequestsAsClient")
   coachingRequestsAsCoach  CoachingRequest[] @relation("coachingRequestsAsCoach")
 
-  excercises Excercise[] @relation("UserExcercises")
+  excercises Excercise[] @relation(name: "UserExcercises")
 }
 
 model BodyWeight {
@@ -189,8 +189,8 @@ model Excercise {
   completed     Boolean     @default(false)
   details       String?
   custom        Boolean     @default(false)
-  createdById   String?     
-  createdBy     User?       @relation(fields: [createdById], references: [id], name: "UserExcercises")
+  createdById String?
+  createdBy   User? @relation(name: "UserExcercises", fields: [createdById], references: [id])
 
   @@unique([workoutId, name])
 }
