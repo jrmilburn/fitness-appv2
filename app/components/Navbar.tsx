@@ -4,8 +4,17 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import Image from "next/image";
-import searchIcon from "../assets/search.svg";
-import settingsIcon from "../assets/settings.svg";
+import {
+  FireIcon,
+  LightningBoltIcon,
+  PlusCircleIcon,
+  ClipboardListIcon,
+  PencilAltIcon,
+  UserGroupIcon,
+  UserIcon,
+  SearchIcon,
+  CogIcon,
+} from "@heroicons/react/outline";
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -22,7 +31,9 @@ export default function Navbar() {
         <Link href="/workouts/current">
           <div className="flex items-center space-x-2 sm:hidden">
             <Image src="/logo.jpg" alt="App Logo" width={32} height={32} />
-            <h2 className="font-bold text-lg relative">JFit <em className="absolute text-xs">Classic</em></h2>
+            <h2 className="font-bold text-lg relative">
+              JFit <em className="absolute text-xs">Classic</em>
+            </h2>
           </div>
         </Link>
 
@@ -86,8 +97,10 @@ export default function Navbar() {
                   setActiveLink("/workouts/current");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                Current Workout
+                <LightningBoltIcon className="h-6 w-6 text-gray-600" />
+                <span>Current Workout</span>
               </Link>
             </li>
             <li
@@ -103,8 +116,10 @@ export default function Navbar() {
                   setActiveLink("/create-program");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                New Program
+                <PlusCircleIcon className="h-6 w-6 text-gray-600" />
+                <span>New Program</span>
               </Link>
             </li>
             <li
@@ -118,8 +133,10 @@ export default function Navbar() {
                   setActiveLink("/programs");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                Programs
+                <ClipboardListIcon className="h-6 w-6 text-gray-600" />
+                <span>Programs</span>
               </Link>
             </li>
             <li
@@ -135,8 +152,10 @@ export default function Navbar() {
                   setActiveLink("/custom-excercises");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                Custom Excercises
+                <PencilAltIcon className="h-6 w-6 text-gray-600" />
+                <span>Custom Exercises</span>
               </Link>
             </li>
           </ul>
@@ -156,8 +175,10 @@ export default function Navbar() {
                   setActiveLink("/coaching/clients");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                Clients
+                <UserGroupIcon className="h-6 w-6 text-gray-600" />
+                <span>Clients</span>
               </Link>
             </li>
           </ul>
@@ -165,7 +186,7 @@ export default function Navbar() {
           <ul className="flex flex-col space-y-4">
             <p className="border-b-2">User</p>
             <li
-              className={`text-xl p-2 flex justify-between items-center ${
+              className={`text-xl p-2 ${
                 activeLink === "/profile" ? "bg-gray-200 rounded-lg" : ""
               }`}
             >
@@ -175,19 +196,14 @@ export default function Navbar() {
                   setActiveLink("/profile");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                Profile
+                <UserIcon className="h-6 w-6 text-gray-600" />
+                <span>Profile</span>
               </Link>
-              <Image
-                src={session?.user?.image || "/avatar.svg"}
-                width={32}
-                height={32}
-                className="rounded-full"
-                alt="Profile"
-              />
             </li>
             <li
-              className={`text-xl p-2 flex justify-between items-center ${
+              className={`text-xl p-2 ${
                 activeLink === "/search" ? "bg-gray-200 rounded-lg" : ""
               }`}
             >
@@ -197,18 +213,14 @@ export default function Navbar() {
                   setActiveLink("/search");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                Search
+                <SearchIcon className="h-6 w-6 text-gray-600" />
+                <span>Search</span>
               </Link>
-              <Image
-                src={searchIcon}
-                width={32}
-                height={32}
-                alt="Search Icon"
-              />
             </li>
             <li
-              className={`text-xl p-2 flex justify-between items-center ${
+              className={`text-xl p-2 ${
                 activeLink === "/settings" ? "bg-gray-200 rounded-lg" : ""
               }`}
             >
@@ -218,27 +230,22 @@ export default function Navbar() {
                   setActiveLink("/settings");
                   setNavOpen(false);
                 }}
+                className="flex items-center space-x-2"
               >
-                Settings
+                <CogIcon className="h-6 w-6 text-gray-600" />
+                <span>Settings</span>
               </Link>
-              <Image
-                src={settingsIcon}
-                width={32}
-                height={32}
-                alt="Settings Icon"
-              />
             </li>
           </ul>
 
-            <button
-              className="bg-[#eee] text-xl rounded p-2 mt-4 w-full"
-              onClick={() => signOut()}
-            >
-              Sign Out
-            </button>
+          <button
+            className="bg-[#eee] text-xl rounded p-2 mt-4 w-full"
+            onClick={() => signOut()}
+          >
+            Sign Out
+          </button>
         </ul>
       </nav>
-
     </div>
   );
 }
