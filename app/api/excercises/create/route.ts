@@ -1,7 +1,12 @@
-import { NextResponse } from "next/server";
-import { prisma } from '../../../lib/prisma'
+import { prisma } from '../../../lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../../../lib/authOptions';
+import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
+
+    const session = await getServerSession(authOptions);
+    const userId = session.user.id;
 
     try {
 
@@ -13,7 +18,8 @@ export async function POST(req: Request) {
             data: {
                 name: name,
                 muscleGroupId: muscleGroupId,
-                custom: true
+                custom: true,
+                createdById: userId
             }
         });
 
@@ -24,7 +30,8 @@ export async function POST(req: Request) {
                     name: name,
                     workoutId: workoutId,
                     muscleGroupId: muscleGroupId,
-                    custom: true
+                    custom: true,
+                    createdById: userId
                 }
             });
 
@@ -59,11 +66,15 @@ export async function POST(req: Request) {
 
 export async function GET() {
 
+    const session = await getServerSession(authOptions);
+    const userId = session.user.id;
+
     try {
 
         const customExcercises = await prisma.excercise.findMany({
             where: {
-                custom: true
+                custom: true,
+                createdById: userId
             }
         })
 

@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
-import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Exercise from '@/app/components/CurrentWorkout/Excercise';
 import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
 import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
+
 
 export default function Workout() {
     interface Exercise {
@@ -68,24 +68,10 @@ export default function Workout() {
     }, [workout?.excercises]);
 
     if (noWorkout) {
-        return (
-            <div className='mx-auto flex flex-col items-center space-y-16 h-full w-full p-8'>
-                <h2>No Workout Available</h2>
-                <p>Please Create or Find a Program to Start a Workout</p>
-                <div className='flex'>
-                <button className='bg-black rounded-lg text-white font-bold p-4'>
-                    <Link href='/create-program'>
-                        Create
-                    </Link>
-                </button>
-                <button className='bg-black rounded-lg text-white font-bold p-4'>
-                    <Link href='/search'>
-                        Search
-                    </Link>
-                </button>
-                </div>
-            </div>
-        );
+
+        router.push('/create-program');
+
+
     }
 
     return (
