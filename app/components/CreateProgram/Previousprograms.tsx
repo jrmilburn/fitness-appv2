@@ -31,6 +31,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
       (program) => program.id === id
     );
     setProgram(selectedProgram);
+    console.log('SELECTED PROGRAM: ', selectedProgram);
     onNext(2);
   };
 

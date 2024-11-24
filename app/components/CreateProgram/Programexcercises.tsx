@@ -15,6 +15,8 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
 
         setIsLoading(true);
 
+        console.log('CREATED PROGRAM: ', program);
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/program`, {
             method: 'POST',
             headers: {

@@ -28,7 +28,7 @@ export default async function Programs() {
     });
 
   return (
-    <main className="max-w-3xl mx-auto p-8 space-y-8">
+    <main className="max-w-screen-sm mx-auto p-8 space-y-8">
       <h1 className="text-4xl font-semibold text-gray-800 mb-8">Your Programs</h1>
       <ProgramsList initialPrograms={programs} userProgramId={userProgramId}/>
     </main>

@@ -33,6 +33,8 @@ export async function GET() {
       },
     });
 
+    console.log('CURRENT PROGRAM: ', currentProgram);
+
     if (!currentProgram) {
       return NextResponse.json({ error: 'Current program not found' }, { status: 404 });
     }
