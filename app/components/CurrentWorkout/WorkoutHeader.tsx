@@ -123,6 +123,9 @@ export default function WorkoutHeader({ weekId, name, setWorkout, workout, week,
                 <div>
                     <p className="font-sm opacity-50">Whole Body</p>
                     <h2 className="text-xl">Week {week?.weekNo} {name}</h2>
+                    {workout.skipped && (
+                    <p className='font-sm opacity-50 p-2 bg-gray-300'>Skipped</p>
+                    )}
                 </div>
                 <div className="flex flex-col justify-end h-full gap-2">
                     <button className='hover:scale-105 transition-all duration-300' onClick={handleWorkoutOptions}>

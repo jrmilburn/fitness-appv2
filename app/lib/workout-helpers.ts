@@ -9,7 +9,8 @@ export async function skipWorkout(workoutId, status) {
                 id: workoutId
             },
             data: {
-                completed: status
+                completed: status,
+                skipped: true
             }
         })
 
