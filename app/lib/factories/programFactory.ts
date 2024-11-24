@@ -163,13 +163,13 @@ export function processProgramData(program) {
         data: { currentProgramId: createdProgram.id },
       });
   
-      // Set currentWeekId and currentWorkoutId
-      const firstWeek = weeks[0];
+        const firstWeek = weeks.find((week) => week.weekNo === 1 || week.weekNumber === 1);
+
       const newWeek = await prisma.week.update({
         where: {
           programId_weekNo: {
             programId: createdProgram.id,
-            weekNo: 1,
+            weekNo: firstWeek.weekNo,
           },
         },
         data: {

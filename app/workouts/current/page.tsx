@@ -84,6 +84,7 @@ export default function Workout() {
                     name={workout.name}
                     weekId={workout.weekId}
                     setWorkout={setWorkout}
+                    workout={workout}
                     week={week}
                     setWeek={setWeek}
                     //programCompleted={programCompleted}

@@ -44,7 +44,7 @@ export default function CompleteWorkout({ completed, workout, setWorkout, progra
             );
     
             const newWorkout = await newWorkoutResponse.json();
-            setWorkout(newWorkout.workout); // Update state with the new workout
+            setWorkout(newWorkout.workout);
         } catch (error) {
             console.error('Error finishing workout:', error);
         } finally {

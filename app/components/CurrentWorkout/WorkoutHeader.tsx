@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { AiOutlineCalendar } from 'react-icons/ai'; // Aesthetic Calendar Icon
 import Workouts from './Workouts';
+import horieditIcon from '../../assets/edit-hori.svg';
+import Image from 'next/image';
+import WorkoutOptions from './WorkoutOptions';
 
-export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek }) {
+export default function WorkoutHeader({ weekId, name, setWorkout, workout, week, setWeek }) {
     interface ProgramWorkouts {
         weeks: Week[];
     }
@@ -13,6 +16,9 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
 
     const [programWorkouts, setProgramWorkouts] = useState<ProgramWorkouts | null>(null);
     const [workoutSelect, setWorkoutSelect] = useState(false);
+    const [workoutOptionsShown, setWorkoutOptionsShown] = useState(false);
+
+    const formRef = useRef(null);
 
     // Fetch the week data based on the weekId
     useEffect(() => {
@@ -50,6 +56,17 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
         }
     }, [week]);
 
+    useEffect(() => {
+        if (workoutOptionsShown) {
+          document.addEventListener('mousedown', handleClickOutside);
+        } else {
+          document.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+          document.removeEventListener('mousedown', handleClickOutside);
+        };
+      }, [workoutOptionsShown]);
+
     const selectWorkout = (e) => {
         e.preventDefault();
         setWorkoutSelect(true);
@@ -59,6 +76,47 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
         setWorkoutSelect(false);
     };
 
+    const onSkip = async () => {
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/workouts/skip/${workout.id}`,{
+            method: 'PATCH',
+            headers: {
+                'Content-Type':'appliction/json'
+            },
+            body: JSON.stringify({
+                status: true,
+                weekId: weekId
+            })
+        }
+        )
+
+        if(response.ok) {
+            const newWorkoutResponse = await fetch(
+                `${process.env.NEXT_PUBLIC_BASE_URL!}/api/workouts/current`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+    
+            const newWorkout = await newWorkoutResponse.json();
+            setWorkout(newWorkout.workout);
+        }
+
+    }
+
+    const handleWorkoutOptions = () => {
+        setWorkoutOptionsShown(true)
+    }
+
+    const handleClickOutside = (event) => {
+        if (formRef.current && !formRef.current.contains(event.target)) {
+          setWorkoutOptionsShown(false);
+        }
+      };
+
     return (
         <div className="w-[100%] max-w-screen-sm mx-auto bg-gray-200 p-4">
             <div className="w-[100%] flex justify-between p-2">
@@ -66,7 +124,13 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
                     <p className="font-sm opacity-50">Whole Body</p>
                     <h2 className="text-xl">Week {week?.weekNo} {name}</h2>
                 </div>
-                <div className="flex flex-col justify-end">
+                <div className="flex flex-col justify-end h-full gap-2">
+                    <button className='hover:scale-105 transition-all duration-300' onClick={handleWorkoutOptions}>
+                        <Image 
+                            src={horieditIcon}
+                            alt='more'
+                            />
+                    </button>
                     <button
                         className="w-8 h-8 hover:scale-105 transition-all duration-300"
                         onClick={selectWorkout}
@@ -84,6 +148,14 @@ export default function WorkoutHeader({ weekId, name, setWorkout, week, setWeek 
                     setProgram={setProgramWorkouts}
                     setWorkout={setWorkout}
                 />
+            )}
+            {workoutOptionsShown && (
+                <div ref={formRef} className='absolute top-[5%] translate-x-[200%] z-50 w-[175px]'>
+                    <WorkoutOptions 
+                        onSkip={onSkip}
+                    />
+                </div>
+
             )}
         </div>
     );

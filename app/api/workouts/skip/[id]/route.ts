@@ -1,27 +1,26 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../../../../lib/authOptions';
-import { findNextWorkout, updateNextWeekSets } from '@/app/lib/workout-helpers';
+import { NextResponse } from "next/server";
+import { findNextWorkout, updateNextWeekSets, skipWorkout } from "@/app/lib/workout-helpers";
+import { prisma } from "../../../../lib/prisma";
+import { getServerSession } from "next-auth"; // Ensure you import this if used
+import { authOptions } from "../../../../lib/authOptions"; // Ensure this is correctly imported
 
-export async function PUT(req, { params }) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
   const { id } = params;
-  const { weekId } = await req.json();
+  const { status, weekId } = await req.json();
 
   try {
-    // Mark current workout as completed
-    const workout = await prisma.workout.update({
-      where: { id },
-      data: { completed: true }
-    });
+    const workout = await skipWorkout(id, status);
 
     // Check if all workouts in the current week are completed
     const week = await prisma.week.findUnique({
       where: { id: weekId },
-      include: { workouts: true }
+      include: { workouts: true },
     });
 
-    if (week && week.workouts.every(workout => workout.completed === true)) {
+    if (week && week.workouts.every((workout) => workout.completed === true)) {
       console.log("All workouts for the week are completed!");
 
       // Mark the week as completed
@@ -33,12 +32,12 @@ export async function PUT(req, { params }) {
             include: {
               excercises: {
                 include: {
-                  sets: true
-                }
-              }
-            }
-          }
-        }
+                  sets: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       // Find the next week and update sets if it exists
@@ -47,7 +46,17 @@ export async function PUT(req, { params }) {
           programId: week.programId,
           weekNo: week.weekNo + 1,
         },
-        include: { workouts: { include: { excercises: { include: { sets: true } } } } }
+        include: {
+          workouts: {
+            include: {
+              excercises: {
+                include: {
+                  sets: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       if (nextWeek) {
@@ -63,13 +72,13 @@ export async function PUT(req, { params }) {
     const nextWorkout = await findNextWorkout(userEmail);
 
     const user = await prisma.user.findUnique({
-      where: { email: userEmail }
+      where: { email: userEmail },
     });
 
     if (nextWorkout === "Program finished") {
       await prisma.program.update({
         where: { id: user?.currentProgramId },
-        data: { completed: true }
+        data: { completed: true },
       });
 
       return NextResponse.json({ message: "Program finished" }, { status: 200 });
@@ -77,22 +86,21 @@ export async function PUT(req, { params }) {
 
     await prisma.program.update({
       where: { id: user?.currentProgramId },
-      data: { currentWeekId: nextWorkout.weekId }
+      data: { currentWeekId: nextWorkout.weekId },
     });
 
     await prisma.week.update({
       where: { id: nextWorkout.weekId },
-      data: { currentWorkoutId: nextWorkout.id }
+      data: { currentWorkoutId: nextWorkout.id },
     });
 
     if (!workout) {
-      return new NextResponse('Program not found', { status: 404 });
+      return new NextResponse("Workout not found", { status: 404 });
     }
 
-    return NextResponse.json(workout);
+    return NextResponse.json(workout, { status: 200 });
   } catch (error) {
-    console.error('Error fetching excercise:', error);
-    return new NextResponse('Failed to fetch excercise', { status: 500 });
+    console.error("Error fetching exercise:", error);
+    return new NextResponse("Failed to fetch exercise", { status: 500 });
   }
 }
-
