@@ -101,6 +101,7 @@ export default function Workout({ params }) {
                 <WorkoutHeader 
                     name={workout.name}
                     weekId={workout.weekId}
+                    workout={workout}
                     setWorkout={setWorkout}
                     week={week}
                     setWeek={setWeek}
