@@ -153,7 +153,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, workout, week,
                 />
             )}
             {workoutOptionsShown && (
-                <div ref={formRef} className='absolute top-[5%] translate-x-[200%] z-50 w-[175px]'>
+                <div ref={formRef} className='absolute top-[5%] translate-x-[100%] translate-y-[50%] sm:translate-y-[0%] sm:translate-x-[200%] z-50 w-[175px]'>
                     <WorkoutOptions 
                         onSkip={onSkip}
                     />
