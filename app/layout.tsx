@@ -37,9 +37,9 @@ export default function RootLayout({ children }) {
         console.log("Pull-to-refresh triggered");
         window.location.reload();
       },
-      shouldPullToRefresh: () => {
+     /* shouldPullToRefresh: () => {
         return window.scrollY === 0;
-      }, // Check if the window is scrolled to the top
+      },*/ // Check if the window is scrolled to the top
     });
 
     return () => {
