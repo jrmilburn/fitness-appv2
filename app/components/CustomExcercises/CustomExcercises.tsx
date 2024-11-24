@@ -35,9 +35,9 @@ export default function CustomExcercises({ excercises, muscleGroups }) {
     return (
         <div className="max-w-2xl flex flex-col mx-auto">
 
-            <div className="flex w-full justify-between border-b-2 p-4">
-                <h2 className="text-3xl">Custom Excercises</h2>
-                <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded flex gap-2 sm:gap-0" onClick={() => setNewShown(true)}>New <PlusCircleIcon className="h-6 w-6 text-gray-600" /></button>
+            <div className="flex w-full justify-between border-b-2 p-4 items-center">
+                <h2 className="text-2xl sm:text-3xl">Custom Excercises</h2>
+                <button className="font-bold border-2 p-2 hover:bg-gray-100 rounded flex gap-2" onClick={() => setNewShown(true)}>New <PlusCircleIcon className="h-6 w-6 text-gray-600" /></button>
             </div>
 
             {customExcercises.map(excercise => (
