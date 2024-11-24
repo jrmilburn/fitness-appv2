@@ -32,7 +32,7 @@ export default async function ProfilePage() {
     return (
         <div className='max-w-2xl mx-auto w-full h-[80%]'>
             <h1 className='text-3xl m-4'>User Profile</h1>
-            <div key={user.id} className='flex flex-col w-full bg-gray-100 rounded p-4'>
+            <div key={user.id} className='flex flex-col w-full bg-background-secondary rounded p-4'>
                 <div className='flex justify-between items-center p-4'>
                     <h2 className='text-2xl'>{user.name}</h2>
                     <Image

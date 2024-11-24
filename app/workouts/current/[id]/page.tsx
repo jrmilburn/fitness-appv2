@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from 'next/link'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import Exercise from '@/app/components/CurrentWorkout/Excercise';
+import Excercise from '@/app/components/CurrentWorkout/Excercise';
 import WorkoutHeader from '@/app/components/CurrentWorkout/WorkoutHeader';
 import CompleteWorkout from '@/app/components/CurrentWorkout/CompleteWorkout';
 
@@ -111,7 +111,7 @@ export default function Workout({ params }) {
             {/* Exercise List */}
             {isLoading ? (
                 Array(3).fill(null).map((_, index) => (
-                    <div key={index} className="w-[100%] max-w-2xl mx-auto p-8 flex flex-col border-2 border-gray-200">
+                    <div key={index} className="w-[100%] max-w-2xl mx-auto p-8 flex flex-col border-2 border-border">
                         <div className="flex justify-between items-center">
                             <div className="flex flex-col">
                                 <Skeleton width={100} height={16} className="mb-2" /> {/* Muscle Group */}
@@ -139,7 +139,7 @@ export default function Workout({ params }) {
                 ))
             ) : (
                 workout?.excercises && workout.excercises.map(excercise => (
-                    <Exercise 
+                    <Excercise 
                         key={excercise.id}
                         excercise={excercise}
                         weekRir={week?.repsInReserve}

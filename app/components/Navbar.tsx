@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import {
   LightningBoltIcon,
@@ -13,18 +13,49 @@ import {
   UserIcon,
   SearchIcon,
   CogIcon,
+  MoonIcon,
+  SunIcon
 } from "@heroicons/react/outline";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [activeLink, setActiveLink] = useState("/workouts/current");
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleNav = () => setNavOpen(!navOpen);
+
+  useEffect(() => {
+    // Check if user has a saved preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark');
+      setIsDarkMode(true);
+    } else {
+      document.documentElement.classList.remove('dark');
+      setIsDarkMode(false);
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => {
+      const newMode = !prevMode;
+      if (newMode) {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+      return newMode;
+    });
+  };
+  
+  
 
   return (
     <div className="relative">
       {/* Top Bar for Small Screens */}
-      <div className="fixed top-0 left-0 w-full h-16 bg-white flex items-center justify-between px-4 shadow-md md:hidden z-50">
+      <div className="fixed top-0 left-0 w-full h-16 bg-background flex items-center justify-between px-4 shadow-md md:hidden z-40">
         {/* App Logo */}
         <Link href="/workouts/current">
           <div className="flex items-center space-x-2 sm:hidden">
@@ -37,7 +68,7 @@ export default function Navbar() {
 
         {/* Hamburger Button */}
         <button
-          className="flex flex-col items-center justify-center space-y-1 w-8 h-8 bg-white text-white rounded-md"
+          className="flex flex-col items-center justify-center space-y-1 w-8 h-8 bg-background text-primary-text rounded-md"
           onClick={toggleNav}
         >
           <span
@@ -60,7 +91,7 @@ export default function Navbar() {
 
       {/* Navbar */}
       <nav
-        className={`fixed top-0 left-0 h-full w-full bg-white md:w-64 shadow-lg transform transition-transform duration-300 z-40 ${
+        className={`fixed top-0 left-0 h-full w-full bg-background dark:bg-background dark:text-primary-text md:w-64 shadow-lg transform transition-transform duration-300 z-40 ${
           navOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 md:fixed md:w-80`}
       >
@@ -85,7 +116,7 @@ export default function Navbar() {
             <li
               className={`text-xl p-2 ${
                 activeLink === "/workouts/current"
-                  ? "bg-gray-200 rounded-lg"
+                  ? "bg-highlight rounded-lg"
                   : ""
               }`}
             >
@@ -104,7 +135,7 @@ export default function Navbar() {
             <li
               className={`text-xl p-2 ${
                 activeLink === "/create-program"
-                  ? "bg-gray-200 rounded-lg"
+                  ? "bg-highlight rounded-lg"
                   : ""
               }`}
             >
@@ -122,7 +153,7 @@ export default function Navbar() {
             </li>
             <li
               className={`text-xl p-2 ${
-                activeLink === "/programs" ? "bg-gray-200 rounded-lg" : ""
+                activeLink === "/programs" ? "bg-highlight rounded-lg" : ""
               }`}
             >
               <Link
@@ -140,7 +171,7 @@ export default function Navbar() {
             <li
               className={`text-xl p-2 ${
                 activeLink === "/custom-excercises"
-                  ? "bg-gray-200 rounded-lg"
+                  ? "bg-highlight rounded-lg"
                   : ""
               }`}
             >
@@ -163,7 +194,7 @@ export default function Navbar() {
             <li
               className={`text-xl p-2 ${
                 activeLink === "/coaching/clients"
-                  ? "bg-gray-200 rounded-lg"
+                  ? "bg-highlight rounded-lg"
                   : ""
               }`}
             >
@@ -185,7 +216,7 @@ export default function Navbar() {
             <p className="border-b-2">User</p>
             <li
               className={`text-xl p-2 ${
-                activeLink === "/profile" ? "bg-gray-200 rounded-lg" : ""
+                activeLink === "/profile" ? "bg-highlight rounded-lg" : ""
               }`}
             >
               <Link
@@ -202,7 +233,7 @@ export default function Navbar() {
             </li>
             <li
               className={`text-xl p-2 ${
-                activeLink === "/search" ? "bg-gray-200 rounded-lg" : ""
+                activeLink === "/search" ? "bg-highlight rounded-lg" : ""
               }`}
             >
               <Link
@@ -219,7 +250,7 @@ export default function Navbar() {
             </li>
             <li
               className={`text-xl p-2 ${
-                activeLink === "/settings" ? "bg-gray-200 rounded-lg" : ""
+                activeLink === "/settings" ? "bg-highlight rounded-lg" : ""
               }`}
             >
               <Link
@@ -234,10 +265,31 @@ export default function Navbar() {
                 <span>Settings</span>
               </Link>
             </li>
+            <li className="text-xl p-2">
+              <button
+                className="flex items-center space-x-2 focus:outline-none"
+                onClick={() => {
+                  toggleDarkMode();
+                  setNavOpen(false); // Close the nav if needed
+                }}
+              >
+                {isDarkMode ? (
+                  <>
+                    <SunIcon className="h-6 w-6 text-gray-600" />
+                    <span>Light Mode</span>
+                  </>
+                ) : (
+                  <>
+                    <MoonIcon className="h-6 w-6 text-gray-600" />
+                    <span>Dark Mode</span>
+                  </>
+                )}
+              </button>
+          </li>
           </ul>
 
           <button
-            className="bg-[#eee] text-xl rounded p-2 mt-4 w-full"
+            className="bg-background-secondary text-xl rounded p-2 mt-4 w-full"
             onClick={() => signOut()}
           >
             Sign Out

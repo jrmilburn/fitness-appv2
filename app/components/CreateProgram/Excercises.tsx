@@ -54,7 +54,7 @@ export default function Excercises({
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
           {/* Modal Content */}
-          <div className="bg-white p-6 rounded shadow-lg w-[90%] max-w-md relative z-10">
+          <div className="bg-background-secondary p-6 rounded shadow-lg w-[90%] max-w-md relative z-10">
             {newShown ? (
               <NewExcercise
                 onClose={() => setNewShown(false)}

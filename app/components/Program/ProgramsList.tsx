@@ -28,7 +28,7 @@ export default function ProgramsList({ initialPrograms, userProgramId }) {
   };
 
   return (
-    <div className="space-y-6 w-full">
+    <div className="space-y-6 w-full bg-background">
       {programs.map((program) => (
         <ProgramTab
           key={program.id}

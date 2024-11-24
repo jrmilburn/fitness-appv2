@@ -24,15 +24,15 @@ export default function ProgramTab({
   onDelete,
 }: ProgramTabProps) {
   return (
-    <div className={`w-3xl ${id === userProgramId ? 'bg-green-100' : 'bg-gray-200'} p-4 relative`}>
+    <div className={`w-3xl border-2 border-border ${id === userProgramId ? 'border-green-200' : 'border-border'} p-4 relative`}>
       <div className="w-full flex justify-between space-x-16 p-2">
         {userProgramId === null ? (
           <>
             <div>
-              <h2 className="text-xl">{name}</h2>
-              <p className="text-sm opacity-50">Saved</p>
+              <h2 className="text-xl text-primary-text">{name}</h2>
+              <p className="text-sm text-secondary-text">Saved</p>
             </div>
-            <div className="flex flex-col space-y-4 justify-center">
+            <div className="flex flex-col space-y-4 justify-center text-primary-text">
               <Link href={`/programs/${id}`}>
                 <button>View Program</button>
               </Link>
@@ -46,13 +46,13 @@ export default function ProgramTab({
         ) : (
           <>
             <div>
-              <h2 className="text-xl">{name}</h2>
-              <p className="text-sm opacity-50">
+              <h2 className="text-xl text-primary-text">{name}</h2>
+              <p className="text-sm text-secondary-text">
                 {length} Weeks - {days} Days / Week
               </p>
-              <p className="text-sm opacity-50">Created: {created}</p>
+              <p className="text-sm text-secondary-text">Created: {created}</p>
             </div>
-            <div className="flex flex-col space-y-4 justify-center">
+            <div className="flex flex-col space-y-4 justify-center text-primary-text">
               <Link href={`/programs/${id}`}>
                 <button>View Program</button>
               </Link>

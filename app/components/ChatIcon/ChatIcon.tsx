@@ -98,7 +98,7 @@ export default function ChatIcon() {
       {/* Chat Icon Button */}
       <div
         onClick={toggleChat}
-        className="w-16 h-16 bg-gradient-to-br from-gray-800 to-black text-white 
+        className="w-16 h-16 bg-gradient-to-br from-primary-text to-black text-background 
                    flex items-center justify-center rounded-full cursor-pointer shadow-lg 
                    transition transform hover:scale-105 hover:shadow-xl"
       >
@@ -107,8 +107,8 @@ export default function ChatIcon() {
 
       {/* Chat Popup Window */}
       {isOpen && (
-        <div className="fixed bottom-20 right-5 w-80 bg-gray-900 text-gray-100 rounded-lg shadow-lg overflow-hidden">
-          <div className="bg-gradient-to-br from-gray-800 to-black text-white p-3 flex justify-between items-center">
+        <div className="fixed bottom-20 right-5 w-80 bg-primary-text text-background rounded-lg shadow-lg overflow-hidden">
+          <div className="bg-gradient-to-br from-primary-text to-black text-background p-3 flex justify-between items-center">
             <span className="font-semibold">Notifications</span>
             <button onClick={toggleChat} className="text-gray-400 hover:text-gray-200">
               <XIcon className="w-5 h-5" />

@@ -4,7 +4,7 @@ import ProgramWorkout from './ProgramWorkout';
 
 export default function ProgramView({ week }) {
     return (
-        <div className="p-4 w-full h-full bg-white overflow-y-auto border-2 rounded space-y-6 ">
+        <div className="p-4 w-full h-full bg-background overflow-y-auto border-2 rounded space-y-6 ">
             {/* Week Title */}
             <h2 className='text-2xl sm:text-3xl font-semibold text-gray-800'>Week {week.weekNo}</h2>
 

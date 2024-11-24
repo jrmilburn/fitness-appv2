@@ -66,8 +66,8 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
                 </div>
             )}
 
-            <form className="w-[100%] h-screen p-4 bg-white shadow-md rounded overflow-x-auto border-2">
-                <h2 className="text-3xl text-gray-800 mb-6"><strong>{program.name}</strong> Exercises</h2>
+            <form className="w-[100%] h-screen p-4 bg-background shadow-md rounded overflow-x-auto border-2">
+                <h2 className="text-3xl text-primary-text mb-6"><strong>{program.name}</strong> Exercises</h2>
 
                 {/* Workouts Container */}
                 <div className="flex space-x-4 w-full p-4">

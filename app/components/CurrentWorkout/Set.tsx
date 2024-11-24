@@ -123,7 +123,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
         <input
           type="number"
           placeholder={`Weight`}
-          className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
           onFocus={() => setFocusedInput('weight')}
           onBlur={() => setFocusedInput('')}
           value={weight !== null ? weight : ''}
@@ -137,7 +137,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
         <input
           type="number"
           placeholder={`${Rir} RIR`}
-          className="w-[50%] mt-2 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
           onFocus={() => setFocusedInput('reps')}
           onBlur={() => setFocusedInput('')}
           value={reps !== null ? reps : ''}
@@ -218,9 +218,9 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
             }`}
           >
             {recommendedWeight ? (
-              <p>Recommended weight: {lowerBoundWeight}kg - {recommendedWeight}kg</p>
+              <p className='text-secondary-text'>Recommended weight: {lowerBoundWeight}kg - {recommendedWeight}kg</p>
             ) : (
-              <p>Recommended {Rir} RIR</p>
+              <p className='text-secondary-text'>Recommended {Rir} RIR</p>
             )}
           </div>
           
@@ -234,9 +234,9 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
             }`}
           >
             {recommendedReps ? (
-              <p>Aim for {recommendedReps} reps this set</p>
+              <p className='text-secondary-text'>Aim for {recommendedReps} reps this set</p>
             ) : (
-              <p>Recommended {Rir} RIR</p>
+              <p className='text-secondary-text'>Recommended {Rir} RIR</p>
             )}
           </div>
         </div>

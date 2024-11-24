@@ -211,13 +211,13 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
 
     return (
-        <div className={`w-[100%] max-w-screen-sm mx-auto p-8 flex flex-col ${setsCompleted ? 'border-2 border-green-400' : 'border-2 border-gray-200'}`}>
+        <div className={`w-[100%] max-w-screen-sm mx-auto bg-background-secondary p-8 flex flex-col ${setsCompleted ? 'border-2 border-green-400' : 'border-2 border-border'}`}>
             
             <div className='flex justify-between items-center'>
 
                 <div className='flex flex-col'>
-                    <p className="opacity-50 p-1">{muscle ? muscle.name : ''}</p>
-                    <h2 className="font-bold text-xl p-1">{excercise.name}</h2>
+                    <p className="p-1 text-secondary-text">{muscle ? muscle.name : ''}</p>
+                    <h2 className="font-bold text-xl p-1 text-primary-text">{excercise.name}</h2>
                 </div>
 
                 <div className='flex flex-col space-y-4 items-center relative'>
@@ -271,7 +271,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
             </div>
 
-            <div className="w-[60%] flex justify-between mx-8 my-2">
+            <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text">
                 <h2>Weight</h2>
                 <h2>Reps</h2>
             </div>

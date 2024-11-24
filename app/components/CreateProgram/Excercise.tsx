@@ -43,8 +43,8 @@ export default function Excercise({ muscleId, muscleName, excercise, setProgram,
 
     return (
         <>
-            <div className="bg-gray-200 p-2 flex flex-col space-y-2 items-baseline relative">
-                <h2 className="bg-gray-400 p-1">{muscleName}</h2>
+            <div className="bg-background-secondary p-2 flex flex-col space-y-2 items-baseline relative text-primary-text">
+                <h2 className="bg-highlight p-1 text-secondary-text">{muscleName}</h2>
                 <button
                     onClick={handleShowExcercises}
                     className="w-[100%] h-[100%] text-left border-solid border-2 border-gray-700 p-1"

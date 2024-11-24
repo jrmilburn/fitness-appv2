@@ -10,16 +10,16 @@ export default function ExcerciseInfo({ name, details, lastWeekData }) {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-transparent z-50">
-            <div className="bg-white w-3/4 max-w-md p-6 rounded-lg shadow-lg">
+            <div className="bg-background text-primary-text w-3/4 max-w-md p-6 rounded-lg shadow-lg">
                 <div className="flex justify-between items-center pb-3 mb-3">
-                    <h2 className="font-bold text-xl">{name}</h2>
+                    <h2 className="font-bold text-xl text-secondary-text">{name}</h2>
                 </div>
 
                 {/* Tab Navigation */}
                 <div className="flex space-x-4 border-b mb-4">
                     <button
                         className={`py-2 px-4 ${
-                            activeTab === 'details' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'
+                            activeTab === 'details' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-primary-text'
                         }`}
                         onClick={() => setActiveTab('details')}
                     >
@@ -27,7 +27,7 @@ export default function ExcerciseInfo({ name, details, lastWeekData }) {
                     </button>
                     <button
                         className={`py-2 px-4 ${
-                            activeTab === 'lastWeek' ? 'text-blue-500 border-b-2 border-blue-500' : 'text-gray-500'
+                            activeTab === 'lastWeek' ? 'text-blue-400 border-b-2 border-blue-400' : 'text-primary-text'
                         }`}
                         onClick={() => setActiveTab('lastWeek')}
                     >

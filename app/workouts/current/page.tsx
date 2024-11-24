@@ -75,7 +75,7 @@ export default function Workout() {
     }
 
     return (
-        <div className='mx-auto flex flex-col items-center h-screen w-full sm:p-8 pb-24'>
+        <div className='mx-auto flex flex-col items-center h-screen w-full sm:p-8 pb-24 text-primary-text'>
             {/* Workout Header */}
             {isLoading ? (
                 <Skeleton height={40} width={300} />
@@ -94,7 +94,7 @@ export default function Workout() {
             {/* Exercise List */}
             {isLoading ? (
                 Array(3).fill(null).map((_, index) => (
-                    <div key={index} className="w-[100%] max-w-2xl mx-auto p-8 flex flex-col border-2 border-gray-200">
+                    <div key={index} className="w-[100%] max-w-2xl mx-auto p-8 flex flex-col border-2 border-border">
                         <div className="flex justify-between items-center">
                             <div className="flex flex-col">
                                 <Skeleton width={100} height={16} className="mb-2" /> {/* Muscle Group */}

@@ -17,14 +17,14 @@ export default function CoachPrograms({ programs, onClose, clientId }) {
   return (
     <div
       id="modal-overlay"
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-primary-text bg-opacity-50 flex items-center justify-center z-50"
       onClick={handleClickOutside}
     >
-      <div className="bg-white max-w-3xl w-full max-h-[90%] overflow-y-auto rounded-lg shadow-lg p-6 relative">
+      <div className="bg-background max-w-3xl w-full max-h-[90%] overflow-y-auto rounded-lg shadow-lg p-6 relative">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-600 hover:text-black"
+          className="absolute top-4 right-4 text-primary-text hover:text-black"
           aria-label="Close"
         >
           &times;
@@ -35,27 +35,27 @@ export default function CoachPrograms({ programs, onClose, clientId }) {
           {programs.map((program) => (
             <div
               key={program.id}
-              className="bg-gray-200 p-4 rounded flex flex-col space-y-2"
+              className="bg-background-secondary p-4 rounded flex flex-col space-y-2"
             >
               <div className="flex justify-between items-center">
                 <div>
-                  <h2 className="text-xl font-bold">{program.name}</h2>
-                  <p className="text-sm opacity-50">
+                  <h2 className="text-xl font-bold text-primary-text">{program.name}</h2>
+                  <p className="text-sm text-secondary-text">
                     {program.length} Weeks - {program.days} Days / Week
                   </p>
-                  <p className="text-sm opacity-50">
+                  <p className="text-sm text-secondary-text">
                     Created: {new Date(program.createdAt).toLocaleDateString()}
                   </p>
                 </div>
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-2 text-primary-text">
                   <Link href={`/programs/assign/${program.id}/${clientId}`}>
-                    <button className="text-black px-4 py-2 rounded hover:bg-gray-100">
+                    <button className="text-primary-text px-4 py-2 rounded hover:bg-highlight">
                       Assign Program
                     </button>
                   </Link>
                   <button
                     onClick={() => toggleSummary(program.id)}
-                    className="text-black px-4 py-2 rounded hover:bg-gray-100"
+                    className="text-primary-text px-4 py-2 rounded hover:bg-highlight"
                   >
                     {expandedProgramId === program.id
                       ? "Hide Summary"

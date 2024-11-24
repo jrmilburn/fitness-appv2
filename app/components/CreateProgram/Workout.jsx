@@ -34,8 +34,8 @@ export default function Workout({ workout, setProgram, excercises }) {
 
     return (
         <>
-            <div className="bg-gray-300 min-w-64 p-4 flex flex-col space-y-4 justify">
-                <h2 className="text-lg">{workout}</h2>
+            <div className="bg-background min-w-64 p-4 flex flex-col space-y-4 justify">
+                <h2 className="text-lg text-primary-text">{workout}</h2>
                 <div className="flex flex-col space-y-4">
                     {muscleGroups.map((muscleGroup, index) => (
                         <Excercise
@@ -50,7 +50,7 @@ export default function Workout({ workout, setProgram, excercises }) {
                         />
                     ))}
                 </div>
-                <button type="button" className="bg-gray-200 p-2" onClick={showMuscleGroups}>
+                <button type="button" className="bg-background-secondary text-primary-text p-2" onClick={showMuscleGroups}>
                     Add Muscle Group +
                 </button>
             </div>

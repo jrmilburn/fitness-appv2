@@ -40,15 +40,15 @@ export default function NewExcercise({ workoutId, muscleGroups, onClose }) {
   };
 
   return (
-    <div className="p-6 bg-white rounded w-full h-full max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Add New Exercise</h2>
+    <div className="p-6 bg-background rounded w-full h-full max-w-md mx-auto">
+      <h2 className="text-xl font-bold mb-4 text-primary-text">Add New Exercise</h2>
       <form onSubmit={handleFormSubmit} className="space-y-4">
         {/* Exercise Name Input */}
         <div>
           <input
             id="exerciseName"
             type="text"
-            className="mt-1 block w-full border-gray-300 rounded-md p-2 shadow-sm sm:text-sm"
+            className="mt-1 block w-full border-2 border-border bg-background rounded-md p-2 shadow-sm sm:text-sm"
             placeholder="Enter exercise name"
             value={exerciseName}
             onChange={(e) => setExerciseName(e.target.value)}
@@ -76,7 +76,7 @@ export default function NewExcercise({ workoutId, muscleGroups, onClose }) {
         <div className="flex justify-end space-x-2">
           <button
             type="button"
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+            className="px-4 py-2 bg-secondary-text text-gray-700 rounded hover:bg-highlight"
             onClick={onClose}
           >
             Cancel

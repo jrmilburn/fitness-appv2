@@ -67,7 +67,7 @@ export default function AssignProgram({ program, clientId }) {
             )}
             <button
                 type="button"
-                className="right-[5%] px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 absolute bottom-4"
+                className="right-[5%] px-6 py-3 bg-background text-primary-text font-semibold rounded-lg hover:bg-highlight transition-all duration-300 absolute bottom-4"
                 >
                     <Link href='/coaching/clients'>
                      Back

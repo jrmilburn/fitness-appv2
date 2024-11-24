@@ -22,7 +22,7 @@ export default async function Home() {
 
   return (
     <div className="grid grid-cols-2 grid-rows-2 min-h-screen gap-4 p-4 font-[family-name:var(--font-geist-sans)]">
-      <div className="w-full h-full flex items-center justify-center bg-white rounded-lg border-2">
+      <div className="w-full h-full flex items-center justify-center bg-background rounded-lg border-2">
         {user?.image ? (
           <Image
             src={user.image}

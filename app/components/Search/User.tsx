@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function User({ user }) {
     return (
-        <div className='flex w-full justify-between items-center border md:rounded-xl shadow-sm  p-4'>
+        <div className='flex w-full justify-between items-center border-2 border-border md:rounded-xl shadow-sm bg-background-secondary  p-4'>
             <div className="flex items-center">
                 <Image
                     src={user.image || '/avatar.svg'}
@@ -17,7 +17,7 @@ export default function User({ user }) {
                     <p className="text-gray-500">{user.email}</p>
                 </div>
             </div>
-            <button className='border-2 rounded-lg p-2 hover:bg-gray-50 duration-300'>
+            <button className='border-2 border-border rounded-lg p-2 hover:bg-gray-50 duration-300'>
                 <Link href={`/profile/${user.id}`}>
                     View Profile
                 </Link>

@@ -6,11 +6,16 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: 'class', // Use system preference for dark mode
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: 'var(--background)',
+        'background-secondary': 'var(--background-secondary)',
+        'primary-text': 'var(--primary-text)',
+        'secondary-text': 'var(--secondary-text)',
+        borders: 'var(--borders)',
+        highlight: 'var(--highlight)',
       },
     },
   },

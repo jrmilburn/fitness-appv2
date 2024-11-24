@@ -39,7 +39,7 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
   }, [isMenuOpen]);
 
   return (
-    <div className="w-full bg-white p-4 rounded shadow-md flex items-center justify-between relative border-b-2">
+    <div className="w-full bg-background-secondary p-4 shadow-md flex items-center justify-between relative border-2 border-border text-primary-text">
       {/* Client Information */}
       <div className="flex items-center space-x-4">
         <Image
@@ -68,30 +68,30 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
         {isMenuOpen && (
           <div
             ref={menuRef}
-            className="fixed sm:absolute right-0 mt-2 bg-white shadow-lg rounded p-4 space-y-2 z-50 w-[200px]"
+            className="fixed sm:absolute border-2 border-border right-0 mt-2 bg-background shadow-lg rounded p-4 space-y-2 z-50 w-[200px]"
           >
-            <h2>{client.client.name}</h2>
+            <h2 className='text-primary-text'>{client.client.name}</h2>
          <button
           onClick={() => onAssignProgram(client.client.id)}
-          className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
+          className="w-full border-2 border-border px-4 py-2 rounded text-primary-text hover:bg-highlight"
         >
           Assign Program
         </button>
         <button
           onClick={() => onViewProgram(client.client.id)}
-          className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
+          className="w-full border-2 border-border px-4 py-2 rounded text-primary-text hover:bg-highlight"
         >
           View Program
         </button>
         <button
           onClick={() => onViewWorkout(client.client.id)}
-          className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
+          className="w-full border-2 border-border px-4 py-2 rounded text-primary-text hover:bg-highlight"
           >
           View Next Workout
         </button>
         <button
           onClick={() => onDeleteClient(client.id)}
-          className="w-full border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-100"
+          className="w-full border-2 border-border px-4 py-2 rounded text-primary-text hover:bg-highlight"
         >
           Delete Client
         </button>
