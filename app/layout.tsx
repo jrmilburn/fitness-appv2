@@ -139,7 +139,7 @@ export default function RootLayout({ children }) {
             <main
               className={`flex-grow ${
                 shouldShowNavbar ? "sm:ml-80" : ""
-              } z-0 bg-background-secondary dark:bg-background-secondary`}
+              } z-0 bg-background-secondary`}
             >
               {children}
             </main>
