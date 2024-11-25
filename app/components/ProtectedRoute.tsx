@@ -44,7 +44,7 @@ export default function ProtectedRoute({ children }) {
       >
         <div className="text-center">
           <div className="animate-bounce">
-            <Image src="/logo.jpg" alt="App logo" width={80} height={80} className="mx-auto" />
+            <Image src="/logo.png" alt="App logo" width={80} height={80} className="mx-auto" />
           </div>
           <h1 className="text-2xl font-bold text-gray-700 mt-4">Welcome to JFit</h1>
         </div>
