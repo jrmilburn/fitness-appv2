@@ -55,7 +55,7 @@ export default function Navbar() {
   return (
     <div className="relative">
       {/* Top Bar for Small Screens */}
-      <div className="fixed top-0 left-0 w-full h-16 bg-background flex items-center justify-between px-4 shadow-md md:hidden z-40">
+      <div className="fixed top-0 left-0 w-full h-16 bg-background flex items-center justify-between px-4 shadow-md md:hidden z-50">
         {/* App Logo */}
         <Link href="/workouts/current">
           <div className="flex items-center space-x-2 sm:hidden">
@@ -72,17 +72,17 @@ export default function Navbar() {
           onClick={toggleNav}
         >
           <span
-            className={`block w-6 h-1 bg-black transform transition-transform duration-300 ${
+            className={`block w-6 h-1 bg-primary-text transform transition-transform duration-300 ${
               navOpen ? "rotate-45 translate-y-2" : ""
             }`}
           ></span>
           <span
-            className={`block w-6 h-1 bg-black transition-opacity duration-300 ${
+            className={`block w-6 h-1 bg-primary-text transition-opacity duration-300 ${
               navOpen ? "opacity-0" : ""
             }`}
           ></span>
           <span
-            className={`block w-6 h-1 bg-black transform transition-transform duration-300 ${
+            className={`block w-6 h-1 bg-primary-text transform transition-transform duration-300 ${
               navOpen ? "-rotate-45 -translate-y-2" : ""
             }`}
           ></span>
