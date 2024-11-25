@@ -138,7 +138,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, workout, week,
                         className="w-8 h-8 hover:scale-105 transition-all duration-300"
                         onClick={selectWorkout}
                     >
-                        <AiOutlineCalendar className="w-8 h-8 text-black hover:text-blue-700 transition-all duration-300" />
+                        <AiOutlineCalendar className="w-8 h-8 text-primary-text hover:text-secondary-text transition-all duration-300" />
                         {/* React-Icons Calendar */}
                     </button>
                 </div>
