@@ -18,40 +18,64 @@ export async function determineUserId(userEmail, programUserId) {
 }
 
 export function processProgramData(program) {
-    const weeks = program.weeks;
-  
-    weeks.forEach((week, weekIndex) => {
-      const totalWeeks = weeks.length;
-  
-      const setCount =
-        weekIndex === 0 || weekIndex === totalWeeks - 1
-          ? 2
-          : 2 + Math.floor((2 * weekIndex) / (totalWeeks - 2));
-  
-      const repsInReserve =
-        weekIndex === totalWeeks - 1
-          ? 8
-          : 3 - Math.floor((3 * weekIndex) / (totalWeeks - 2));
-  
-      week.repsInReserve = repsInReserve;
-  
-      week.workouts.forEach((workout) => {
-        workout.excercises.forEach((excercise) => {
-          const sets = Array.from({ length: setCount }, () => ({
-            reps: 0,
-            weight: 0,
-          }));
-  
-          Object.assign(excercise, {
-            setCount,
-            sets,
-          });
+  const weeks = program.weeks;
+  const totalWeeks = weeks.length;
+
+  weeks.forEach((week, weekIndex) => {
+    const repsInReserve =
+      weekIndex === totalWeeks - 1
+        ? 8
+        : 3 - Math.floor((3 * weekIndex) / (totalWeeks - 1));
+
+    week.repsInReserve = repsInReserve;
+
+    week.workouts.forEach((workout) => {
+      workout.excercises.forEach((excercise) => {
+        let setCount;
+
+        console.log('EXCERCISE DATA: ', excercise);
+
+        if (totalWeeks <= 1 || excercise.setProgression === 'none') {
+          // If there is only 1 week, use startSets
+          setCount = excercise.startSets;
+        } else if (weekIndex === totalWeeks - 1) {
+          // Last week has startSets
+          setCount = excercise.startSets;
+        } else {
+          // Progression weeks from week 0 to second-to-last week
+          const progressionWeeks = totalWeeks - 1;
+          const step = weekIndex; // weekIndex ranges from 0 to totalWeeks - 2
+          const totalSteps = progressionWeeks - 1;
+
+          if (totalSteps === 0) {
+            // Only one progression week
+            setCount = excercise.endSets;
+          } else {
+            setCount =
+              excercise.startSets +
+              Math.round(
+                ((excercise.endSets - excercise.startSets) * step) / totalSteps
+              );
+          }
+        }
+
+        const sets = Array.from({ length: setCount }, () => ({
+          reps: 0,
+          weight: 0,
+        }));
+
+        Object.assign(excercise, {
+          setCount,
+          sets,
         });
       });
     });
-  
-    return program;
-  }
+  });
+
+  return program;
+}
+
+
 
   export async function saveProgram(program, userId, setAsCurrentProgram = true) {
     const { name, length, days, weeks } = program;
@@ -103,6 +127,7 @@ export function processProgramData(program) {
         });
   
         for (const excercise of workout.excercises) {
+          console.log('EXCERCISE DATA: ', excercise);
           // Ensure the MuscleGroup exists or create it if necessary
           const muscleGroupName = excercise.muscle || excercise.muscleGroup?.name;
           const muscleGroup = await prisma.muscleGroup.upsert({
@@ -165,11 +190,13 @@ export function processProgramData(program) {
   
         const firstWeek = weeks.find((week) => week.weekNo === 1 || week.weekNumber === 1);
 
+      console.log('FIRST WEEK: ', firstWeek);
+
       const newWeek = await prisma.week.update({
         where: {
           programId_weekNo: {
             programId: createdProgram.id,
-            weekNo: firstWeek.weekNo,
+            weekNo: firstWeek.weekNo || firstWeek.weekNumber,
           },
         },
         data: {

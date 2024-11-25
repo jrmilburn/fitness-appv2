@@ -8,7 +8,7 @@ export default function Excercises({
   selectExcercise,
   children,
   muscleGroups,
-  workoutId
+  workoutId,
 }) {
   const [excercises, setExcercises] = useState([]);
   const [newShown, setNewShown] = useState(false);

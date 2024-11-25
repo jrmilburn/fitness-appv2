@@ -168,34 +168,36 @@ model Workout {
   weekId             String
   name               String
   updatedAt          DateTime?   @updatedAt
-  excercises         Excercise[] 
+  excercises         Excercise[]
   currentExcerciseId String?
   completed          Boolean     @default(false)
-  skipped             Boolean @default(false)
+  skipped            Boolean     @default(false)
 
   @@unique([weekId, name])
 }
 
 model Excercise {
-  id            String      @id @default(cuid())
-  name          String
-  workout       Workout?    @relation(fields: [workoutId], references: [id], onDelete: Cascade)
-  workoutId     String?
-  updatedAt     DateTime    @updatedAt
-  createdAt     DateTime    @default(now())
-  sets          Set[]       
-  currentSetId  String?
-  muscleGroupId String
-  muscleGroup   MuscleGroup @relation(fields: [muscleGroupId], references: [id])
-  completed     Boolean     @default(false)
-  details       String?
-  custom        Boolean     @default(false)
-  createdById String?
-  createdBy   User? @relation(name: "UserExcercises", fields: [createdById], references: [id])
+  id              String      @id @default(cuid())
+  name            String
+  workout         Workout?    @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  workoutId       String?
+  updatedAt       DateTime    @updatedAt
+  createdAt       DateTime    @default(now())
+  sets            Set[]
+  currentSetId    String?
+  muscleGroupId   String
+  muscleGroup     MuscleGroup @relation(fields: [muscleGroupId], references: [id])
+  completed       Boolean     @default(false)
+  details         String?
+  custom          Boolean     @default(false)
+  createdById     String?
+  createdBy       User?       @relation(name: "UserExcercises", fields: [createdById], references: [id])
+  startSets       Int?
+  endSets         Int?
+  progressionType String?     @default("linear")
 
   @@unique([workoutId, name])
 }
-
 
 model Set {
   id                String    @id @default(cuid())

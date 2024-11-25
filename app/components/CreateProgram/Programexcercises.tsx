@@ -9,6 +9,7 @@ import Loader from '../Loader';
 export default function ProgramExcercises({ program, setProgram, type, onPrevious }) {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [advanced, setAdvanced] = useState(false);
     const router = useRouter();
 
     const handleCreate = async () => {
@@ -16,7 +17,7 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
         setIsLoading(true);
 
         console.log('CREATED PROGRAM: ', program);
-
+        
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/program`, {
             method: 'POST',
             headers: {
@@ -30,6 +31,7 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
         if(response.ok) {
             router.push('/workouts/current');
         }
+            
     };
 
     const handleSave = async () => {
@@ -52,22 +54,37 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
 
     }
 
+    const toggleAdvanced = (e) => {
+
+        e.preventDefault();
+
+        const newAdvanced = !advanced;
+
+        setAdvanced(newAdvanced);
+    }
+
     return (
         <>
 
             {isLoading && (
-                <div className="fixed inset-0 bg-black/50 z-40 backdrop-blur-md flex items-center justify-center">
+                <div className="fixed inset-0 bg-black/50 z-40 backdrop-blur-md flex flex-col items-center justify-center">
                     <div className="text-white text-lg flex items-center">
                         <span className='text-3xl font-bold'>Generating program</span>
                         <Loader 
                             size={10}
                             color="#fff"/>
                     </div>
+                    <span>This could take a few minutes...</span>
                 </div>
             )}
 
             <form className="w-[100%] h-[75%] sm:h-screen p-4 bg-background shadow-md rounded overflow-x-auto border-2">
-                <h2 className="text-3xl text-primary-text mb-6"><strong>{program.name}</strong> Exercises</h2>
+                <div className='flex gap-8 items-center'>
+                    <h2 className="text-3xl text-primary-text"><strong>{program.name}</strong> Exercises</h2>
+                    <button 
+                        className="inter-bold border-2 text-primary-text border-border p-2 hover:bg-highlight rounded flex gap-2"
+                        onClick={toggleAdvanced}>{advanced ? 'Switch to Basic Builder' : 'Switch to Advanced Builder'}</button>
+                </div>
 
                 {/* Workouts Container */}
                 <div className="flex space-x-4 w-full p-4 items-start">
@@ -77,6 +94,7 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
                             workout={workout.name}
                             setProgram={setProgram}
                             excercises={workout.excercises}
+                            advanced={advanced}
                         />
                     ))}
                 </div>

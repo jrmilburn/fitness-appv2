@@ -2,7 +2,7 @@ import Musclegroups from './Musclegroups';
 import Excercise from './Excercise';
 import { useState, useEffect } from 'react';
 
-export default function Workout({ workout, setProgram, excercises }) {
+export default function Workout({ workout, setProgram, excercises, advanced }) {
     const [muscleGroupsShown, setMuscleGroupsShown] = useState(false);
     const [muscleGroups, setMuscleGroups] = useState([]);
     const [selectedMuscleGroups, setSelectedMuscleGroups] = useState([]);
@@ -46,7 +46,8 @@ export default function Workout({ workout, setProgram, excercises }) {
                             excercise={excercises[index]}
                             setProgram={setProgram}
                             workout={workout}
-                            onDelete={() => removeMuscleGroup(index)} // Pass delete handler
+                            onDelete={() => removeMuscleGroup(index)}
+                            advanced={advanced}
                         />
                     ))}
                 </div>
