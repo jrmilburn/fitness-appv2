@@ -23,6 +23,10 @@
   --highlight: #6E6E6E;            /* Medium gray for highlights */
 }
 
+.ptr--ptr {
+  color: var(--primary-text); /* Matches your Tailwind variable */
+}
+
 
 .inter-main {
   font-family: "Inter", sans-serif;
