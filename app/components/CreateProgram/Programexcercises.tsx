@@ -66,11 +66,11 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
                 </div>
             )}
 
-            <form className="w-[100%] h-screen p-4 bg-background shadow-md rounded overflow-x-auto border-2">
+            <form className="w-[100%] h-[75%] sm:h-screen p-4 bg-background shadow-md rounded overflow-x-auto border-2">
                 <h2 className="text-3xl text-primary-text mb-6"><strong>{program.name}</strong> Exercises</h2>
 
                 {/* Workouts Container */}
-                <div className="flex space-x-4 w-full p-4">
+                <div className="flex space-x-4 w-full p-4 items-start">
                     {program.weeks[0].workouts.map((workout, index) => (
                         <Workout
                             key={index}
@@ -81,7 +81,7 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
                     ))}
                 </div>
                 {type === 0 ? (
-                    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 flex flex-col sm:flex-row sm:space-x-4 justify-center items-center">
+                    <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 flex flex-col sm:flex-row sm:space-x-4 justify-center items-center scale-75 sm:scale-100">
                         <button
                             type="button"
                             onClick={handleCreate}

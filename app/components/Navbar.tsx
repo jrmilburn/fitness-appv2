@@ -68,7 +68,7 @@ export default function Navbar() {
 
         {/* Hamburger Button */}
         <button
-          className="flex flex-col items-center justify-center space-y-1 w-8 h-8 bg-background text-primary-text rounded-md"
+          className="flex flex-col items-center justify-center space-y-1 w-8 h-8 bg-background text-primary-text rounded-md z-50"
           onClick={toggleNav}
         >
           <span
