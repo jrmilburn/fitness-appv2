@@ -49,7 +49,7 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
           width={64}
           height={64}
         />
-        <h2 className="text-xl font-semibold">{client.client.name}</h2>
+        <h2 className="text-xl inter-bold">{client.client.name}</h2>
       </div>
 
       {/* "More" Button */}
@@ -70,7 +70,7 @@ export default function ClientTab({ client, onAssignProgram, onDeleteClient }) {
             ref={menuRef}
             className="fixed sm:absolute border-2 border-border right-0 mt-2 bg-background shadow-lg rounded p-4 space-y-2 z-50 w-[200px]"
           >
-            <h2 className='text-primary-text'>{client.client.name}</h2>
+            <h2 className='text-primary-text inter-bold'>{client.client.name}</h2>
          <button
           onClick={() => onAssignProgram(client.client.id)}
           className="w-full border-2 border-border px-4 py-2 rounded text-primary-text hover:bg-highlight"

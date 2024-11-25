@@ -106,7 +106,7 @@ export default function Navbar() {
                 height={80}
                 className="mx-auto"
               />
-              <h2 className="font-bold text-3xl">JFit</h2>
+              <h2 className="font-bold text-3xl inter-bold">JFit</h2>
             </div>
           </Link>
 
@@ -128,7 +128,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <LightningBoltIcon className="h-6 w-6 text-gray-600" />
+                <LightningBoltIcon className="h-6 w-6 text-primary-text" />
                 <span>Current Workout</span>
               </Link>
             </li>
@@ -147,7 +147,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <PlusCircleIcon className="h-6 w-6 text-gray-600" />
+                <PlusCircleIcon className="h-6 w-6 text-primary-text" />
                 <span>New Program</span>
               </Link>
             </li>
@@ -164,7 +164,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <ClipboardListIcon className="h-6 w-6 text-gray-600" />
+                <ClipboardListIcon className="h-6 w-6 text-primary-text" />
                 <span>Programs</span>
               </Link>
             </li>
@@ -183,7 +183,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <PencilAltIcon className="h-6 w-6 text-gray-600" />
+                <PencilAltIcon className="h-6 w-6 text-primary-text" />
                 <span>Custom Exercises</span>
               </Link>
             </li>
@@ -206,7 +206,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <UserGroupIcon className="h-6 w-6 text-gray-600" />
+                <UserGroupIcon className="h-6 w-6 text-primary-text" />
                 <span>Clients</span>
               </Link>
             </li>
@@ -227,7 +227,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <UserIcon className="h-6 w-6 text-gray-600" />
+                <UserIcon className="h-6 w-6 text-primary-text" />
                 <span>Profile</span>
               </Link>
             </li>
@@ -244,7 +244,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <SearchIcon className="h-6 w-6 text-gray-600" />
+                <SearchIcon className="h-6 w-6 text-primary-text" />
                 <span>Search</span>
               </Link>
             </li>
@@ -261,7 +261,7 @@ export default function Navbar() {
                 }}
                 className="flex items-center space-x-2"
               >
-                <CogIcon className="h-6 w-6 text-gray-600" />
+                <CogIcon className="h-6 w-6 text-primary-text" />
                 <span>Settings</span>
               </Link>
             </li>
@@ -275,12 +275,12 @@ export default function Navbar() {
               >
                 {isDarkMode ? (
                   <>
-                    <SunIcon className="h-6 w-6 text-gray-600" />
+                    <SunIcon className="h-6 w-6 text-primary-text" />
                     <span>Light Mode</span>
                   </>
                 ) : (
                   <>
-                    <MoonIcon className="h-6 w-6 text-gray-600" />
+                    <MoonIcon className="h-6 w-6 text-primary-text" />
                     <span>Dark Mode</span>
                   </>
                 )}

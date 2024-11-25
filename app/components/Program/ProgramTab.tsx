@@ -24,7 +24,7 @@ export default function ProgramTab({
   onDelete,
 }: ProgramTabProps) {
   return (
-    <div className={`w-3xl border-2 border-border ${id === userProgramId ? 'border-green-200' : 'border-border'} p-4 relative`}>
+    <div className={`w-3xl border-2 border-border ${id === userProgramId ? 'border-green-200' : 'border-border'} p-4 relative bg-background-secondary`}>
       <div className="w-full flex justify-between space-x-16 p-2">
         {userProgramId === null ? (
           <>

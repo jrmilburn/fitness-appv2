@@ -52,7 +52,7 @@ export default function ProgramLength({ onNext, setProgram, onPrevious }) {
                 <h2 className="text-3xl text-center w-full text-primary-text">Create New</h2>
             </div>
         <form onSubmit={handleSubmit} className="w-full p-4 sm:p-8 bg-background sm:shadow-md rounded-lg mx-auto max-w-screen-sm sm:border-2">
-            <h2 className="text-3xl font-semibold text-primary-text mb-6">General Details</h2>
+            <h2 className="text-3xl inter-bold text-primary-text mb-6">General Details</h2>
 
             <div className="flex flex-col space-y-6 w-full">
                 {/* Program Name Input */}
@@ -68,7 +68,7 @@ export default function ProgramLength({ onNext, setProgram, onPrevious }) {
 
                 {/* Program Length */}
                 <div>
-                    <h3 className="text-lg font-medium text-primary-text mb-2">Program Length (weeks)</h3>
+                    <h3 className="text-lg inter-bold text-primary-text mb-2">Program Length (weeks)</h3>
                     <div className="flex space-x-4">
                         <Radiobtn id="length4" name="length" text="4" onChange={() => setProgramLength(4)} checked={programLength === 4} />
                         <Radiobtn id="length6" name="length" text="6" onChange={() => setProgramLength(6)} checked={programLength === 6} />
@@ -78,7 +78,7 @@ export default function ProgramLength({ onNext, setProgram, onPrevious }) {
 
                 {/* Days Per Week */}
                 <div>
-                    <h3 className="text-lg font-medium text-primary-text mb-2">Days Per Week</h3>
+                    <h3 className="text-lg inter-bold text-primary-text mb-2">Days Per Week</h3>
                     <div className="flex space-x-4">
                         <Radiobtn id="day2" name="days" text="2" onChange={() => setProgramDays(2)} checked={programDays === 2} />
                         <Radiobtn id="day3" name="days" text="3" onChange={() => setProgramDays(3)} checked={programDays === 3} />

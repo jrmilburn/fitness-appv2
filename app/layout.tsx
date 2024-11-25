@@ -1,6 +1,5 @@
 "use client";
 
-import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import { SessionProvider } from "next-auth/react";
@@ -11,18 +10,6 @@ import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as PullToRefresh from "pulltorefreshjs";
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 // Function to update the <meta name="theme-color"> tag dynamically
 const updateThemeColor = () => {
@@ -131,15 +118,15 @@ export default function RootLayout({ children }) {
       </head>
       <SessionProvider>
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-auto pt-16 md:pt-0 bg-background text-primary-text dark:bg-background dark:text-primary-text`}
+          className={`antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-auto pt-16 md:pt-0 bg-background text-primary-text dark:bg-background dark:text-primary-text font-sans inter-main`}
         >
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}
 
             <main
-              className={`flex-grow ${
+              className={`flex-grow inter-main ${
                 shouldShowNavbar ? "sm:ml-80" : ""
-              } z-0 bg-background-secondary`}
+              } z-0 bg-background`}
             >
               {children}
             </main>

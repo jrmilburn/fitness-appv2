@@ -66,7 +66,7 @@ export default function SettingsForm({ user, latestBodyWeight }) {
 
     return (
         <form onSubmit={handleUserUpdate} className="flex flex-col space-y-6 w-[60%] mx-auto">
-            <h1 className="text-2xl font-bold text-center">Update Profile</h1>
+            <h1 className="text-2xl inter-bold text-center">Update Profile</h1>
             
             {/* Success or Error Messages */}
             {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
@@ -95,7 +95,7 @@ export default function SettingsForm({ user, latestBodyWeight }) {
                         </span>
                     </div>
                 </label>
-                <span className="text-sm font-semibold text-gray-700">Edit Profile Picture</span>
+                <span className="text-sm inter-bold text-primary-text">Edit Profile Picture</span>
             </div>
 
             {/* Bodyweight */}

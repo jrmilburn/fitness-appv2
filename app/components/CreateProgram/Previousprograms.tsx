@@ -44,7 +44,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
       <div className="flex justify-between w-full">
         <h2 className="text-left text-2xl sm:text-3xl text-primary-text">Previous programs</h2>
         <button
-          className="font-bold border-2 text-primary-text border-border p-2 hover:bg-highlight rounded flex gap-2"
+          className="inter-bold border-2 text-primary-text border-border p-2 hover:bg-highlight rounded flex gap-2"
           onClick={() => onNext(1)}
         >
           New <PlusCircleIcon className="h-6 w-6 text-primary-text" />
@@ -66,7 +66,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
             <div className="w-full flex justify-between items-start">
               <div>
                 <Link href={`/programs/${program.id}`}>
-                  <h2 className="text-xl font-bold text-primary-text">{program.name}</h2>
+                  <h2 className="text-xl inter-bold text-primary-text">{program.name}</h2>
                 </Link>
                 <p className="text-sm text-secondary-text">
                   {program.length} Weeks - {program.days} Days / Week
@@ -106,7 +106,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
               } overflow-hidden`}
             >
               <div className="bg-background p-4 rounded shadow-inner mt-4">
-                <h3 className="text-lg font-semibold mb-2 text-primary-text">
+                <h3 className="text-lg inter-bold mb-2 text-primary-text">
                   {program.name} - Weekly Summary
                 </h3>
                 {program.weeks[0]?.workouts?.length > 0 ? (
@@ -116,7 +116,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
                         key={workout.id}
                         className="bg-background-secondary p-4 rounded shadow-sm"
                       >
-                        <h4 className="text-md font-bold text-primary-text">{workout.name}</h4>
+                        <h4 className="text-md inter-bold text-primary-text">{workout.name}</h4>
                         <ul className="list-disc pl-5 mt-2">
                           {workout.excercises.map((excercise) => (
                             <li key={excercise.id} className="text-primary-text">

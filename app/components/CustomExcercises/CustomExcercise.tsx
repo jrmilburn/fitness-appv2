@@ -9,7 +9,7 @@ export default function CustomExcercise({ excercise, onDelete }) {
     return (
         <div className="w-full border-2 border-border p-4 flex justify-between items-center bg-background-secondary">
             <div className="">
-                <h2 className="font-bold text-xl text-primary-text">{excercise.name}</h2>
+                <h2 className="inter-bold text-xl text-primary-text">{excercise.name}</h2>
                 <p className="opacity-60 text-sm text-secondary-text">{excercise.muscleGroup.name}</p>
                 <p className="opacity-60 text-sm text-secondary-text">{new Date(excercise.createdAt).toLocaleDateString()}</p>
             </div>

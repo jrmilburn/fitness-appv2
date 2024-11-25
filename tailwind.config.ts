@@ -17,6 +17,9 @@ const config: Config = {
         borders: 'var(--borders)',
         highlight: 'var(--highlight)',
       },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'], // Default Tailwind sans font
+      },
     },
   },
   plugins: [],

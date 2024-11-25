@@ -216,8 +216,8 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
             <div className='flex justify-between items-center'>
 
                 <div className='flex flex-col'>
-                    <p className="p-1 text-secondary-text">{muscle ? muscle.name : ''}</p>
-                    <h2 className="font-bold text-xl p-1 text-primary-text">{excercise.name}</h2>
+                    <p className="p-1 text-secondary-text inter-main">{muscle ? muscle.name : ''}</p>
+                    <h2 className="text-xl p-1 text-primary-text inter-bold">{excercise.name}</h2>
                 </div>
 
                 <div className='flex flex-col space-y-4 items-center relative'>
@@ -271,7 +271,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
             </div>
 
-            <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text">
+            <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text inter-main">
                 <h2>Weight</h2>
                 <h2>Reps</h2>
             </div>
@@ -279,7 +279,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                 <Set key={index} setId={set.id} Rir={weekRir} workout={workout} setWorkout={setWorkout} onDelete={() => handleDeleteSet(set.id)} onAdd={() => handleAddSet()} onDataFetch={handleSetDataFetch} />
             ))}
 
-            {setsCompleted && <p className="text-green-500 font-bold">All sets completed!</p>}
+            {setsCompleted && <p className="text-green-500 inter-bold">All sets completed!</p>}
         </div>
     );
 }

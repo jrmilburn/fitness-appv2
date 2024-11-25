@@ -98,7 +98,7 @@ export default function ChatIcon() {
       {/* Chat Icon Button */}
       <div
         onClick={toggleChat}
-        className="w-16 h-16 bg-gradient-to-br from-primary-text to-black text-background 
+        className="w-16 h-16 bg-gradient-to-br from-primary-text to-primary-text text-background 
                    flex items-center justify-center rounded-full cursor-pointer shadow-lg 
                    transition transform hover:scale-105 hover:shadow-xl"
       >

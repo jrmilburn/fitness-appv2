@@ -29,7 +29,7 @@ export default async function Programs() {
 
   return (
     <main className="max-w-screen-sm mx-auto p-8 space-y-8">
-      <h1 className="text-2xl sm:text-3xl font-semibold text-primary-text mb-8">Your Programs</h1>
+      <h1 className="text-2xl sm:text-3xl inter-bold text-primary-text mb-8">Your Programs</h1>
       <ProgramsList initialPrograms={programs} userProgramId={userProgramId}/>
     </main>
   );

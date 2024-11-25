@@ -13,8 +13,8 @@ export default function User({ user }) {
                     className="rounded-full"
                 />
                 <div className="ml-4">
-                    <h3 className="text-lg font-semibold">{user.name}</h3>
-                    <p className="text-gray-500">{user.email}</p>
+                    <h3 className="text-lg inter-bold">{user.name}</h3>
+                    <p className="text-secondary-text">{user.email}</p>
                 </div>
             </div>
             <button className='border-2 border-border rounded-lg p-2 hover:bg-gray-50 duration-300'>

@@ -12,7 +12,7 @@ export default function ExcerciseInfo({ name, details, lastWeekData }) {
         <div className="fixed inset-0 flex items-center justify-center bg-transparent z-50">
             <div className="bg-background text-primary-text w-3/4 max-w-md p-6 rounded-lg shadow-lg">
                 <div className="flex justify-between items-center pb-3 mb-3">
-                    <h2 className="font-bold text-xl text-secondary-text">{name}</h2>
+                    <h2 className="inter-bold text-xl text-secondary-text">{name}</h2>
                 </div>
 
                 {/* Tab Navigation */}
