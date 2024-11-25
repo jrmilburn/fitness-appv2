@@ -102,7 +102,7 @@ export default function ProgramTemplates({ setProgram, onNext }) {
             <div
               className={`transition-all duration-300 ease-in-out ${
                 expandedProgramId === program.id
-                  ? "max-h-screen opacity-100"
+                  ? "opacity-100"
                   : "max-h-0 opacity-0"
               } overflow-hidden`}
             >
