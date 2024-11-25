@@ -59,7 +59,7 @@ export default function Navbar() {
         {/* App Logo */}
         <Link href="/workouts/current">
           <div className="flex items-center space-x-2 sm:hidden">
-            <Image src="/logo.jpg" alt="App Logo" width={32} height={32} />
+            <Image src={!isDarkMode ? "/logo.png" : "/dark-logo.png"} alt="App Logo" width={32} height={32} />
             <h2 className="font-bold text-lg relative">
               JFit <em className="absolute text-xs">Classic</em>
             </h2>
@@ -100,7 +100,7 @@ export default function Navbar() {
           <Link href="/">
             <div className="w-full flex flex-col items-center hidden sm:flex ">
               <Image
-                src="/logo.jpg"
+                src={!isDarkMode ? "/logo.png" : "/dark-logo.png"}
                 alt="App logo"
                 width={80}
                 height={80}
