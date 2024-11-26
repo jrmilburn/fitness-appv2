@@ -87,17 +87,33 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
                 </div>
 
                 {/* Workouts Container */}
-                <div className="flex space-x-4 w-full p-4 items-start">
+                <div className="w-full flex flex-col">
+                  <div className="flex space-x-4 w-full p-4 items-start">
                     {program.weeks[0].workouts.map((workout, index) => (
-                        <Workout
-                            key={index}
-                            workout={workout.name}
-                            setProgram={setProgram}
-                            excercises={workout.excercises}
-                            advanced={advanced}
-                        />
+                      <Workout
+                        key={index}
+                        workout={workout.name}
+                        setProgram={setProgram}
+                        excercises={workout.excercises}
+                        advanced={advanced}
+                      />
                     ))}
+                  </div>
+                
+                  {/* Program Notes Section */}
+                  <div className="w-full px-4 my-6">
+                    <label htmlFor="program-notes" className="block text-primary-text inter-bold mb-2">
+                      Program Notes:
+                    </label>
+                    <textarea
+                      id="program-notes"
+                      className="w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
+                      placeholder="Enter any notes or comments about the program here..."
+                      rows={10}
+                    />
+                  </div>
                 </div>
+
                 {type === 0 ? (
                     <div className="fixed bottom-0 left-1/2 transform -translate-x-1/2 flex flex-col sm:flex-row sm:space-x-4 justify-center items-center scale-75 sm:scale-100">
                         <button

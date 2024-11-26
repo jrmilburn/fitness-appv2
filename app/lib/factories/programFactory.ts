@@ -150,6 +150,10 @@ export function processProgramData(program) {
             workoutId: createdWorkout.id,
             muscleGroupId: muscleGroup.id,
             details: existingExercise?.details || null,
+            startSets: excercise.startSets,
+            endSets: excercise.endSets,
+            progressionType: excercise.progressionType
+
           };
   
           const createdExcercise = await prisma.excercise.upsert({
