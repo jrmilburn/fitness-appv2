@@ -17,7 +17,7 @@ export default function Excercise({
     console.log(excercise);
 
     // New state variables for additional capabilities
-    const [setProgressionType, setSetProgressionType] = useState(excercise?.setProgression || 'linear');
+    const [setProgressionType, setSetProgressionType] = useState(excercise?.setProgression || excercise.progressionType || 'linear');
     const [startSets, setStartSets] = useState(excercise?.startSets || 2); // Default start sets
     const [endSets, setEndSets] = useState(excercise?.endSets || 2); // Default end sets
 
