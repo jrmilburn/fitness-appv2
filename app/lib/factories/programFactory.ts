@@ -152,7 +152,7 @@ export function processProgramData(program) {
             details: existingExercise?.details || null,
             startSets: excercise.startSets,
             endSets: excercise.endSets,
-            progressionType: excercise.progressionType
+            progressionType: excercise.setProgression
 
           };
   

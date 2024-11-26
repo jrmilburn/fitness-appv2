@@ -14,6 +14,8 @@ export default function Excercise({
     const [showExcercises, setShowExcercises] = useState(false);
     const [selectedExcercise, setSelectedExcercise] = useState(excercise?.name);
 
+    console.log(excercise);
+
     // New state variables for additional capabilities
     const [setProgressionType, setSetProgressionType] = useState(excercise?.setProgression || 'linear');
     const [startSets, setStartSets] = useState(excercise?.startSets || 2); // Default start sets
