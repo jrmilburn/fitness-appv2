@@ -13,11 +13,7 @@ export default function Excercise({
 }) {
     const [showExcercises, setShowExcercises] = useState(false);
     const [selectedExcercise, setSelectedExcercise] = useState(excercise?.name);
-
-    console.log(excercise);
-
-    // New state variables for additional capabilities
-    const [setProgressionType, setSetProgressionType] = useState(excercise?.setProgression || excercise.progressionType || 'linear');
+    const [setProgressionType, setSetProgressionType] = useState(excercise?.setProgression || excercise?.progressionType || 'linear');
     const [startSets, setStartSets] = useState(excercise?.startSets || 2); // Default start sets
     const [endSets, setEndSets] = useState(excercise?.endSets || 2); // Default end sets
 
@@ -35,6 +31,7 @@ export default function Excercise({
                             session.excercises.push({
                                 muscle: muscleName,
                                 name: excercise,
+                                excerciseNo: excerciseindex,
                                 setProgression: setProgressionType,
                                 startSets: startSets,
                                 endSets: endSets,
@@ -43,6 +40,7 @@ export default function Excercise({
                             session.excercises[excerciseindex] = {
                                 muscle: muscleName,
                                 name: excercise,
+                                excerciseNo: excerciseindex,
                                 setProgression: setProgressionType,
                                 startSets: startSets,
                                 endSets: endSets,

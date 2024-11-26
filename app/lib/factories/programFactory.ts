@@ -152,7 +152,8 @@ export function processProgramData(program) {
             details: existingExercise?.details || null,
             startSets: excercise.startSets,
             endSets: excercise.endSets,
-            progressionType: excercise.setProgression
+            progressionType: excercise.setProgression,
+            excerciseNo: excercise.excerciseNo
 
           };
   
@@ -193,8 +194,6 @@ export function processProgramData(program) {
       });
   
         const firstWeek = weeks.find((week) => week.weekNo === 1 || week.weekNumber === 1);
-
-      console.log('FIRST WEEK: ', firstWeek);
 
       const newWeek = await prisma.week.update({
         where: {

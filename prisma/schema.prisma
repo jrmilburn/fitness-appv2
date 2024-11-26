@@ -195,6 +195,7 @@ model Excercise {
   startSets       Int?
   endSets         Int?
   progressionType String?     @default("linear")
+  excerciseNo     Int?
 
   @@unique([workoutId, name])
 }
