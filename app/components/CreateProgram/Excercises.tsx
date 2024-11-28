@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import NewExcercise from "./NewExcercise";
+import Loader from "../Loader";
 
 export default function Excercises({
   muscle,
@@ -12,6 +13,7 @@ export default function Excercises({
 }) {
   const [excercises, setExcercises] = useState([]);
   const [newShown, setNewShown] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Handle overlay clicks to close the modal
   const handleOverlayClick = (e) => {
@@ -33,6 +35,7 @@ export default function Excercises({
       .then((data) => {
         setExcercises(data || []);
         console.log(data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching exercises:", error);
@@ -46,7 +49,8 @@ export default function Excercises({
   return (
     <>
       {visible && (
-        <div
+
+          <div
           className="fixed inset-0 flex items-center justify-center z-40"
           onClick={handleOverlayClick}
         >
@@ -54,8 +58,13 @@ export default function Excercises({
           <div className="absolute inset-0 bg-black bg-opacity-50"></div>
 
           {/* Modal Content */}
-          <div className="bg-background-secondary p-6 rounded shadow-lg w-[90%] max-w-md relative z-10">
-            {newShown ? (
+          <div className="bg-background-secondary p-6 rounded shadow-lg w-[90%] max-w-md relative z-10 min-h-[50%] max-h-[75%] overflow-y-auto">
+          {loading ? (
+          <div className="h-full w-full flex items-center justify-center">
+          <Loader />
+          </div>
+          ) : (
+            newShown ? (
               <NewExcercise
                 onClose={() => setNewShown(false)}
                 muscleGroups={muscleGroups}
@@ -96,7 +105,8 @@ export default function Excercises({
                   </button>
                 </div>
               </>
-            )}
+            )
+          )}
           </div>
         </div>
       )}

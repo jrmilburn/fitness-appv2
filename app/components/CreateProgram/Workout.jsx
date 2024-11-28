@@ -5,8 +5,8 @@ import { handleMoveUp, handleMoveDown } from '@/app/lib/factories/programFactory
 
 export default function Workout({ workout, setProgram, program, excercises, advanced, workoutIndex }) {
     const [muscleGroupsShown, setMuscleGroupsShown] = useState(false);
-    const [muscleGroups, setMuscleGroups] = useState([]);
     const [workoutDetails, setWorkoutDetails] = useState([]);
+    const [muscleGroups, setMuscleGroups] = useState([]);
 
     // Populate muscleGroups with all muscleGroup objects from excercises, including duplicates
     useEffect(() => {
@@ -56,7 +56,6 @@ export default function Workout({ workout, setProgram, program, excercises, adva
     const moveDown = (e, index) => {
         e.preventDefault();
         const newProgram = handleMoveDown(index, program, workoutIndex, excercises);
-        console.log('NEW PROGRAM', newProgram);
         setProgram(newProgram);
         setWorkoutDetails((prevDetails) => {
             if (index >= prevDetails.length - 1) return prevDetails; // Can't move the last item down
@@ -99,7 +98,8 @@ export default function Workout({ workout, setProgram, program, excercises, adva
                 visible={muscleGroupsShown}
                 onClose={() => setMuscleGroupsShown(false)}
                 onAdd={(muscleGroup) => addMuscleGroup(muscleGroup)}
-                muscleGroups={workoutDetails.map((detail) => detail.muscleGroup)}
+                muscleGroups={muscleGroups}
+                setMuscleGroups={setMuscleGroups}
             />
         </>
     );

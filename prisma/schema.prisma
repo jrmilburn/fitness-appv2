@@ -197,7 +197,19 @@ model Excercise {
   progressionType String?     @default("linear")
   excerciseNo     Int?
 
+  autoRegulator   autoRegulator? @relation(fields: [autoRegulatorId], references: [id])
+  autoRegulatorId String?
+
   @@unique([workoutId, name])
+}
+
+model autoRegulator {
+  id        String @id @default(cuid())
+  soreness  Int    @default(0)
+  jointpain Int    @default(0)
+  workload  Int    @default(0)
+
+  Excercise Excercise[]
 }
 
 model Set {

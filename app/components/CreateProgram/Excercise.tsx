@@ -110,61 +110,61 @@ export default function Excercise({
                 </button>
 
                 {advanced && (
-  <>
-    <label className="flex flex-col w-full mt-2">
-      Set Progression Type:
-      <select
-        value={setProgressionType}
-        onChange={(e) => setSetProgressionType(e.target.value)}
-        className="border border-border p-1 mt-1"
-      >
-        <option value="linear">Linear</option>
-        <option value="none">None</option>
-      </select>
-    </label>
-
-    <div className="flex space-x-4 mt-2">
-      {/* Start Sets Input */}
-      <label className="flex flex-col">
-        Start Sets:
-        <input
-          type="number"
-          min="1"
-          value={startSets}
-          onChange={(e) => setStartSets(Number(e.target.value))}
-          className="border border-border p-1 mt-1 w-24"
-        />
-      </label>
-
-      {/* End Sets Input (only shown if setProgressionType is 'linear') */}
-      {setProgressionType === 'linear' && (
-        <label className="flex flex-col">
-          End Sets:
-          <input
-            type="number"
-            min="1"
-            value={endSets}
-            onChange={(e) => setEndSets(Number(e.target.value))}
-            className="border border-border p-1 mt-1 w-24"
-          />
-        </label>
-      )}
-    </div>
-
-    {/* Exercise Notes */}
-    <div className="w-full my-4">
-      <label htmlFor="excercise-notes" className="block text-primary-text inter-bold mb-2">
-        Exercise Notes:
-      </label>
-      <textarea
-        id="excercise-notes"
-        className="w-full h-16 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
-        placeholder="Enter exercise cues here..."
-        rows={2}
-      />
-    </div>
-  </>
-)}
+              <>
+                <label className="flex flex-col w-full mt-2">
+                  Set Progression Type:
+                  <select
+                    value={setProgressionType}
+                    onChange={(e) => setSetProgressionType(e.target.value)}
+                    className="border border-border p-1 mt-1"
+                  >
+                    <option value="linear">Linear</option>
+                    <option value="none">None</option>
+                  </select>
+                </label>
+                            
+                <div className="flex space-x-4 mt-2">
+                  {/* Start Sets Input */}
+                  <label className="flex flex-col">
+                    Start Sets:
+                    <input
+                      type="number"
+                      min="1"
+                      value={startSets}
+                      onChange={(e) => setStartSets(Number(e.target.value))}
+                      className="border border-border p-1 mt-1 w-24"
+                    />
+                  </label>
+                            
+                  {/* End Sets Input (only shown if setProgressionType is 'linear') */}
+                  {setProgressionType === 'linear' && (
+                    <label className="flex flex-col">
+                      End Sets:
+                      <input
+                        type="number"
+                        min="1"
+                        value={endSets}
+                        onChange={(e) => setEndSets(Number(e.target.value))}
+                        className="border border-border p-1 mt-1 w-24"
+                      />
+                    </label>
+                  )}
+                </div>
+                
+                {/* Exercise Notes */}
+                <div className="w-full my-4">
+                  <label htmlFor="excercise-notes" className="block text-primary-text inter-bold mb-2">
+                    Exercise Notes:
+                  </label>
+                  <textarea
+                    id="excercise-notes"
+                    className="w-full h-16 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
+                    placeholder="Enter exercise cues here..."
+                    rows={2}
+                  />
+                </div>
+              </>
+            )}
 
 
 

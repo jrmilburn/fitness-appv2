@@ -7,6 +7,7 @@ import ExcerciseForm from './ExcerciseForm'
 import ExcerciseInfo from './ExcerciseInfo'
 import AddExcercise from './AddExcercise'
 import ReplaceExcercise from './ReplaceExcercise'
+import AutoRegulationForm from './AutoRegulation'
 
 
 export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
@@ -17,6 +18,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
     const [muscle, setMuscle] = useState<muscle | null>(null);
     const [setsCompleted, setSetsComplete] = useState(false);
+    const [autoRegulationSubmitted, setAutoRegulationSubmitted] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [infoShown, setInfoShown] = useState(false);
     const [addExcerciseShown, setAddExcerciseShown] = useState(false);
@@ -266,6 +268,10 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                             workout={workout}
                             excercise={excercise}/>
 
+                    )}
+                    {setsCompleted && !autoRegulationSubmitted && (
+                        <AutoRegulationForm 
+                            setSubmission={setAutoRegulationSubmitted}/>
                     )}
                 </div>
 
