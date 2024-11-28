@@ -77,115 +77,116 @@ export function processProgramData(program) {
 
 
 
-  export async function saveProgram(program, userId, setAsCurrentProgram = true) {
-    const { name, length, days, weeks } = program;
-  
-    const createdProgram = await prisma.program.create({
-      data: {
-        name,
-        length,
-        days,
-        userId,
+export async function saveProgram(program, userId, setAsCurrentProgram = true) {
+  const { name, length, days, weeks } = program;
+
+  const createdProgram = await prisma.program.create({
+    data: {
+      name,
+      length,
+      days,
+      userId,
+    },
+  });
+
+  for (const [weekIndex, week] of weeks.entries()) {
+    const createdWeek = await prisma.week.upsert({
+      where: {
+        programId_weekNo: {
+          programId: createdProgram.id,
+          weekNo: weekIndex + 1,
+        },
+      },
+      update: {
+        updatedAt: new Date(),
+        repsInReserve: week.repsInReserve,
+      },
+      create: {
+        weekNo: weekIndex + 1,
+        programId: createdProgram.id,
+        repsInReserve: week.repsInReserve,
       },
     });
-  
-    for (const [weekIndex, week] of weeks.entries()) {
-      const createdWeek = await prisma.week.upsert({
+
+    for (const [workIndex, workout] of week.workouts.entries()) {
+      const createdWorkout = await prisma.workout.upsert({
         where: {
-          programId_weekNo: {
-            programId: createdProgram.id,
-            weekNo: weekIndex + 1,
+          weekId_name: {
+            weekId: createdWeek.id,
+            name: workout.name,
           },
         },
         update: {
           updatedAt: new Date(),
-          repsInReserve: week.repsInReserve,
         },
         create: {
-          weekNo: weekIndex + 1,
-          programId: createdProgram.id,
-          repsInReserve: week.repsInReserve,
+          name: workout.name,
+          weekId: createdWeek.id,
+          workoutNo: workIndex + 1,
         },
       });
-  
-      for (const [workIndex, workout] of week.workouts.entries()) {
-        const createdWorkout = await prisma.workout.upsert({
+
+      for (const [excerciseIndex, excercise] of workout.excercises.entries()) {
+        console.log('EXCERCISE DATA: ', excercise);
+
+        // Ensure the MuscleGroup exists or create it if necessary
+        const muscleGroupName = excercise.muscle || excercise.muscleGroup?.name;
+        const muscleGroup = await prisma.muscleGroup.upsert({
+          where: { name: muscleGroupName },
+          update: {},
+          create: { name: muscleGroupName },
+        });
+
+        // Check for existing exercise with non-null `details`
+        const existingExercise = await prisma.excercise.findFirst({
           where: {
-            weekId_name: {
-              weekId: createdWeek.id,
-              name: workout.name,
+            name: excercise.name,
+            muscleGroupId: muscleGroup.id,
+            details: { not: null },
+          },
+        });
+
+        // Prepare exercise details, including the correct excerciseNo
+        const excerciseDetails = {
+          name: excercise.name,
+          workoutId: createdWorkout.id,
+          muscleGroupId: muscleGroup.id,
+          details: existingExercise?.details || null,
+          startSets: excercise.startSets,
+          endSets: excercise.endSets,
+          progressionType: excercise.setProgression,
+          excerciseNo: excerciseIndex + 1, // Use the index + 1 for excerciseNo
+        };
+
+        const createdExcercise = await prisma.excercise.upsert({
+          where: {
+            workoutId_name: {
+              workoutId: createdWorkout.id,
+              name: excercise.name,
             },
           },
           update: {
+            ...excerciseDetails,
             updatedAt: new Date(),
           },
-          create: {
-            name: workout.name,
-            weekId: createdWeek.id,
-            workoutNo: workIndex + 1,
-          },
+          create: excerciseDetails,
         });
-  
-        for (const excercise of workout.excercises) {
-          console.log('EXCERCISE DATA: ', excercise);
-          // Ensure the MuscleGroup exists or create it if necessary
-          const muscleGroupName = excercise.muscle || excercise.muscleGroup?.name;
-          const muscleGroup = await prisma.muscleGroup.upsert({
-            where: { name: muscleGroupName },
-            update: {},
-            create: { name: muscleGroupName },
-          });
-  
-          // Check for existing exercise with non-null `details`
-          const existingExercise = await prisma.excercise.findFirst({
-            where: {
-              name: excercise.name,
-              muscleGroupId: muscleGroup.id,
-              details: { not: null },
-            },
-          });
-  
-          const excerciseDetails = {
-            name: excercise.name,
-            workoutId: createdWorkout.id,
-            muscleGroupId: muscleGroup.id,
-            details: existingExercise?.details || null,
-            startSets: excercise.startSets,
-            endSets: excercise.endSets,
-            progressionType: excercise.setProgression,
-            excerciseNo: excercise.excerciseNo
 
-          };
-  
-          const createdExcercise = await prisma.excercise.upsert({
-            where: {
-              workoutId_name: {
-                workoutId: createdWorkout.id,
-                name: excercise.name,
-              },
+        // Add Sets to the Exercise
+        for (const [setIndex, set] of excercise.sets.entries()) {
+          await prisma.set.create({
+            data: {
+              excerciseId: createdExcercise.id,
+              weight: set.weight,
+              reps: set.reps,
+              setNo: setIndex + 1,
             },
-            update: {
-              ...excerciseDetails,
-              updatedAt: new Date(),
-            },
-            create: excerciseDetails,
           });
-  
-          // Add Sets to the Exercise
-          for (const [setIndex, set] of excercise.sets.entries()) {
-            await prisma.set.create({
-              data: {
-                excerciseId: createdExcercise.id,
-                weight: set.weight,
-                reps: set.reps,
-                setNo: setIndex + 1,
-              },
-            });
-          }
         }
       }
     }
-  
+  }
+
     if (setAsCurrentProgram) {
       // Update user's currentProgramId
       await prisma.user.update({
@@ -246,6 +247,82 @@ export async function getUserPrograms(userEmail) {
   
     return programs;
   }
+
+
+  export function handleMoveUp(index, prevProgram, workoutIndex) {
+    if (index <= 0) return prevProgram; // Can't move the first item up
+  
+    // Deep clone the program and update all weeks
+    const updatedProgram = {
+      ...prevProgram,
+      weeks: prevProgram.weeks.map((week) => {
+        const updatedWorkouts = week.workouts.map((workout, wIndex) => {
+          if (wIndex === workoutIndex) {
+            // Clone the exercises array
+            const updatedExcercises = [...workout.excercises];
+  
+            // Swap the exercises
+            [updatedExcercises[index - 1], updatedExcercises[index]] = [
+              updatedExcercises[index],
+              updatedExcercises[index - 1],
+            ];
+  
+            return {
+              ...workout,
+              excercises: updatedExcercises,
+            };
+          }
+          return workout; // Return unchanged workouts
+        });
+  
+        return {
+          ...week,
+          workouts: updatedWorkouts,
+        };
+      }),
+    };
+  
+    return updatedProgram;
+  }
+  
+
+  export function handleMoveDown(index, prevProgram, workoutIndex, excercises) {
+    if (index >= excercises.length - 1) return prevProgram; // Can't move the last item down
+  
+    // Deep clone the program and update all weeks
+    const updatedProgram = {
+      ...prevProgram,
+      weeks: prevProgram.weeks.map((week) => {
+        const updatedWorkouts = week.workouts.map((workout, wIndex) => {
+          if (wIndex === workoutIndex) {
+            // Clone the exercises array
+            const updatedExcercises = [...workout.excercises];
+  
+            // Swap the exercises
+            [updatedExcercises[index], updatedExcercises[index + 1]] = [
+              updatedExcercises[index + 1],
+              updatedExcercises[index],
+            ];
+  
+            return {
+              ...workout,
+              excercises: updatedExcercises,
+            };
+          }
+          return workout; // Return unchanged workouts
+        });
+  
+        return {
+          ...week,
+          workouts: updatedWorkouts,
+        };
+      }),
+    };
+  
+    return updatedProgram;
+  }
+  
+
   
   
   

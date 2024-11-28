@@ -22,7 +22,7 @@ const nextConfig = withPWA({
       },
     ],
   },
-  reactStrictMode: true, // Enable React strict mode
+  reactStrictMode: false, // Enable React strict mode
 });
 
 export default nextConfig;

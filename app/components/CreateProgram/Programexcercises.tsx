@@ -89,12 +89,14 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
                 {/* Workouts Container */}
                 <div className="w-full flex flex-col">
                   <div className="flex space-x-4 w-full p-4 items-start">
-                    {program.weeks[0].workouts.map((workout, index) => (
+                  {(program.weeks.find(week => week.weekNo === 1) || program.weeks[0]).workouts.map((workout, index) => (
                       <Workout
-                        key={index}
+                        key={`${workout.weekNo}-${index}`}
+                        workoutIndex={index}
                         workout={workout.name}
                         setProgram={setProgram}
-                        excercises={workout.excercises}
+                        program={program}
+                        excercises={program.weeks[0].workouts[index].excercises}
                         advanced={advanced}
                       />
                     ))}

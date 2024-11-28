@@ -17,6 +17,7 @@ export default function Workout({ params }) {
         id: string;
         name: string;
         completed: boolean;
+        excerciseNo: number;
     }
     
     interface Workout {
@@ -138,7 +139,9 @@ export default function Workout({ params }) {
                     </div>
                 ))
             ) : (
-                workout?.excercises && workout.excercises.map(excercise => (
+                workout?.excercises && workout.excercises
+                .sort((a, b) => a.excerciseNo - b.excerciseNo)
+                .map(excercise => (
                     <Excercise 
                         key={excercise.id}
                         excercise={excercise}

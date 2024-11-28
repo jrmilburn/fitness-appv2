@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
 import Excercises from './Excercises';
+import {  
+    ChevronUpIcon, 
+    ChevronDownIcon
+} from "@heroicons/react/outline";
 
 export default function Excercise({
     muscleId,
     muscleName,
     excercise,
     setProgram,
+    handleMoveUp,
+    handleMoveDown,
     workout,
     excerciseindex,
     onDelete,
@@ -87,12 +93,20 @@ export default function Excercise({
     return (
         <>
             <div className="bg-background-secondary p-2 flex flex-col space-y-2 items-baseline relative text-primary-text">
-                <h2 className="bg-highlight p-1 text-secondary-text">{muscleName}</h2>
+                <div className='flex justify-between w-[60%] items-center'>
+                    <h2 className="bg-highlight p-1 text-secondary-text">{muscleName}</h2>
+                    <div className='flex flex-col'>
+                        <button className='' onClick={(e) => handleMoveUp(e, excerciseindex)}><ChevronUpIcon className="h-6 w-6 text-primary-text" /></button>
+                        <button className='' onClick={(e) => handleMoveDown(e, excerciseindex)}><ChevronDownIcon className="h-6 w-6 text-primary-text" /></button>
+                    </div>
+
+                </div>
+
                 <button
                     onClick={handleShowExcercises}
                     className="w-[100%] h-[100%] text-left border-solid border-2 border-gray-700 p-1"
                 >
-                    {selectedExcercise ? selectedExcercise : 'Select Exercise'}
+                    {selectedExcercise ? excercise.name : 'Select Exercise'}
                 </button>
 
                 {advanced && (
