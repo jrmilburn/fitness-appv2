@@ -17,7 +17,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
     }
 
 
-    console.log(excercise.id);
+    console.log('EXCERCISE', excercise);
 
     const [muscle, setMuscle] = useState<muscle | null>(null);
     const [setsCompleted, setSetsComplete] = useState(false);
@@ -221,7 +221,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
             <div className='flex justify-between items-center'>
 
                 <div className='flex flex-col'>
-                    <p className="p-1 text-secondary-text inter-main">{muscle ? muscle.name : ''}{excercise?.progressionType === 'linear' ? ' - Linear progression' : excercise.progressionType === 'none' ? ' - No set progression' : excercise.progressionType === 'autoregulated' ? ' - Auto Regulated progression' : ''}</p>
+                    <p className="p-1 text-secondary-text inter-main">{muscle ? muscle.name : ''}{excercise?.progressionType === 'linear' ? ' - Linear progression' : excercise.progressionType === 'none' ? ' - No set progression' : excercise.progressionType === 'auto' ? ' - Auto Regulated progression' : ''}</p>
                     <h2 className="text-xl p-1 text-primary-text inter-bold">{excercise.name}</h2>
                 </div>
 

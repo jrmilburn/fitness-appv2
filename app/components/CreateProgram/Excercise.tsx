@@ -16,14 +16,15 @@ export default function Excercise({
     workout,
     excerciseindex,
     onDelete,
-    advanced
+    advanced,
+    progressionType
 }) {
 
     console.log(muscleId, muscleName, excercise, workout, excerciseindex)
 
     const [showExcercises, setShowExcercises] = useState(false);
     const [selectedExcercise, setSelectedExcercise] = useState(excercise);
-    const [setProgressionType, setSetProgressionType] = useState(excercise?.setProgression || excercise?.progressionType || 'linear');
+    const [setProgressionType, setSetProgressionType] = useState(progressionType);
     const [startSets, setStartSets] = useState(excercise?.startSets || 2); // Default start sets
     const [endSets, setEndSets] = useState(excercise?.endSets || 4); // Default end sets
 
@@ -138,10 +139,11 @@ export default function Excercise({
                   >
                     <option value="linear">Linear</option>
                     <option value="none">None</option>
+                    <option value="auto">Auto</option>
                   </select>
                 </label>
-                            
-                <div className="flex space-x-4 mt-2">
+                {setProgressionType !== 'auto' && (
+                  <div className="flex space-x-4 mt-2">
                   {/* Start Sets Input */}
                   <label className="flex flex-col">
                     Start Sets:
@@ -168,6 +170,7 @@ export default function Excercise({
                     </label>
                   )}
                 </div>
+                )}          
                 
                 {/* Exercise Notes */}
                 <div className="w-full my-4">

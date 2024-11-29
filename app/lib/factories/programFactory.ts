@@ -33,11 +33,11 @@ export function processProgramData(program) {
       workout.excercises.forEach((excercise) => {
         let setCount;
 
-        console.log('EXCERCISE DATA: ', excercise);
-
         if (totalWeeks <= 1 || excercise.setProgression === 'none') {
           // If there is only 1 week, use startSets
           setCount = excercise.startSets;
+        } else if (excercise.setProgression === 'auto') {
+          setCount = 2;
         } else if (weekIndex === totalWeeks - 1) {
           // Last week has startSets
           setCount = excercise.startSets;

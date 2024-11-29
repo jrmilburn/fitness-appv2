@@ -67,14 +67,14 @@ export default function ProgramExcercises({ program, setProgram, type, onPreviou
         <>
 
             {isLoading && (
-                <div className="fixed inset-0 bg-black/50 z-40 backdrop-blur-md flex flex-col items-center justify-center">
+                <div className="fixed inset-0 bg-black/50 z-50 backdrop-blur-md flex flex-col items-center justify-center">
                     <div className="text-white text-lg flex items-center">
                         <span className='text-3xl font-bold'>Generating program</span>
                         <Loader 
                             size={10}
                             color="#fff"/>
                     </div>
-                    <span>This could take a few minutes...</span>
+                    <span className='text-white'>This could take a few minutes...</span>
                 </div>
             )}
 
