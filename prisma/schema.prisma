@@ -196,6 +196,7 @@ model Excercise {
   endSets         Int?
   progressionType String?     @default("linear")
   excerciseNo     Int?
+  autoregulation  Boolean     @default(false)
 
   autoRegulator   autoRegulator? @relation(fields: [autoRegulatorId], references: [id])
   autoRegulatorId String?

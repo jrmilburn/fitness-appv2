@@ -9,6 +9,7 @@ export default function Excercise({
     muscleId,
     muscleName,
     excercise,
+    setWorkoutDetails,
     setProgram,
     handleMoveUp,
     handleMoveDown,
@@ -17,15 +18,30 @@ export default function Excercise({
     onDelete,
     advanced
 }) {
+
+    console.log(muscleId, muscleName, excercise, workout, excerciseindex)
+
     const [showExcercises, setShowExcercises] = useState(false);
-    const [selectedExcercise, setSelectedExcercise] = useState(excercise?.name);
+    const [selectedExcercise, setSelectedExcercise] = useState(excercise);
     const [setProgressionType, setSetProgressionType] = useState(excercise?.setProgression || excercise?.progressionType || 'linear');
     const [startSets, setStartSets] = useState(excercise?.startSets || 2); // Default start sets
-    const [endSets, setEndSets] = useState(excercise?.endSets || 2); // Default end sets
+    const [endSets, setEndSets] = useState(excercise?.endSets || 4); // Default end sets
 
     const handleSelectExcercise = (e, excercise) => {
         e.preventDefault();
         setSelectedExcercise(excercise);
+
+        setWorkoutDetails((prevDetails) => {
+            const updatedDetails = [...prevDetails];
+            updatedDetails[excerciseindex] = {
+                ...updatedDetails[excerciseindex],
+                excercise: {
+                    ...excercise,
+                    name: excercise
+                }
+            };
+            return updatedDetails;
+        })
 
         setProgram((prev) => {
             const newProgram = { ...prev };
@@ -90,6 +106,8 @@ export default function Excercise({
         });
     }, [setProgressionType, startSets, endSets]);
 
+    console.log(excercise);
+
     return (
         <>
             <div className="bg-background-secondary p-2 flex flex-col space-y-2 items-baseline relative text-primary-text">
@@ -106,7 +124,7 @@ export default function Excercise({
                     onClick={handleShowExcercises}
                     className="w-[100%] h-[100%] text-left border-solid border-2 border-gray-700 p-1"
                 >
-                    {selectedExcercise ? excercise.name : 'Select Exercise'}
+                    {selectedExcercise ? excercise : 'Select Exercise'}
                 </button>
 
                 {advanced && (

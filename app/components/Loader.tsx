@@ -1,10 +1,10 @@
 "use client";
 
-import { ClimbingBoxLoader } from "react-spinners"
+import { PuffLoader } from "react-spinners"
 
 export default function Loader({ size = 10, color = "#000"}) {
     return (
-        <ClimbingBoxLoader
+        <PuffLoader
             size={size} 
             color={color}
             />

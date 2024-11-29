@@ -5,24 +5,23 @@ import { handleMoveUp, handleMoveDown } from '@/app/lib/factories/programFactory
 
 export default function Workout({ workout, setProgram, program, excercises, advanced, workoutIndex }) {
     const [muscleGroupsShown, setMuscleGroupsShown] = useState(false);
-    const [workoutDetails, setWorkoutDetails] = useState([]);
+    const [workoutDetails, setWorkoutDetails] = useState(
+        excercises.map((excercise) => ({
+          muscleGroup: excercise.muscleGroup,
+          excercise,
+        }))
+      );
+      
     const [muscleGroups, setMuscleGroups] = useState([]);
-
-    // Populate muscleGroups with all muscleGroup objects from excercises, including duplicates
-    useEffect(() => {
-        const initialWorkoutDetails = excercises.map((exercise) => ({
-            muscleGroup: exercise.muscleGroup,
-            exercise,
-        }));
-        setWorkoutDetails(initialWorkoutDetails);
-    }, [excercises]);
 
     console.log('excercises from workout: ', excercises);
 
     const addMuscleGroup = (muscleGroup) => {
         setWorkoutDetails((prevDetails) => [
             ...prevDetails,
-            { muscleGroup, exercise: null } // Add muscleGroup with no exercise initially
+            { muscleGroup, excercise: {
+                name: ''
+            } } // Add muscleGroup with no exercise initially
         ]);
         setMuscleGroupsShown(false);
     };
@@ -65,6 +64,8 @@ export default function Workout({ workout, setProgram, program, excercises, adva
                 updatedDetails[index + 1],
                 updatedDetails[index],
             ];
+
+
             return updatedDetails;
         });
     };
@@ -74,7 +75,9 @@ export default function Workout({ workout, setProgram, program, excercises, adva
             <div className="bg-background min-w-64 p-4 flex flex-col space-y-4 justify">
                 <h2 className="text-lg text-primary-text">{workout}</h2>
                 <div className="flex flex-col space-y-4">
-                {workoutDetails.map((detail, index) => (
+                {workoutDetails.map((detail, index) => {
+                    console.log('detail: ', detail);
+                    return (
                     <Excercise
                         key={`${workout.name}-${index}`}
                         excerciseindex={index}
@@ -82,13 +85,14 @@ export default function Workout({ workout, setProgram, program, excercises, adva
                         handleMoveDown={moveDown}
                         muscleId={detail.muscleGroup?.id || null}
                         muscleName={detail.muscleGroup?.name || "Unspecified"}
-                        excercise={detail.exercise}
+                        excercise={detail.excercise.name}
+                        setWorkoutDetails={setWorkoutDetails}
                         setProgram={setProgram}
                         workout={workout}
                         onDelete={() => removeMuscleGroup(index)}
                         advanced={advanced}
                     />
-                ))}
+                )})}
             </div>
                 <button type="button" className="bg-background-secondary text-primary-text p-2" onClick={showMuscleGroups}>
                     Add Muscle Group +

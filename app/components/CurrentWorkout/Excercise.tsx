@@ -16,9 +16,12 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
         name: string
     }
 
+
+    console.log(excercise.id);
+
     const [muscle, setMuscle] = useState<muscle | null>(null);
     const [setsCompleted, setSetsComplete] = useState(false);
-    const [autoRegulationSubmitted, setAutoRegulationSubmitted] = useState(false);
+    const [autoRegulationSubmitted, setAutoRegulationSubmitted] = useState(excercise.autoregulation);
     const [isEditing, setIsEditing] = useState(false);
     const [infoShown, setInfoShown] = useState(false);
     const [addExcerciseShown, setAddExcerciseShown] = useState(false);
@@ -218,7 +221,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
             <div className='flex justify-between items-center'>
 
                 <div className='flex flex-col'>
-                    <p className="p-1 text-secondary-text inter-main">{muscle ? muscle.name : ''}</p>
+                    <p className="p-1 text-secondary-text inter-main">{muscle ? muscle.name : ''}{excercise?.progressionType === 'linear' ? ' - Linear progression' : excercise.progressionType === 'none' ? ' - No set progression' : excercise.progressionType === 'autoregulated' ? ' - Auto Regulated progression' : ''}</p>
                     <h2 className="text-xl p-1 text-primary-text inter-bold">{excercise.name}</h2>
                 </div>
 
@@ -271,7 +274,8 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                     )}
                     {setsCompleted && !autoRegulationSubmitted && (
                         <AutoRegulationForm 
-                            setSubmission={setAutoRegulationSubmitted}/>
+                            setSubmission={setAutoRegulationSubmitted}
+                            id={excercise.id}/>
                     )}
                 </div>
 
