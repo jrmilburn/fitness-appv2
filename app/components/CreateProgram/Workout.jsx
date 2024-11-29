@@ -1,6 +1,6 @@
 import Musclegroups from './Musclegroups';
 import Excercise from './Excercise';
-import { useState, useEffect } from 'react';
+import { useState} from 'react';
 import { handleMoveUp, handleMoveDown } from '@/app/lib/factories/programFactory';
 
 export default function Workout({ workout, setProgram, program, excercises, advanced, workoutIndex }) {
