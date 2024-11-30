@@ -281,13 +281,36 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
 
             </div>
 
-            <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text inter-main">
-                <h2>Weight</h2>
-                <h2>Reps</h2>
-            </div>
-            {excercise?.sets?.map((set, index) => (
-                <Set key={index} setId={set.id} Rir={weekRir} workout={workout} setWorkout={setWorkout} onDelete={() => handleDeleteSet(set.id)} onAdd={() => handleAddSet()} onDataFetch={handleSetDataFetch} />
-            ))}
+            {excercise.sets.length === 0 ? (
+              excercise.progressionType === 'auto' ? (
+                <>
+                  <p>Sets not programmed yet</p>
+                  <p>Complete previous workouts to get autoregulated set volumes</p>
+                </>
+              ) : (
+                <p>No sets programmed for this excercise</p>
+              )
+            ) : (
+              <>
+                <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text inter-main">
+                  <h2>Weight</h2>
+                  <h2>Reps</h2>
+                </div>
+                {excercise.sets.map((set, index) => (
+                  <Set
+                    key={index}
+                    setId={set.id}
+                    Rir={weekRir}
+                    workout={workout}
+                    setWorkout={setWorkout}
+                    onDelete={() => handleDeleteSet(set.id)}
+                    onAdd={handleAddSet}
+                    onDataFetch={handleSetDataFetch}
+                  />
+                ))}
+              </>
+            )}
+
 
             {setsCompleted && <p className="text-green-500 inter-bold">All sets completed!</p>}
         </div>
