@@ -146,6 +146,7 @@ export default function Workout({ params }) {
                         key={excercise.id}
                         excercise={excercise}
                         weekRir={week?.repsInReserve}
+                        weekNo={week?.weekNo}
                         workout={workout}
                         setWorkout={setWorkout}
                     />
