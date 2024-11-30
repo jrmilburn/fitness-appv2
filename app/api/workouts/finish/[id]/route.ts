@@ -33,7 +33,8 @@ export async function PUT(req, { params }) {
             include: {
               excercises: {
                 include: {
-                  sets: true
+                  sets: true,
+                  autoRegulator: true
                 }
               }
             }

@@ -224,6 +224,8 @@ export async function findNextWorkout(userEmail) {
 
   async function determineNewSetCount(completedExcercise) {
 
+    console.log('COMPLETED EXCERCISE', completedExcercise);
+
     return completedExcercise.sets.length;
 
   }
