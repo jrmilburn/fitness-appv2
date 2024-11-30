@@ -28,7 +28,7 @@ export default async function CustomExcercisesPage() {
 
 
     return (
-        <div className='p-8'>
+        <div className=''>
         <CustomExcercises 
             excercises={customexcercises}
             muscleGroups={muscleGroups}/>

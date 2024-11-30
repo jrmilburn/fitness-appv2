@@ -48,8 +48,8 @@ export default function ProgramTemplates({ setProgram, onNext }) {
   };
 
   return (
-    <div className="flex flex-col w-full space-y-4 p-4 sm:max-w-screen-sm sm:mx-auto">
-      <h2 className="text-left text-2xl sm:text-3xl text-primary-text">JFIT Templates</h2>
+    <div className="flex flex-col w-full sm:max-w-screen-sm sm:mx-auto">
+      <h2 className="text-left text-2xl sm:text-3xl text-primary-text p-2 pb-4">JFIT Templates</h2>
 
       {isLoading ? (
         <>
@@ -63,7 +63,7 @@ export default function ProgramTemplates({ setProgram, onNext }) {
         programTemplates.map((program) => (
           <div
             key={program.id}
-            className={`w-full bg-background-secondary p-4 rounded shadow-md`}
+            className={`w-full bg-background-secondary p-4 rounded border-b-2 border-border shadow-md`}
           >
             <div className="w-full flex justify-between items-start">
               <div>

@@ -50,7 +50,7 @@ export default function Search() {
     return (
         <div className="w-full h-full max-w-3xl mx-auto">
             {/* Search Input and Button */}
-            <form className="sm:w-[80%] w-[90%] mx-auto my-16 flex space-x-4" onSubmit={handleSearch}>
+            <form className="sm:w-[80%] w-[90%] mx-auto p-4  flex space-x-4" onSubmit={handleSearch}>
                 <input
                     type="text"
                     placeholder="Search for users..."

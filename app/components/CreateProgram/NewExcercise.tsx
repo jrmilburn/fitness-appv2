@@ -67,6 +67,7 @@ export default function NewExcercise({ workoutId, muscleGroups, onClose }) {
                 text={group.name}
                 onChange={() => setMuscle(group.id)}
                 checked={muscle === group.name}
+                size={1.5}
               />
             ))}
           </div>

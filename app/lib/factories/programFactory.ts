@@ -1,20 +1,12 @@
 // lib/programFactory.js
 import { prisma } from '../prisma';
 
-export async function determineUserId(userEmail, programUserId) {
+export async function determineUserId(userEmail) {
   const user = await prisma.user.findUnique({
     where: { email: userEmail },
   });
 
-  if (!programUserId) {
-    return user?.id;
-  }
-
-  const adminUser = await prisma.user.findUnique({
-    where: { email: 'admin@jfit.com.au' },
-  });
-
-  return adminUser.id === programUserId ? user.id : programUserId;
+  return user.id;
 }
 
 export function processProgramData(program) {

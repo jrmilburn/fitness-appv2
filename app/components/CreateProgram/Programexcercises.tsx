@@ -19,7 +19,26 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(program),
+      body: JSON.stringify({
+        completed: false,
+        days: program.days,
+        length: program.length,
+        name: program.name,
+        weeks: program.weeks.map((week) => ({
+            weekNumber: week.weekNo || week.weekNumber,
+            workouts: week.workouts.map((workout) => ({
+                name: workout.name,
+                excercises: workout.excercises.map((excercise) => ({
+                    muscle: excercise?.muscleGroup?.name || excercise.muscle,
+                    name: excercise?.name,
+                    setProgression: excercise.progressionType || excercise.setProgression,
+                    startSets: excercise.startSets,
+                    endSets: excercise.endSets,
+                    excerciseNo: excercise.excerciseNo
+                }))
+            }))
+        }))
+      }),
     });
 
     setIsLoading(false);

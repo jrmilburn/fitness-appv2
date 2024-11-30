@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function User({ user }) {
     return (
-        <div className='flex w-full justify-between items-center border-2 border-border md:rounded-xl shadow-sm bg-background-secondary  p-4'>
+        <div className='flex w-full justify-between items-center border-b-2 border-border rounded shadow-sm bg-background-secondary  p-4'>
             <div className="flex items-center">
                 <Image
                     src={user.image || '/avatar.svg'}

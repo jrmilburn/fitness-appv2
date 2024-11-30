@@ -30,7 +30,7 @@ export async function POST(req) {
     const program = await req.json();
 
     // Determine the correct userId
-    const userId = await determineUserId(userEmail, program.userId);
+    const userId = await determineUserId(userEmail);
 
     // Process the program data
     const processedProgram = processProgramData(program);

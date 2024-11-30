@@ -38,7 +38,7 @@ export default function Musclegroups({ visible, onClose, onAdd, muscleGroups, se
             <div className="fixed inset-0 bg-black bg-opacity-50"></div>
   
             {/* Modal Content */}
-            <div className="bg-white p-6 rounded shadow-lg w-[90%] max-w-md relative z-10">
+            <div className="bg-background-secondary p-6 rounded shadow-lg w-[90%] max-w-md relative z-10">
               <h2 className="text-xl mb-4">Muscle Groups</h2>
               {muscleGroups?.map((muscleGroup) => (
                 <div key={muscleGroup.id} className="flex items-center justify-between border-b py-2">

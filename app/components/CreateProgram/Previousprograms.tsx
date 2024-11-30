@@ -40,8 +40,8 @@ export default function PreviousPrograms({ setProgram, onNext }) {
   };
 
   return (
-    <div className="flex flex-col w-full space-y-4 p-4 sm:max-w-screen-sm sm:mx-auto">
-      <div className="flex justify-between w-full">
+    <div className="flex flex-col w-full sm:max-w-screen-sm sm:mx-auto">
+      <div className="flex justify-between items-center w-full p-2">
         <h2 className="text-left text-2xl sm:text-3xl text-primary-text">Previous programs</h2>
         <button
           className="inter-bold border-2 text-primary-text border-border p-2 hover:bg-highlight rounded flex gap-2"
@@ -61,7 +61,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
         previousPrograms.map((program) => (
           <div
             key={program.id}
-            className={`w-full bg-background-secondary p-4 rounded shadow-md`}
+            className={`w-full bg-background-secondary p-4 rounded shadow-md border-b-2 border-border`}
           >
             <div className="w-full flex justify-between items-start">
               <div>
