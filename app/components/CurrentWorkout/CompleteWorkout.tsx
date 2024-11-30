@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
+import Loader from "../Loader";
 
 export default function CompleteWorkout({ completed, workout, setWorkout, programComplete }) {
     const [isLoading, setIsLoading] = useState(false);
@@ -79,9 +80,14 @@ export default function CompleteWorkout({ completed, workout, setWorkout, progra
                 <button 
                     onClick={handleFinish} 
                     disabled={isLoading}  // Disable button while loading
-                    className={`w-full max-w-2xl text-lg font-bold text-background bg-primary-text p-4 rounded hover:opacity-75 transition-all duration-300 fixed bottom-10 ${isLoading ? 'opacity-50' : ''}`}
+                    className={`w-full max-w-2xl text-lg font-bold text-background bg-primary-text p-4 rounded hover:opacity-75 transition-all flex items-center justify-center duration-300 fixed bottom-10 ${isLoading ? 'opacity-50' : ''}`}
                 >
-                    {isLoading ? 'Finishing...' : 'Finish Workout'}
+                    {isLoading ? (
+                        <>
+                            <Loader size={6} color="background" />
+                            <span className="ml-2 text-background">Finishing...</span>
+                        </>
+                    ) : 'Finish Workout'}
                 </button> 
             )}
         </>

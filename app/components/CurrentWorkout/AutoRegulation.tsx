@@ -200,15 +200,15 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
 
             <button
               type="submit"
-              className={`flex justify-center items-center p-4 rounded-lg text-primary-text font-semibold text-lg ${
+              className={`flex justify-center items-center p-4 rounded-lg text-background font-semibold text-lg ${
                 isFormValid ? 'bg-black hover:bg-gray-800 text-background' : 'bg-gray-400 cursor-not-allowed'
               }`}
               disabled={!isFormValid || isLoading}
             >
               {isLoading ? (
                 <>
-                  <Loader size={6} color="white" />
-                  <span className="ml-2">Submitting...</span>
+                  <Loader size={6} color="background" />
+                  <span className="ml-2 text-background">Submitting...</span>
                 </>
               ) : (
                 'Submit'
