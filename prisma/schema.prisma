@@ -194,6 +194,7 @@ model Excercise {
   createdBy       User?       @relation(name: "UserExcercises", fields: [createdById], references: [id])
   startSets       Int?
   endSets         Int?
+  actualSets      Float?
   progressionType String?     @default("linear")
   excerciseNo     Int?
   autoregulation  Boolean     @default(false)
@@ -206,7 +207,7 @@ model Excercise {
 
 model autoRegulator {
   id        String @id @default(cuid())
-  soreness  Int    @default(0)
+  soreness  Int?    @default(0)
   jointpain Int    @default(0)
   workload  Int    @default(0)
 

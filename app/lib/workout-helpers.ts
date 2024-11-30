@@ -128,7 +128,15 @@ export async function findNextWorkout(userEmail) {
   
     // Determine new set count based on completed exercise
     const newSetCount = await determineNewSetCount(completedExercise);
-  
+    await prisma.excercise.update({
+      where: {
+        id: nextExercise.id
+      },
+      data: {
+        actualSets: newSetCount
+      }
+    })
+
     // Generate new sets
     const newSets = [];
   
@@ -222,10 +230,41 @@ export async function findNextWorkout(userEmail) {
     return prevSet;
   }
 
-  async function determineNewSetCount(completedExcercise) {
+//Algorithm for autoregulation
 
-    console.log('COMPLETED EXCERCISE', completedExcercise);
-
-    return completedExcercise.sets.length;
-
+  async function determineNewSetCount(completedExercise) {
+    console.log('COMPLETED EXERCISE', completedExercise);
+  
+    const weights = {
+      soreness: 0.3,
+      jointpain: 0.4,
+      workload: 0.3,
+    };
+  
+    const maxRating = 3; // Maximum rating for each factor
+    const scalingFactor = 2; // Adjusts the overall impact on additionalSets
+  
+    // Normalize the ratings to a 0-1 scale
+    const normalizedSoreness = completedExercise.autoRegulator.soreness / maxRating;
+    const normalizedJointPain = completedExercise.autoRegulator.jointpain / maxRating;
+    const normalizedWorkload = completedExercise.autoRegulator.workload / maxRating;
+  
+    // Calculate weighted adjustments for each factor
+    let additionalSets =
+      ((0.5 - normalizedSoreness) * weights.soreness +
+        (0.5 - normalizedJointPain) * weights.jointpain +
+        (0.5 - normalizedWorkload) * weights.workload) *
+      scalingFactor;
+  
+    // Round the additionalSets to the nearest integer
+    additionalSets = Math.round(additionalSets);
+  
+    // Calculate the new set count
+    let newSetCount = completedExercise.actualSets + additionalSets;
+  
+    // Ensure newSetCount is at least 1
+    newSetCount = Math.max(newSetCount, 1);
+  
+    return newSetCount;
   }
+  

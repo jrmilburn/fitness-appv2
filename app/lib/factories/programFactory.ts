@@ -160,6 +160,7 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           details: existingExercise?.details || null,
           startSets: excercise.startSets,
           endSets: excercise.endSets,
+          actualSets: excercise.startSets,
           progressionType: excercise.setProgression,
           excerciseNo: excerciseIndex + 1, // Use the index + 1 for excerciseNo
         };

@@ -2,7 +2,7 @@ import RadioBtn from "../Radiobtn";
 import { useState, useEffect } from 'react';
 import Loader from "../Loader";
 
-export default function AutoRegulationForm({ setSubmission, id }) {
+export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
   const [soreness, setSoreness] = useState(null);
   const [jointpain, setJointPain] = useState(null);
   const [workload, setWorkload] = useState(null);
@@ -43,8 +43,13 @@ export default function AutoRegulationForm({ setSubmission, id }) {
   };
 
   useEffect(() => {
-    setIsFormValid(soreness !== null && jointpain !== null && workload !== null);
-  }, [soreness, jointpain, workload]);
+    // Adjust form validation based on weekNo
+    if (weekNo === 1) {
+      setIsFormValid(jointpain !== null && workload !== null);
+    } else {
+      setIsFormValid(soreness !== null && jointpain !== null && workload !== null);
+    }
+  }, [soreness, jointpain, workload, weekNo]);
 
   return (
     <div
@@ -62,30 +67,118 @@ export default function AutoRegulationForm({ setSubmission, id }) {
           <h2 className="text-2xl font-bold text-primary-text mb-6">General Details</h2>
 
           <div className="flex flex-col space-y-6 w-full">
-            {/* Your form fields remain unchanged */}
-            <div>
-              <h3 className="text-xl font-semibold text-primary-text mb-2">Soreness after last session</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <RadioBtn id="soreness1" name="soreness" text="Never got sore" onChange={() => setSoreness(0)} checked={soreness === 0} size={2} />
-                <RadioBtn id="soreness2" name="soreness" text="Sore But Recovered" onChange={() => setSoreness(1)} checked={soreness === 1} size={2} />
-                <RadioBtn id="soreness3" name="soreness" text="Still Sore" onChange={() => setSoreness(2)} checked={soreness === 2} size={2} />
+            {/* Conditionally render the soreness question */}
+            {weekNo !== 1 && (
+              <div>
+                <h3 className="text-xl font-semibold text-primary-text mb-2">Soreness after last session</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <RadioBtn
+                    id="soreness1"
+                    name="soreness"
+                    text="No Soreness"
+                    onChange={() => setSoreness(0)}
+                    checked={soreness === 0}
+                    size={2}
+                  />
+                  <RadioBtn
+                    id="soreness2"
+                    name="soreness"
+                    text="Mild Soreness"
+                    onChange={() => setSoreness(1)}
+                    checked={soreness === 1}
+                    size={2}
+                  />
+                  <RadioBtn
+                    id="soreness3"
+                    name="soreness"
+                    text="Moderate Soreness"
+                    onChange={() => setSoreness(2)}
+                    checked={soreness === 2}
+                    size={2}
+                  />
+                  <RadioBtn
+                    id="soreness4"
+                    name="soreness"
+                    text="Severe Soreness"
+                    onChange={() => setSoreness(3)}
+                    checked={soreness === 3}
+                    size={2}
+                  />
+                </div>
               </div>
-            </div>
+            )}
             <div>
               <h3 className="text-xl font-semibold text-primary-text mb-2">Joint pain today</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <RadioBtn id="jointpain1" name="jointpain" text="None" onChange={() => setJointPain(0)} checked={jointpain === 0} size={2} />
-                <RadioBtn id="jointpain2" name="jointpain" text="Some" onChange={() => setJointPain(1)} checked={jointpain === 1} size={2} />
-                <RadioBtn id="jointpain3" name="jointpain" text="A lot" onChange={() => setJointPain(2)} checked={jointpain === 2} size={2} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <RadioBtn
+                  id="jointpain1"
+                  name="jointpain"
+                  text="No Pain"
+                  onChange={() => setJointPain(0)}
+                  checked={jointpain === 0}
+                  size={2}
+                />
+                <RadioBtn
+                  id="jointpain2"
+                  name="jointpain"
+                  text="Mild Pain"
+                  onChange={() => setJointPain(1)}
+                  checked={jointpain === 1}
+                  size={2}
+                />
+                <RadioBtn
+                  id="jointpain3"
+                  name="jointpain"
+                  text="Moderate Pain"
+                  onChange={() => setJointPain(2)}
+                  checked={jointpain === 2}
+                  size={2}
+                />
+                <RadioBtn
+                  id="jointpain4"
+                  name="jointpain"
+                  text="Severe Pain"
+                  onChange={() => setJointPain(3)}
+                  checked={jointpain === 3}
+                  size={2}
+                />
               </div>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-primary-text mb-2">Workload today</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <RadioBtn id="workload1" name="workload" text="Easy" onChange={() => setWorkload(0)} checked={workload === 0} size={2} />
-                <RadioBtn id="workload2" name="workload" text="Pretty Good" onChange={() => setWorkload(1)} checked={workload === 1} size={2} />
-                <RadioBtn id="workload3" name="workload" text="Challenging" onChange={() => setWorkload(2)} checked={workload === 2} size={2} />
-                <RadioBtn id="workload4" name="workload" text="Too much" onChange={() => setWorkload(3)} checked={workload === 3} size={2} />
+                <RadioBtn
+                  id="workload1"
+                  name="workload"
+                  text="Easy"
+                  onChange={() => setWorkload(0)}
+                  checked={workload === 0}
+                  size={2}
+                />
+                <RadioBtn
+                  id="workload2"
+                  name="workload"
+                  text="Pretty Good"
+                  onChange={() => setWorkload(1)}
+                  checked={workload === 1}
+                  size={2}
+                />
+                <RadioBtn
+                  id="workload3"
+                  name="workload"
+                  text="Challenging"
+                  onChange={() => setWorkload(2)}
+                  checked={workload === 2}
+                  size={2}
+                />
+                <RadioBtn
+                  id="workload4"
+                  name="workload"
+                  text="Too Much"
+                  onChange={() => setWorkload(3)}
+                  checked={workload === 3}
+                  size={2}
+                />
               </div>
             </div>
 

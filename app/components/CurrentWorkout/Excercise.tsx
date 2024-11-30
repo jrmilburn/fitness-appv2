@@ -10,7 +10,7 @@ import ReplaceExcercise from './ReplaceExcercise'
 import AutoRegulationForm from './AutoRegulation'
 
 
-export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
+export default function Excercise({ excercise, weekRir, weekNo, workout, setWorkout }) {
 
     interface muscle {
         name: string
@@ -275,7 +275,8 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
                     {setsCompleted && !autoRegulationSubmitted && (
                         <AutoRegulationForm 
                             setSubmission={setAutoRegulationSubmitted}
-                            id={excercise.id}/>
+                            id={excercise.id}
+                            weekNo={weekNo}/>
                     )}
                 </div>
 
