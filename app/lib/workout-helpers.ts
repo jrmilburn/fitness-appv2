@@ -57,36 +57,103 @@ export async function findNextWorkout(userEmail) {
   }
 
 
-export async function updateNextWeekSets(completedWeek, nextWeek) {
-
-    for (const workout of nextWeek.workouts) {
-      for (const excercise of workout.excercises) {
-        for (const set of excercise.sets) {
+  export async function updateNextWeekSets(completedWeek, nextWeek) {
+    for (const nextWorkout of nextWeek.workouts) {
+      // Find the corresponding workout in the completed week
+      const completedWorkout = completedWeek.workouts.find(
+        (workout) => workout.workoutNo === nextWorkout.workoutNo
+      );
   
-          // Find the corresponding set from the completed week
-          const prevSet = await findPreviousWeekSet(set.id, completedWeek);
+      if (!completedWorkout) {
+        console.warn(
+          `No matching workout found in completedWeek for workoutNo: ${nextWorkout.workoutNo}`
+        );
+        continue;
+      }
   
-          console.log('PREV SET: ', prevSet);
+      for (const nextExercise of nextWorkout.excercises) {
+        // Only process exercises with 'auto' progression
+        if (nextExercise.progressionType === 'auto') {
+          // Generate sets for 'auto' progression exercises that currently have no sets
+          await generateSetsForAutoProgression(nextExercise, completedWorkout);
+        } else {
+          // For other progression types, maintain existing logic
+          for (const set of nextExercise.sets) {
+            const prevSet = await findPreviousWeekSet(set.id, completedWeek);
   
-          // Check if prevSet exists and log the details for debugging
-          if (prevSet) {
-            console.log(`Updating set ID: ${set.id} based on previous set ID: ${prevSet.id}`);
-            console.log(`Previous Reps: ${prevSet.reps}, Previous Weight: ${prevSet.weight}`);
-            
-            // Update the set with recommended progressive overload values
-            await prisma.set.update({
-              where: { id: set.id },
-              data: {
-                recommendedReps: prevSet.reps + 1,
-                recommendedWeight: Math.ceil(prevSet.weight * 1.01) // Example of 1% increase
-              }
-            });
-          } else {
-            console.log(`Skipping update for set ID ${set.id} as no matching previous set was found.`);
+            if (prevSet) {
+              // Update the set with recommended progressive overload values
+              await prisma.set.update({
+                where: { id: set.id },
+                data: {
+                  recommendedReps: prevSet.reps + 1,
+                  recommendedWeight: Math.ceil(prevSet.weight * 1.01),
+                },
+              });
+            } else {
+              console.log(
+                `Skipping update for set ID ${set.id} as no matching previous set was found.`
+              );
+            }
           }
         }
       }
     }
+  }
+
+  async function generateSetsForAutoProgression(nextExercise, completedWorkout) {
+    // Check if sets already exist
+    const existingSets = await prisma.set.findMany({
+      where: { excerciseId: nextExercise.id },
+    });
+  
+    if (existingSets.length > 0) {
+      console.log(
+        `Sets already exist for exercise ${nextExercise.name} in next week; skipping generation.`
+      );
+      return;
+    }
+  
+    // Find the corresponding exercise in the completed week
+    const completedExercise = completedWorkout.excercises.find(
+      (exercise) => exercise.name === nextExercise.name
+    );
+  
+    if (!completedExercise) {
+      console.warn(
+        `No matching exercise found in completedWorkout for exercise name: ${nextExercise.name}`
+      );
+      return;
+    }
+  
+    // Determine new set count based on completed exercise
+    const newSetCount = await determineNewSetCount(completedExercise);
+  
+    // Generate new sets
+    const newSets = [];
+  
+    for (let index = 0; index < newSetCount; index++) {
+      const prevSet = completedExercise.sets[index];
+      const recommendedWeight = prevSet
+        ? Math.ceil(prevSet.weight * 1.01)
+        : 0;
+      const recommendedReps = prevSet ? prevSet.reps + 1 : 0;
+  
+      const setData = {
+        excerciseId: nextExercise.id,
+        weight: 0,
+        reps: 0,
+        setNo: index + 1,
+        recommendedWeight,
+        recommendedReps,
+      };
+  
+      const createdSet = await prisma.set.create({ data: setData });
+      newSets.push(createdSet);
+    }
+  
+    // Update the nextExercise object
+    nextExercise.sets = newSets;
   }
 
   async function findPreviousWeekSet(setId, completedWeek) {
@@ -153,4 +220,10 @@ export async function updateNextWeekSets(completedWeek, nextWeek) {
     }
   
     return prevSet;
+  }
+
+  async function determineNewSetCount(completedExcercise) {
+
+    return completedExcercise.sets.length;
+
   }
