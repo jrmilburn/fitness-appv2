@@ -285,7 +285,7 @@ export default function Excercise({ excercise, weekRir, workout, setWorkout }) {
               excercise.progressionType === 'auto' ? (
                 <>
                   <p>Sets not programmed yet</p>
-                  <p>Complete previous workouts to get autoregulated set volumes</p>
+                  <p className='text-secondary-text'>Complete previous workouts to get autoregulated set volumes</p>
                 </>
               ) : (
                 <p>No sets programmed for this excercise</p>
