@@ -33,11 +33,15 @@ export function processProgramData(program) {
       workout.excercises.forEach((excercise) => {
         let setCount;
 
-        if (totalWeeks <= 1 || excercise.setProgression === 'none') {
-          // If there is only 1 week, use startSets
+        if (excercise.setProgression === 'auto' && weekIndex > 0) {
+          // For weeks beyond the first, exercises with 'auto' progression have no sets
+          setCount = 0;
+        } else if (totalWeeks <= 1 || excercise.setProgression === 'none') {
+          // If there is only 1 week or progression is 'none', use startSets
           setCount = excercise.startSets;
         } else if (excercise.setProgression === 'auto') {
-          setCount = 2;
+          // For the first week, exercises with 'auto' progression use startSets
+          setCount = excercise.startSets;
         } else if (weekIndex === totalWeeks - 1) {
           // Last week has startSets
           setCount = excercise.startSets;
@@ -74,6 +78,8 @@ export function processProgramData(program) {
 
   return program;
 }
+
+
 
 
 
