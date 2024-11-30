@@ -1,6 +1,7 @@
 import RadioBtn from "../Radiobtn";
 import { useState, useEffect } from 'react';
 import Loader from "../Loader";
+import { useMediaQuery } from 'react-responsive';
 
 export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
   const [soreness, setSoreness] = useState(null);
@@ -9,7 +10,13 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState(false);
-  const [show, setShow] = useState(false); // State to control transitions
+  const [show, setShow] = useState(false);
+
+  // Determine if the screen is mobile
+  const isMobile = useMediaQuery({ maxWidth: 640 }); // Tailwind's 'sm' breakpoint is 640px
+
+  // Set radio button size based on screen size
+  const radioSize = isMobile ? 1.75 : 2;
 
   useEffect(() => {
     setShow(true); // Trigger the entry transition on mount
@@ -51,14 +58,23 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
     }
   }, [soreness, jointpain, workload, weekNo]);
 
+  // Define class names based on isMobile
+  const modalContentClassNames = isMobile
+    ? `bg-background rounded-t-lg flex flex-col items-center transform w-full fixed top-16 left-0 right-0 bottom-0 transition-transform duration-300 ease-in-out ${
+        show ? 'translate-y-0' : 'translate-y-full'
+      }`
+    : `bg-background rounded-lg flex flex-col items-center transform w-full max-w-screen-sm transition-transform duration-300 ease-in-out ${
+        show ? 'scale-100' : 'scale-95'
+      }`;
+
+  const overlayClassNames = `fixed inset-0 bg-black bg-opacity-50 z-50 ${
+    show ? 'opacity-100' : 'opacity-0'
+  } transition-opacity duration-300 ease-in-out`;
+
   return (
-    <div
-      className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity duration-300 ease-in-out ${show ? 'opacity-100' : 'opacity-0'}`}
-    >
-      <div
-        className={`bg-background rounded-lg flex flex-col items-center transform transition-transform duration-300 ease-in-out ${show ? 'scale-100' : 'scale-95'}`}
-      >
-        <form onSubmit={handleSubmit} className="w-full p-6 sm:p-10 bg-background rounded-lg mx-auto max-w-screen-sm">
+    <div className={overlayClassNames}>
+      <div className={modalContentClassNames}>
+        <form onSubmit={handleSubmit} className={`w-full p-6 sm:p-10 bg-background mx-auto ${isMobile ? 'rounded-t-lg' : 'rounded-lg'}`}>
           {err && (
             <p className="text-red-400 mb-4">
               There was an error sending your request
@@ -71,14 +87,14 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
             {weekNo !== 1 && (
               <div>
                 <h3 className="text-xl font-semibold text-primary-text mb-2">Soreness after last session</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-4 gap-4">
                   <RadioBtn
                     id="soreness1"
                     name="soreness"
                     text="No Soreness"
                     onChange={() => setSoreness(0)}
                     checked={soreness === 0}
-                    size={2}
+                    size={radioSize}
                   />
                   <RadioBtn
                     id="soreness2"
@@ -86,7 +102,7 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                     text="Mild Soreness"
                     onChange={() => setSoreness(1)}
                     checked={soreness === 1}
-                    size={2}
+                    size={radioSize}
                   />
                   <RadioBtn
                     id="soreness3"
@@ -94,7 +110,7 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                     text="Moderate Soreness"
                     onChange={() => setSoreness(2)}
                     checked={soreness === 2}
-                    size={2}
+                    size={radioSize}
                   />
                   <RadioBtn
                     id="soreness4"
@@ -102,21 +118,21 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                     text="Severe Soreness"
                     onChange={() => setSoreness(3)}
                     checked={soreness === 3}
-                    size={2}
+                    size={radioSize}
                   />
                 </div>
               </div>
             )}
             <div>
               <h3 className="text-xl font-semibold text-primary-text mb-2">Joint pain today</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-4">
                 <RadioBtn
                   id="jointpain1"
                   name="jointpain"
                   text="No Pain"
                   onChange={() => setJointPain(0)}
                   checked={jointpain === 0}
-                  size={2}
+                  size={radioSize}
                 />
                 <RadioBtn
                   id="jointpain2"
@@ -124,7 +140,7 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                   text="Mild Pain"
                   onChange={() => setJointPain(1)}
                   checked={jointpain === 1}
-                  size={2}
+                  size={radioSize}
                 />
                 <RadioBtn
                   id="jointpain3"
@@ -132,7 +148,7 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                   text="Moderate Pain"
                   onChange={() => setJointPain(2)}
                   checked={jointpain === 2}
-                  size={2}
+                  size={radioSize}
                 />
                 <RadioBtn
                   id="jointpain4"
@@ -140,20 +156,20 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                   text="Severe Pain"
                   onChange={() => setJointPain(3)}
                   checked={jointpain === 3}
-                  size={2}
+                  size={radioSize}
                 />
               </div>
             </div>
             <div>
               <h3 className="text-xl font-semibold text-primary-text mb-2">Workload today</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-4 gap-4">
                 <RadioBtn
                   id="workload1"
                   name="workload"
                   text="Easy"
                   onChange={() => setWorkload(0)}
                   checked={workload === 0}
-                  size={2}
+                  size={radioSize}
                 />
                 <RadioBtn
                   id="workload2"
@@ -161,7 +177,7 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                   text="Pretty Good"
                   onChange={() => setWorkload(1)}
                   checked={workload === 1}
-                  size={2}
+                  size={radioSize}
                 />
                 <RadioBtn
                   id="workload3"
@@ -169,7 +185,7 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                   text="Challenging"
                   onChange={() => setWorkload(2)}
                   checked={workload === 2}
-                  size={2}
+                  size={radioSize}
                 />
                 <RadioBtn
                   id="workload4"
@@ -177,7 +193,7 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
                   text="Too Much"
                   onChange={() => setWorkload(3)}
                   checked={workload === 3}
-                  size={2}
+                  size={radioSize}
                 />
               </div>
             </div>
