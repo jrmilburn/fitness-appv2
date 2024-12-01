@@ -35,7 +35,7 @@ export default function ProgramTab({
       <div className="w-full flex justify-between space-x-16 p-2">
         {userProgramId === null && !completed ? (
           <>
-            <Link href={`/workouts/current/${workoutId}`}>
+            <Link href={`/workouts/${workoutId}`}>
             <div>
               <h2 className="text-xl text-primary-text">{name}</h2>
               <p className="text-sm text-secondary-text">Saved</p>
@@ -51,7 +51,7 @@ export default function ProgramTab({
           </>
         ) : completed ? (
           <>
-          <Link href={`/workouts/current/${workoutId}`}>
+          <Link href={`/workouts/${workoutId}`}>
           <div>
           <h2 className="text-xl text-primary-text">{name}</h2>
           <p className="text-sm text-secondary-text">
@@ -65,7 +65,7 @@ export default function ProgramTab({
         </>
         ) : (
           <>
-            <Link href={`/workouts/current/${workoutId}`} className='flex justify-between w-full'>
+            <Link href={`/workouts/${workoutId}`} className='flex justify-between w-full'>
             <div>
               <h2 className="text-xl text-primary-text">{name}</h2>
               <p className="text-sm text-secondary-text">
