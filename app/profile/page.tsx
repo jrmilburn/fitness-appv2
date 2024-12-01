@@ -19,7 +19,21 @@ export default async function ProfilePage() {
         program = await prisma.program.findUnique({
             where: {
                 id: user.currentProgramId
-            }
+            },
+            include: {
+                weeks: {
+                  where: {
+                    weekNo: 1
+                  },
+                  include: {
+                    workouts: {
+                      where: {
+                        workoutNo: 1
+                      }
+                    }
+                  }
+                }
+              },
         });
     }
 
@@ -55,6 +69,8 @@ export default async function ProfilePage() {
                         userProgramId={user?.currentProgramId}
                         created={formattedDate}
                         canDelete={false}
+                        completed={false}
+                        workoutId={program?.weeks[0]?.workouts[0]?.id}
                     />
                 ) : (
                     <p className="text-gray-500 p-4">No current program available.</p>
