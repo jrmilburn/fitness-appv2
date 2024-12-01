@@ -2,8 +2,10 @@
 import { useState } from 'react';
 import ProgramTab from './ProgramTab';
 
-export default function ProgramsList({ initialPrograms, userProgramId }) {
+export default function ProgramsList({ initialPrograms, userProgramId, completed }) {
   const [programs, setPrograms] = useState(initialPrograms);
+
+  console.log(programs[0]);
 
   const handleDelete = async (id) => {
     try {
@@ -44,6 +46,8 @@ export default function ProgramsList({ initialPrograms, userProgramId }) {
           })}
           canDelete={true}
           onDelete={() => handleDelete(program.id)}
+          completed={completed}
+          workoutId={program?.weeks[0]?.workouts[0]?.id}
         />
       ))}
     </div>

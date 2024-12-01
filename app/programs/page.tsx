@@ -21,16 +21,57 @@ export default async function Programs() {
         where: {
             userId,
         },
+        include: {
+          weeks: {
+            where: {
+              weekNo: 1
+            },
+            include: {
+              workouts: {
+                where: {
+                  workoutNo: 1
+                }
+              }
+            }
+          }
+        },
         orderBy: {
-            createdAt: 'desc'
+          createdAt: 'desc'
         }
 
     });
 
+    const completedPrograms = await prisma.program.findMany({
+      where: {
+        userId,
+        completed: true
+      },
+      include: {
+        weeks: {
+          where: {
+            weekNo: 1
+          },
+          include: {
+            workouts: {
+              where: {
+                workoutNo: 1
+              }
+            }
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+    
+
   return (
     <main className="max-w-screen-sm mx-auto">
       <h1 className="text-2xl sm:text-3xl inter text-primary-text p-4">Your Programs</h1>
-      <ProgramsList initialPrograms={programs} userProgramId={userProgramId}/>
+      <ProgramsList initialPrograms={programs} userProgramId={userProgramId} completed={false}/>
+      <h1 className="text-2xl sm:text-3xl inter text-primary-text p-4">Completed Programs</h1>
+      <ProgramsList initialPrograms={completedPrograms} userProgramId={null} completed={true}/>
     </main>
   );
 }
