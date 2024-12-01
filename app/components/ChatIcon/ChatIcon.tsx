@@ -6,12 +6,37 @@ import { useSession } from 'next-auth/react';
 export default function ChatIcon() {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
+  const [isVisible, setIsVisible] = useState(true);
+  const [shouldRender, setShouldRender] = useState(true);
 
-   const { data: session } = useSession();
-
-   const user = session?.user;
+  const { data: session } = useSession();
+  const user = session?.user;
 
   const toggleChat = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollThreshold = 200; // Adjust this value as needed
+      if (window.scrollY < scrollThreshold) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!isVisible) {
+      const timeout = setTimeout(() => setShouldRender(false), 300); // Matches the fade-out duration
+      return () => clearTimeout(timeout);
+    } else {
+      setShouldRender(true);
+    }
+  }, [isVisible]);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -47,12 +72,12 @@ export default function ChatIcon() {
         },
         body: JSON.stringify({ status: 'ACCEPTED' }),
       });
-  
+
       if (!response.ok) {
         console.error('Failed to accept request:', response.statusText);
         return;
       }
-    
+
       setNotifications((prev) =>
         prev.map((notification) =>
           notification.id === id
@@ -64,7 +89,7 @@ export default function ChatIcon() {
       console.error('Error accepting request:', error);
     }
   };
-  
+
   const handleDecline = async (id) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/coach/${id}`, {
@@ -74,13 +99,12 @@ export default function ChatIcon() {
         },
         body: JSON.stringify({ status: 'DECLINED' }),
       });
-  
+
       if (!response.ok) {
         console.error('Failed to decline request:', response.statusText);
         return;
       }
-    
-      // Update the status in the notifications array
+
       setNotifications((prev) =>
         prev.map((notification) =>
           notification.id === id
@@ -93,8 +117,12 @@ export default function ChatIcon() {
     }
   };
 
-  return (
-    <div className="fixed bottom-5 right-5">
+  return shouldRender ? (
+    <div
+      className={`fixed bottom-5 right-5 transform transition-all duration-300 ${
+        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+      }`}
+    >
       {/* Chat Icon Button */}
       <div
         onClick={toggleChat}
@@ -116,9 +144,7 @@ export default function ChatIcon() {
           </div>
           <div className="p-4 max-h-80 overflow-y-auto">
             Coaching Requests
-            {notifications.map((notification) => {
-              console.log(notification)
-              return (
+            {notifications.map((notification) => (
               <Notification 
                 key={notification.id}
                 notification={notification}
@@ -126,10 +152,10 @@ export default function ChatIcon() {
                 onAccept={() => handleAccept(notification.id)}
                 onDecline={() => handleDecline(notification.id)}
               />
-            )})}
+            ))}
           </div>
         </div>
       )}
     </div>
-  );
+  ) : null;
 }
