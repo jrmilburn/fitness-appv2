@@ -5,7 +5,7 @@ import horieditIcon from '../../assets/edit-hori.svg';
 import Image from 'next/image';
 import WorkoutOptions from './WorkoutOptions';
 
-export default function WorkoutHeader({ weekId, name, setWorkout, workout, week, setWeek }) {
+export default function WorkoutHeader({ weekId, name, setWorkout, workout, week, setWeek, disabled=false }) {
     interface ProgramWorkouts {
         weeks: Week[];
     }
@@ -128,7 +128,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, workout, week,
                     )}
                 </div>
                 <div className="flex flex-col justify-end h-full gap-2">
-                    <button className='hover:scale-105 transition-all duration-300' onClick={handleWorkoutOptions}>
+                    <button className='hover:scale-105 transition-all duration-300' onClick={handleWorkoutOptions} disabled={disabled}>
                         <Image 
                             src={horieditIcon}
                             alt='more'

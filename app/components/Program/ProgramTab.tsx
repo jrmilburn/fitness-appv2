@@ -1,6 +1,7 @@
-"use client"
+"use client";
 
-import Link from 'next/link'
+import Link from 'next/link';
+import { TrashIcon } from "@heroicons/react/outline";
 
 type ProgramTabProps = {
   name: string;
@@ -25,21 +26,23 @@ export default function ProgramTab({
   canDelete,
   onDelete,
   completed,
-  workoutId
+  workoutId,
 }: ProgramTabProps) {
-
-
-
   return (
-    <div className={`w-3xl border-2 border-border ${id === userProgramId ? 'border-green-200' : 'border-border'} p-4 relative bg-background-secondary`}>
+    <div
+      className={`w-3xl border-2 ${
+        id === userProgramId ? 'border-green-200' : 'border-border'
+      } p-4 relative bg-background-secondary`}
+    >
       <div className="w-full flex justify-between space-x-16 p-2">
         {userProgramId === null && !completed ? (
           <>
             <Link href={`/workouts/${workoutId}`}>
-            <div>
-              <h2 className="text-xl text-primary-text">{name}</h2>
-              <p className="text-sm text-secondary-text">Saved</p>
-            </div>
+              <div>
+                <h2 className="text-xl text-primary-text">{name}</h2>
+                <p className="text-sm text-secondary-text">Saved</p>
+              </div>
+            </Link>
             <div className="flex flex-col space-y-4 justify-center text-primary-text">
               {canDelete && id !== userProgramId && onDelete && !completed && (
                 <button onClick={onDelete}>
@@ -47,40 +50,40 @@ export default function ProgramTab({
                 </button>
               )}
             </div>
-            </Link>
           </>
         ) : completed ? (
           <>
-          <Link href={`/workouts/${workoutId}`}>
-          <div>
-          <h2 className="text-xl text-primary-text">{name}</h2>
-          <p className="text-sm text-secondary-text">
-            {length} Weeks - {days} Days / Week
-          </p>
-          <p className="text-sm text-secondary-text">Created: {created}</p>
-        </div>
-        <div className="flex flex-col space-y-4 justify-center text-primary-text">
-        </div>
-        </Link>
-        </>
+            <Link href={`/workouts/${workoutId}`}>
+              <div>
+                <h2 className="text-xl text-primary-text">{name}</h2>
+                <p className="text-sm text-secondary-text">
+                  {length} Weeks - {days} Days / Week
+                </p>
+                <p className="text-sm text-secondary-text">Created: {created}</p>
+              </div>
+            </Link>
+            {/* If needed, you can add other elements here */}
+          </>
         ) : (
           <>
-            <Link href={`/workouts/${workoutId}`} className='flex justify-between w-full'>
-            <div>
-              <h2 className="text-xl text-primary-text">{name}</h2>
-              <p className="text-sm text-secondary-text">
-                {length} Weeks - {days} Days / Week
-              </p>
-              <p className="text-sm text-secondary-text">Created: {created}</p>
+            <div className="flex justify-between w-full">
+              <Link href={`/workouts/${workoutId}`}>
+                <div>
+                  <h2 className="text-xl text-primary-text">{name}</h2>
+                  <p className="text-sm text-secondary-text">
+                    {length} Weeks - {days} Days / Week
+                  </p>
+                  <p className="text-sm text-secondary-text">Created: {created}</p>
+                </div>
+              </Link>
+              <div className="flex flex-col space-y-4 justify-center text-primary-text">
+                {canDelete && id !== userProgramId && onDelete && (
+                  <button onClick={onDelete}>
+                    <TrashIcon className="h-7 w-7 text-primary-text hover:text-red-400 transition-all duration-300" />
+                  </button>
+                )}
+              </div>
             </div>
-            <div className="flex flex-col space-y-4 justify-center text-primary-text">
-              {canDelete && id !== userProgramId && onDelete && (
-                <button onClick={onDelete}>
-                  Delete
-                </button>
-              )}
-            </div>
-            </Link>
           </>
         )}
       </div>

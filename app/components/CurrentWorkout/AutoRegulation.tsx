@@ -58,23 +58,27 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
     }
   }, [soreness, jointpain, workload, weekNo]);
 
-  // Define class names based on isMobile
+  // Updated overlay class names with flex centering
+  const overlayClassNames = `fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center ${
+    show ? 'opacity-100' : 'opacity-0'
+  } transition-opacity duration-300 ease-in-out`;
+
+  // Updated modal content class names with mx-auto for desktop
   const modalContentClassNames = isMobile
     ? `bg-background rounded-t-lg flex flex-col items-center transform w-full fixed top-16 left-0 right-0 bottom-0 transition-transform duration-300 ease-in-out ${
         show ? 'translate-y-0' : 'translate-y-full'
       }`
-    : `bg-background rounded-lg flex flex-col items-center transform w-full max-w-screen-sm transition-transform duration-300 ease-in-out ${
+    : `bg-background rounded-lg flex flex-col items-center transform w-full max-w-screen-sm mx-auto transition-transform duration-300 ease-in-out ${
         show ? 'scale-100' : 'scale-95'
       }`;
-
-  const overlayClassNames = `fixed inset-0 bg-black bg-opacity-50 z-50 ${
-    show ? 'opacity-100' : 'opacity-0'
-  } transition-opacity duration-300 ease-in-out`;
 
   return (
     <div className={overlayClassNames}>
       <div className={modalContentClassNames}>
-        <form onSubmit={handleSubmit} className={`w-full p-6 sm:p-10 bg-background mx-auto ${isMobile ? 'rounded-t-lg' : 'rounded-lg'}`}>
+        <form
+          onSubmit={handleSubmit}
+          className={`w-full p-6 sm:p-10 bg-background mx-auto ${isMobile ? 'rounded-t-lg' : 'rounded-lg'}`}
+        >
           {err && (
             <p className="text-red-400 mb-4">
               There was an error sending your request

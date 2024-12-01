@@ -1,21 +1,18 @@
-import Set from './Set'
-import { useEffect, useState, useRef } from 'react'
-import infoIcon from '../../assets/info.svg'
-import horieditIcon from '../../assets/edit-hori.svg'
-import Image from 'next/image'
-import ExcerciseForm from './ExcerciseForm'
-import ExcerciseInfo from './ExcerciseInfo'
-import AddExcercise from './AddExcercise'
-import ReplaceExcercise from './ReplaceExcercise'
-import AutoRegulationForm from './AutoRegulation'
+import Set from './Set';
+import { useEffect, useState, useRef } from 'react';
+import infoIcon from '../../assets/info.svg';
+import horieditIcon from '../../assets/edit-hori.svg';
+import Image from 'next/image';
+import ExcerciseForm from './ExcerciseForm';
+import ExcerciseInfo from './ExcerciseInfo';
+import AddExcercise from './AddExcercise';
+import ReplaceExcercise from './ReplaceExcercise';
+import AutoRegulationForm from './AutoRegulation';
 
-
-export default function Excercise({ excercise, weekRir, weekNo, workout, setWorkout }) {
-
+export default function Excercise({ excercise, weekRir, weekNo, workout, setWorkout, disabled=false }) {
     interface muscle {
-        name: string
+        name: string;
     }
-
 
     console.log('EXCERCISE', excercise);
 
@@ -31,9 +28,9 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
     const infoRef = useRef(null);
 
     const handleSetDataFetch = (data) => {
-        setLastWeekData(prevData => {
+        setLastWeekData((prevData) => {
             // Ensure no duplicate entries by checking setId
-            const existingIndex = prevData.findIndex(item => item.setId === data.setId);
+            const existingIndex = prevData.findIndex((item) => item.setId === data.setId);
             if (existingIndex >= 0) {
                 // Update existing entry
                 const updatedData = [...prevData];
@@ -48,63 +45,59 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/musclegroups/${excercise.muscleGroupId}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
-            }
+                'Content-Type': 'application/json',
+            },
         })
-        .then(response => response.json())
-        .then(data => setMuscle(data))
-        .catch(error => console.error('Error:', error));
+            .then((response) => response.json())
+            .then((data) => setMuscle(data))
+            .catch((error) => console.error('Error:', error));
     }, [excercise.muscleGroupId]);
 
     useEffect(() => {
         if (excercise.sets && excercise.sets.length > 0) {
-
-            const allSetsCompleted = excercise.sets.every(set => set.completed === true);
+            const allSetsCompleted = excercise.sets.every((set) => set.completed === true);
             setSetsComplete(allSetsCompleted);
-
         }
     }, [excercise.sets]);
 
     useEffect(() => {
-            setWorkout(prev => ({
-                ...prev,
-                excercises: prev.excercises.map(e => (
-                    e.id === excercise.id ? { ...e, completed: setsCompleted } : e
-                ))
-            }));
+        setWorkout((prev) => ({
+            ...prev,
+            excercises: prev.excercises.map((e) =>
+                e.id === excercise.id ? { ...e, completed: setsCompleted } : e
+            ),
+        }));
     }, [setsCompleted, excercise.id, setWorkout]);
 
-
     const handleDeleteSet = async (setId) => {
+        if (disabled) return;
 
-        const updatedSets = excercise.sets.filter(set => set.id !== setId);
+        const updatedSets = excercise.sets.filter((set) => set.id !== setId);
 
         try {
-
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set/${setId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
             });
 
-            if(response.ok) {
+            if (response.ok) {
                 console.log(response);
             }
-
         } catch (error) {
             console.error('Error deleting set:', error);
         }
-        setWorkout(prev => ({
+        setWorkout((prev) => ({
             ...prev,
-            excercises: prev.excercises.map(e => (
+            excercises: prev.excercises.map((e) =>
                 e.id === excercise.id ? { ...e, sets: updatedSets } : e
-            ))
+            ),
         }));
-
-    }
+    };
 
     const handleAddSet = async () => {
+        if (disabled) return;
 
         const numSets = excercise.sets.length;
 
@@ -112,23 +105,23 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
             const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     excerciseId: excercise.id,
                     setNo: numSets + 1,
                     weight: 0,
                     reps: 0,
-                })
+                }),
             });
-            
+
             const newSet = await response.json();
-    
-            setWorkout(prev => ({
+
+            setWorkout((prev) => ({
                 ...prev,
-                excercises: prev.excercises.map(e => (
+                excercises: prev.excercises.map((e) =>
                     e.id === excercise.id ? { ...e, sets: [...e.sets, newSet] } : e
-                ))
+                ),
             }));
         } catch (error) {
             console.error('Error adding new set:', error);
@@ -136,54 +129,57 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
     };
 
     const handleEditClick = () => {
+        if (disabled) return;
         setIsEditing(!isEditing);
-    }
-    
-    const handleClickOutside = (event) => {
-      if (formRef.current && !formRef.current.contains(event.target)) {
-        setIsEditing(false);
-      }
     };
-    
+
+    const handleClickOutside = (event) => {
+        if (formRef.current && !formRef.current.contains(event.target)) {
+            setIsEditing(false);
+        }
+    };
+
     useEffect(() => {
-      if (isEditing) {
-        document.addEventListener('mousedown', handleClickOutside);
-      } else {
-        document.removeEventListener('mousedown', handleClickOutside);
-      }
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
+        if (isEditing) {
+            document.addEventListener('mousedown', handleClickOutside);
+        } else {
+            document.removeEventListener('mousedown', handleClickOutside);
+        }
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, [isEditing]);
 
     const handleAddExcercise = async () => {
-
+        if (disabled) return;
         setAddExcerciseShown(true);
-
-    }
+    };
 
     const handleReplaceExcercise = async () => {
-
+        if (disabled) return;
         setReplaceExcerciseShown(true);
-
-    }
+    };
 
     const handleDeleteExcercise = async () => {
+        if (disabled) return;
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/excercises/${excercise.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_BASE_URL!}/api/excercises/${excercise.id}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
                 }
-            });
-    
+            );
+
             if (!response.ok) {
                 throw new Error('Failed to delete exercise');
             }
-    
-            setWorkout(prev => ({
+
+            setWorkout((prev) => ({
                 ...prev,
-                excercises: prev.excercises.filter(e => e.id !== excercise.id)
+                excercises: prev.excercises.filter((e) => e.id !== excercise.id),
             }));
         } catch (error) {
             console.error('Error deleting exercise:', error);
@@ -191,127 +187,136 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
     };
 
     const handleInfoShown = () => {
-
+        if (disabled) return;
         setInfoShown(true);
-
-    }
+    };
 
     const handleInfoClose = (event) => {
         if (infoRef.current && !infoRef.current.contains(event.target)) {
-          setInfoShown(false);
+            setInfoShown(false);
         }
-      };
-      
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         if (infoShown) {
-          document.addEventListener('mousedown', handleInfoClose);
+            document.addEventListener('mousedown', handleInfoClose);
         } else {
-          document.removeEventListener('mousedown', handleInfoClose);
+            document.removeEventListener('mousedown', handleInfoClose);
         }
         return () => {
-          document.removeEventListener('mousedown', handleInfoClose);
+            document.removeEventListener('mousedown', handleInfoClose);
         };
-      }, [infoShown]);
-
-
+    }, [infoShown]);
 
     return (
-        <div className={`w-[100%] max-w-screen-sm mx-auto bg-background-secondary p-8 flex flex-col ${setsCompleted ? 'border-2 border-green-400' : 'border-2 border-border'}`}>
-            
-            <div className='flex justify-between items-center'>
-
-                <div className='flex flex-col'>
-                    <p className="p-1 text-secondary-text inter-main">{muscle ? muscle.name : ''}{excercise?.progressionType === 'linear' ? ' - Linear progression' : excercise.progressionType === 'none' ? ' - No set progression' : excercise.progressionType === 'auto' ? ' - Auto Regulated progression' : ''}</p>
+        <div
+            className={`w-[100%] max-w-screen-sm mx-auto bg-background-secondary p-8 flex flex-col ${
+                setsCompleted ? 'border-2 border-green-400' : 'border-2 border-border'
+            }`}
+        >
+            <div className="flex justify-between items-center">
+                <div className="flex flex-col">
+                    <p className="p-1 text-secondary-text inter-main">
+                        {muscle ? muscle.name : ''}
+                        {excercise?.progressionType === 'linear'
+                            ? ' - Linear progression'
+                            : excercise.progressionType === 'none'
+                            ? ' - No set progression'
+                            : excercise.progressionType === 'auto'
+                            ? ' - Auto Regulated progression'
+                            : ''}
+                    </p>
                     <h2 className="text-xl p-1 text-primary-text inter-bold">{excercise.name}</h2>
                 </div>
 
-                <div className='flex flex-col space-y-4 items-center relative'>
-                    <button onClick={handleInfoShown}>
-                        <Image 
-                            src={infoIcon}
-                            alt='info'/>
+                <div className="flex flex-col space-y-4 items-center relative">
+                    <button onClick={handleInfoShown} disabled={disabled}>
+                        <Image src={infoIcon} alt="info" />
                     </button>
-                    <button onClick={handleEditClick} disabled={excercise.completed}>
-                        <Image
-                            src={horieditIcon}
-                            alt='edit excercise'
-                            />
+                    <button onClick={handleEditClick} disabled={disabled || excercise.completed}>
+                        <Image src={horieditIcon} alt="edit excercise" />
                     </button>
-                    {isEditing && (
-                        <div ref={formRef} className='absolute top-[10%] translate-x-[-70%] z-50 w-[175px]'>
-                            <ExcerciseForm 
+                    {isEditing && !disabled && (
+                        <div
+                            ref={formRef}
+                            className="absolute top-[10%] translate-x-[-70%] z-50 w-[175px]"
+                        >
+                            <ExcerciseForm
                                 onAdd={handleAddExcercise}
                                 onReplace={handleReplaceExcercise}
                                 onDelete={handleDeleteExcercise}
                             />
                         </div>
-
                     )}
                     {infoShown && (
-                        <div ref={infoRef} className='absolute translate-x-[-50%] md:translate-x-[-70%] z-50 w-[400px] bg-white p-2'>
-                            <ExcerciseInfo 
+                        <div
+                            ref={infoRef}
+                            className="absolute translate-x-[-50%] md:translate-x-[-70%] z-50 w-[400px] bg-white p-2"
+                        >
+                            <ExcerciseInfo
                                 name={excercise.name}
                                 details={excercise.details}
-                                lastWeekData={lastWeekData}/>
+                                lastWeekData={lastWeekData}
+                            />
                         </div>
                     )}
-                    {addExcerciseShown && (
-
-                        <AddExcercise 
+                    {addExcerciseShown && !disabled && (
+                        <AddExcercise
                             onClose={() => setAddExcerciseShown(false)}
                             setWorkout={setWorkout}
-                            workout={workout}/>
-
+                            workout={workout}
+                        />
                     )}
-                    {replaceExcerciseShown && (
-
-                        <ReplaceExcercise 
+                    {replaceExcerciseShown && !disabled && (
+                        <ReplaceExcercise
                             onClose={() => setReplaceExcerciseShown(false)}
                             setWorkout={setWorkout}
                             workout={workout}
-                            excercise={excercise}/>
-
+                            excercise={excercise}
+                        />
                     )}
-                    {setsCompleted && !autoRegulationSubmitted && (
-                        <AutoRegulationForm 
+                    {setsCompleted && !autoRegulationSubmitted && !disabled && (
+                        <AutoRegulationForm
                             setSubmission={setAutoRegulationSubmitted}
                             id={excercise.id}
-                            weekNo={weekNo}/>
+                            weekNo={weekNo}
+                        />
                     )}
                 </div>
-
             </div>
 
             {excercise.sets.length === 0 ? (
-              excercise.progressionType === 'auto' ? (
-                <>
-                  <p>Sets not programmed yet</p>
-                  <p className='text-secondary-text'>Complete previous workouts to get autoregulated set volumes</p>
-                </>
-              ) : (
-                <p>No sets programmed for this excercise</p>
-              )
+                excercise.progressionType === 'auto' ? (
+                    <>
+                        <p>Sets not programmed yet</p>
+                        <p className="text-secondary-text">
+                            Complete previous workouts to get autoregulated set volumes
+                        </p>
+                    </>
+                ) : (
+                    <p>No sets programmed for this excercise</p>
+                )
             ) : (
-              <>
-                <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text inter-main">
-                  <h2>Weight</h2>
-                  <h2>Reps</h2>
-                </div>
-                {excercise.sets.map((set, index) => (
-                  <Set
-                    key={index}
-                    setId={set.id}
-                    Rir={weekRir}
-                    workout={workout}
-                    setWorkout={setWorkout}
-                    onDelete={() => handleDeleteSet(set.id)}
-                    onAdd={handleAddSet}
-                    onDataFetch={handleSetDataFetch}
-                  />
-                ))}
-              </>
+                <>
+                    <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text inter-main">
+                        <h2>Weight</h2>
+                        <h2>Reps</h2>
+                    </div>
+                    {excercise.sets.map((set, index) => (
+                        <Set
+                            key={index}
+                            setId={set.id}
+                            Rir={weekRir}
+                            workout={workout}
+                            setWorkout={setWorkout}
+                            onDelete={() => handleDeleteSet(set.id)}
+                            onAdd={handleAddSet}
+                            onDataFetch={handleSetDataFetch}
+                            disabled={disabled} // Pass disabled prop
+                        />
+                    ))}
+                </>
             )}
-
 
             {setsCompleted && <p className="text-green-500 inter-bold">All sets completed!</p>}
         </div>

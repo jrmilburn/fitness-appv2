@@ -111,7 +111,7 @@ export default function Navbar() {
           </Link>
 
           {/* Navigation Links */}
-          <ul className="flex flex-col space-y-4">
+          <ul className="flex flex-col space-y-2">
             <p className="border-b-2">Training</p>
             <li
               className={`text-xl p-2 ${
@@ -189,7 +189,7 @@ export default function Navbar() {
             </li>
           </ul>
 
-          <ul className="flex flex-col space-y-4">
+          <ul className="flex flex-col space-y-2">
             <p className="border-b-2">Coaching</p>
             <li
               className={`text-xl p-2 ${
@@ -212,7 +212,7 @@ export default function Navbar() {
             </li>
           </ul>
 
-          <ul className="flex flex-col space-y-4">
+          <ul className="flex flex-col space-y-2">
             <p className="border-b-2">User</p>
             <li
               className={`text-xl p-2 ${

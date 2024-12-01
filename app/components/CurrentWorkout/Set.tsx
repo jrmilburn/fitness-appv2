@@ -3,7 +3,7 @@ import verteditIcon from '../../assets/edit-vert.svg';
 import Image from 'next/image';
 import SetForm from './SetForm';
 
-export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, onDataFetch }) {
+export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, onDataFetch, disabled=false }) {
   const [isChecked, setIsChecked] = useState(false);
   const [focusedInput, setFocusedInput] = useState(''); 
   const [weight, setWeight] = useState(null);
@@ -113,7 +113,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
   return (
     <>
       <div className="flex justify-between space-x-8 items-center relative">
-        <button className='absolute left-[-1%]' disabled={workout.completed}>
+        <button className='absolute left-[-1%]' disabled={workout.completed || disabled}>
           <Image 
             onClick={handleEditClick}
             src={verteditIcon}
@@ -131,7 +131,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
             const value = e.target.value;
             setWeight(value === '' ? null : +value);
           }}
-          disabled={workout.completed}
+          disabled={workout.completed || disabled}
         />
         
         <input
@@ -145,7 +145,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
             const value = e.target.value;
             setReps(value === '' ? null : +value);
           }}
-          disabled={workout.completed}
+          disabled={workout.completed || disabled}
         />
 
         
@@ -154,7 +154,7 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
           className={`w-8 h-8 rounded-sm border-2 ${
             isChecked ? 'bg-green-500 border-blue-500' : 'border-gray-300'
           } flex items-center justify-center transition-all duration-300`}
-          disabled={workout.completed || sendingSet} // Disable button while sending
+          disabled={workout.completed || sendingSet || disabled} // Disable button while sending
         >
           {sendingSet ? (
             // Spinner

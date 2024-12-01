@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/lib/authOptions';
 
 export async function GET(
     req: Request,
@@ -8,6 +10,18 @@ export async function GET(
     const { id } = params;
 
     try {
+
+      const userSession = await getServerSession(authOptions);
+
+      if (!userSession) {
+        return NextResponse.json({ error: 'User not authenticated' }, { status: 401 });
+      }
+  
+      const userEmail = userSession?.user.email;
+  
+      const user = await prisma.user.findUnique({
+        where: { email: userEmail },
+      });
 
     const currentWorkout = await prisma.workout.findUnique({
       where: { id: id },
@@ -30,6 +44,7 @@ export async function GET(
     // Return both the currentWorkout data and the program's completed status
     return NextResponse.json({
       workout: currentWorkout,
+      user: user
     });
   } catch (error) {
     console.error('Error fetching current workout:', error);

@@ -3,6 +3,7 @@ import { prisma } from '../lib/prisma';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../lib/authOptions';
 import ProgramsList from '../components/Program/ProgramsList';
+import { PlusCircleIcon } from "@heroicons/react/outline";
 
 export default async function Programs() {
     const userSession = await getServerSession(authOptions);
@@ -20,6 +21,7 @@ export default async function Programs() {
     const programs = await prisma.program.findMany({
         where: {
             userId,
+            completed: false
         },
         include: {
           weeks: {
@@ -68,10 +70,19 @@ export default async function Programs() {
 
   return (
     <main className="max-w-screen-sm mx-auto">
-      <h1 className="text-2xl sm:text-3xl inter text-primary-text p-4">Your Programs</h1>
+      <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">
+      <h1 className="text-2xl sm:text-3xl inter text-primary-text">Your Programs</h1>
+      <button
+          className="inter-bold border-2 p-2 hover:bg-background-secondary rounded flex gap-2 text-primary-text"
+          
+        >
+          New <PlusCircleIcon className="h-6 w-6 text-primary-text" />
+        </button>
+        </div>
       <ProgramsList initialPrograms={programs} userProgramId={userProgramId} completed={false}/>
       <h1 className="text-2xl sm:text-3xl inter text-primary-text p-4">Completed Programs</h1>
       <ProgramsList initialPrograms={completedPrograms} userProgramId={null} completed={true}/>
+      <p className='text-secondary-text'>Completed programs cannot be deleted</p>
     </main>
   );
 }
