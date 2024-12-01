@@ -135,6 +135,8 @@ export default async function Profile({ params }) {
             created={formattedDate}
             canDelete={false}
             onDelete={null}
+            completed={false}
+            workoutId={null}
           />
         </div>
 
