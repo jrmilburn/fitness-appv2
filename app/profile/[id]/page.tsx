@@ -31,6 +31,20 @@ export default async function Profile({ params }) {
       where: {
         id: user.currentProgramId,
       },
+      include: {
+        weeks: {
+          where: {
+            weekNo: 1
+          },
+          include: {
+            workouts: {
+              where: {
+                workoutNo: 1
+              }
+            }
+          }
+        }
+      },
     });
   }
 
@@ -136,7 +150,7 @@ export default async function Profile({ params }) {
             canDelete={false}
             onDelete={null}
             completed={false}
-            workoutId={null}
+            workoutId={program?.weeks[0]?.workouts[0]?.id}
           />
         </div>
 
