@@ -9,8 +9,13 @@ function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
     const [isActivity, setIsActivity] = useState(true); // True for activity, false for rest
     const [timeLeft, setTimeLeft] = useState(activityTime);
 
+    const beepSound = '/sounds/beep.mp3';
+
+
     useEffect(() => {
         let timer;
+        const beepAudio = new Audio(beepSound);
+
         if (isRunning) {
             timer = setInterval(() => {
                 setTimeLeft((prev) => {
@@ -35,6 +40,9 @@ function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
                             setIsActivity(true);
                             setTimeLeft(activityTime);
                         }
+                    } else if (prev <= 4) {
+                        // Play beep sound during the last 3 seconds
+                        beepAudio.play();
                     }
                     return prev - 1;
                 });
@@ -42,6 +50,8 @@ function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
         }
         return () => clearInterval(timer);
     }, [isRunning, isActivity, timeLeft, restTime, activityTime, cycles, onClose]);
+    
+    
 
     const handleStart = () => setIsRunning(true);
     const handlePause = () => setIsRunning(false);
@@ -51,18 +61,21 @@ function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
     };
 
     return (
-        <Dialog
-            open={visible}
-            onClose={handleClose}
-            PaperProps={{
+            <Dialog
+              open={visible}
+              onClose={handleClose}
+              maxWidth="sm" // Options: 'xs', 'sm', 'md', 'lg', 'xl', false
+              fullWidth={true}
+              PaperProps={{
                 sx: {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    padding: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  padding: 2,
                 },
-            }}
-        >
+              }}
+            >
+
             <DialogTitle>
                 {isActivity ? 'Activity' : 'Rest'} - Cycle {currentCycle}/{cycles}
                 <IconButton
@@ -78,39 +91,44 @@ function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
                 </IconButton>
             </DialogTitle>
             <DialogContent>
-                <Typography variant="h3" component="p" align="center">
-                    {timeLeft}s
-                </Typography>
+              <Typography variant="h1" component="p" align="center">
+                {timeLeft}s
+              </Typography>
             </DialogContent>
+
             <DialogActions>
-                {!isRunning ? (
-                    <Button
-                        onClick={handleStart}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<PlayArrow />}
-                    >
-                        Start
-                    </Button>
-                ) : (
-                    <Button
-                        onClick={handlePause}
-                        variant="contained"
-                        color="secondary"
-                        startIcon={<Pause />}
-                    >
-                        Pause
-                    </Button>
-                )}
+              {!isRunning ? (
                 <Button
-                    onClick={handleClose}
-                    variant="outlined"
-                    color="error"
-                    startIcon={<Close />}
+                  onClick={handleStart}
+                  variant="contained"
+                  color="primary"
+                  startIcon={<PlayArrow />}
+                  size="large"
                 >
-                    Close
+                  Start
                 </Button>
+              ) : (
+                <Button
+                  onClick={handlePause}
+                  variant="contained"
+                  color="secondary"
+                  startIcon={<Pause />}
+                  size="large"
+                >
+                  Pause
+                </Button>
+              )}
+              <Button
+                onClick={handleClose}
+                variant="outlined"
+                color="error"
+                startIcon={<Close />}
+                size="large"
+              >
+                Close
+              </Button>
             </DialogActions>
+          
         </Dialog>
     );
 }
