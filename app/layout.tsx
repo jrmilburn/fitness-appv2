@@ -126,7 +126,7 @@ export default function RootLayout({ children }) {
             <main
               className={`flex-grow inter-main ${
                 shouldShowNavbar ? "sm:ml-80" : ""
-              } z-0 bg-background h-100% pb-16`}
+              } z-0 bg-background`}
             >
               {children}
             </main>
