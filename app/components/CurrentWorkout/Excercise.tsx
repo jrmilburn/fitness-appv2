@@ -8,13 +8,14 @@ import ExcerciseInfo from './ExcerciseInfo';
 import AddExcercise from './AddExcercise';
 import ReplaceExcercise from './ReplaceExcercise';
 import AutoRegulationForm from './AutoRegulation';
+import TimerPopup from './TimerPopup';
+import { PlayIcon } from '@heroicons/react/solid';
+
 
 export default function Excercise({ excercise, weekRir, weekNo, workout, setWorkout, disabled=false }) {
     interface muscle {
         name: string;
     }
-
-    console.log('EXCERCISE', excercise);
 
     const [muscle, setMuscle] = useState<muscle | null>(null);
     const [setsCompleted, setSetsComplete] = useState(false);
@@ -24,6 +25,7 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
     const [addExcerciseShown, setAddExcerciseShown] = useState(false);
     const [replaceExcerciseShown, setReplaceExcerciseShown] = useState(false);
     const [lastWeekData, setLastWeekData] = useState([]);
+    const [showTimer, setShowTimer] = useState(false);
     const formRef = useRef(null);
     const infoRef = useRef(null);
 
@@ -208,6 +210,14 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
         };
     }, [infoShown]);
 
+    const handlePlayClick = () => {
+        setShowTimer(true);
+    }
+
+    const handleTimerClose = () => {
+        setShowTimer(false);
+    }
+
     return (
         <div
             className={`w-[100%] max-w-screen-sm mx-auto bg-background-secondary p-8 flex flex-col ${
@@ -285,7 +295,27 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
                 </div>
             </div>
 
-            {excercise.sets.length === 0 ? (
+            {muscle?.name === 'Cardio' ? (
+                <>
+                  <button
+                    onClick={handlePlayClick}
+                    className="bg-highlight text-primary-text px-4 py-2 rounded mt-4 flex items-center justify-center"
+                  >
+                    <PlayIcon className="h-6 w-6 mr-2" />
+                    Begin
+                  </button>
+
+                        <TimerPopup
+                          activityTime={30} // Activity duration in seconds
+                          restTime={15} // Rest duration in seconds
+                          cycles={5} // Number of cycles
+                          onClose={handleTimerClose}
+                          visible={showTimer}
+                        />
+
+                </>
+
+            ) : excercise.sets.length === 0 ? (
                 excercise.progressionType === 'auto' ? (
                     <>
                         <p>Sets not programmed yet</p>
