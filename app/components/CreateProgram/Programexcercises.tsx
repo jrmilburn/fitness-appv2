@@ -24,6 +24,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
         days: program.days,
         length: program.length,
         name: program.name,
+        userId: program.userId || null,
         weeks: program.weeks.map((week) => ({
             weekNumber: week.weekNo || week.weekNumber,
             workouts: week.workouts.map((workout) => ({

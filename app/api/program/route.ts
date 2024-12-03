@@ -29,9 +29,14 @@ export async function POST(req) {
     const userEmail = userSession?.user.email;
     const program = await req.json();
 
-    // Determine the correct userId
-    const userId = await determineUserId(userEmail);
+    let userId;
 
+    if(program.userId) {
+      userId = program.userId;
+    } else {
+      userId = await determineUserId(userEmail);
+
+    }
     // Process the program data
     const processedProgram = processProgramData(program);
 
