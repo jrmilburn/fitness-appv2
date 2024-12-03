@@ -3,7 +3,7 @@ import { ChatAlt2Icon, XIcon } from '@heroicons/react/solid';
 import Notification from './Notification';
 import { useSession } from 'next-auth/react';
 
-export default function ChatIcon() {
+export default function ChatIcon({ navbar=false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
@@ -117,18 +117,18 @@ export default function ChatIcon() {
     }
   };
 
-  return shouldRender ? (
+  return (shouldRender || navbar) ? (
     <div
-      className={`fixed bottom-5 right-5 transform transition-all duration-300 ${
+      className={`${navbar ? 'relative' : 'fixed bottom-5 right-5 hidden sm:block'}  transform transition-all duration-300 ${
         isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
       }`}
     >
       {/* Chat Icon Button */}
       <div
         onClick={toggleChat}
-        className="w-16 h-16 bg-gradient-to-br from-primary-text to-primary-text text-background 
-                   flex items-center justify-center rounded-full cursor-pointer shadow-lg 
-                   transition transform hover:scale-105 hover:shadow-xl"
+        className={`${navbar ? 'w-8 h-8 text-primary-text' : 'w-16 h-16 bg-gradient-to-br from-primary-text to-primary-text text-background shadow-lg'} 
+                   flex items-center justify-center rounded-full cursor-pointer 
+                   transition transform hover:scale-105 hover:shadow-xl`}
       >
         <ChatAlt2Icon className="w-8 h-8" />
       </div>

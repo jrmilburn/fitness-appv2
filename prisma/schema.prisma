@@ -197,7 +197,7 @@ model Excercise {
   actualSets      Float?
   progressionType String?     @default("linear")
   excerciseNo     Int?
-  autoregulation  Boolean     @default(false)
+  autoregulation  Boolean     @default(true)
 
   autoRegulator   autoRegulator? @relation(fields: [autoRegulatorId], references: [id])
   autoRegulatorId String?

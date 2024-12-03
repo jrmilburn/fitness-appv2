@@ -99,7 +99,7 @@ export default function CompleteWorkout({ completed, workout, setWorkout, progra
         <button
           onClick={handleFinish}
           disabled={isLoading} // Disable button while loading
-          className={`fixed bottom-5 w-11/12 max-w-md mx-auto left-0 right-0 px-6 py-4 bg-primary-text text-background rounded-full shadow-lg hover:shadow-xl transition duration-300 flex items-center justify-center ${
+          className={`fixed bottom-5 w-11/12 max-w-md mx-auto left-50 px-6 py-4 bg-primary-text text-background rounded-full shadow-lg hover:shadow-xl transition duration-300 flex items-center justify-center ${
             isLoading ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >

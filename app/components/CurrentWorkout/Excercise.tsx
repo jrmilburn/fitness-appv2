@@ -275,7 +275,7 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
                             excercise={excercise}
                         />
                     )}
-                    {setsCompleted && !autoRegulationSubmitted && !disabled && (
+                    {setsCompleted && !autoRegulationSubmitted && !disabled && excercise.progressionType === 'auto' && (
                         <AutoRegulationForm
                             setSubmission={setAutoRegulationSubmitted}
                             id={excercise.id}

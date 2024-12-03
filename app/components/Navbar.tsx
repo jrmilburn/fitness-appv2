@@ -16,6 +16,7 @@ import {
   MoonIcon,
   SunIcon
 } from "@heroicons/react/outline";
+import ChatIcon from "./ChatIcon/ChatIcon";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
@@ -296,6 +297,31 @@ export default function Navbar() {
           </button>
         </ul>
       </nav>
+            {/* Bottom Navigation Bar for Mobile */}
+            <div className="fixed bottom-0 left-0 w-full h-16 bg-background flex justify-around items-center px-4 shadow-md md:hidden z-30">
+        <Link href="/workouts/current">
+          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/workouts/current" ? "text-highlight" : "text-primary-text"}`}>
+            <LightningBoltIcon className="h-6 w-6" />
+          </div>
+        </Link>
+        <Link href="/search">
+          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/search" ? "text-highlight" : "text-primary-text"}`}>
+            <SearchIcon className="h-6 w-6" />
+          </div>
+        </Link>
+        <Link href="/coaching/clients">
+          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/coaching/clients" ? "text-highlight" : "text-primary-text"}`}>
+            <UserGroupIcon className="h-6 w-6" />
+          </div>
+        </Link>
+        <Link href="/profile">
+          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/profile" ? "text-highlight" : "text-primary-text"}`}>
+            <UserIcon className="h-6 w-6" />
+          </div>
+        </Link>
+        <ChatIcon 
+          navbar={true}/>
+      </div>
     </div>
   );
 }
