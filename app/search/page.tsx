@@ -48,7 +48,7 @@ export default function Search() {
     };
 
     return (
-        <div className="w-full h-100% pb-16 sm:pb-0 max-w-3xl mx-auto">
+        <div className="w-full h-100% pb-20 sm:pb-0 max-w-3xl mx-auto">
             {/* Search Input and Button */}
             <form className="sm:w-[80%] w-[90%] mx-auto p-4  flex space-x-4" onSubmit={handleSearch}>
                 <input

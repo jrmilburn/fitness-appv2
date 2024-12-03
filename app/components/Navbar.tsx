@@ -268,7 +268,7 @@ export default function Navbar() {
       </nav>
 
       {/* Bottom Navigation Bar for Mobile */}
-      <div className="fixed bottom-0 left-0 w-full h-16 bg-background flex justify-around items-center px-4 shadow-md md:hidden z-30">
+      <div className="fixed bottom-0 left-0 w-full h-20 bg-background flex justify-around items-center px-4 shadow-md md:hidden z-30">
         <QuickNavItem
           href="/workouts/current"
           IconOutline={LightningBoltOutlineIcon}

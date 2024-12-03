@@ -94,7 +94,7 @@ export default function Workout({ params }) {
   }
 
   return (
-    <div className="mx-auto flex flex-col items-center h-screen w-full sm:p-8 h-100% pb-16">
+    <div className="mx-auto flex flex-col items-center h-screen w-full sm:p-8 h-100% pb-20">
       {/* User Name */}
       {isLoading ? (
         <Skeleton height={30} width={200} />

@@ -45,9 +45,11 @@ export default async function Clients() {
     })
 
     return (
+            <div className='h-100% pb-20'>
             <ClientList 
             clients={clients}
             programs={programs}/>
+            </div>
     )
 
 }
