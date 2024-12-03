@@ -120,7 +120,7 @@ export default function ChatIcon({ navbar=false }) {
   return (shouldRender || navbar) ? (
     <div
       className={`${navbar ? 'relative' : 'fixed bottom-5 right-5 hidden sm:block'}  transform transition-all duration-300 ${
-        isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+        (navbar || isVisible) ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
       }`}
     >
       {/* Chat Icon Button */}
