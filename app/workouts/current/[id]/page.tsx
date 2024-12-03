@@ -73,7 +73,7 @@ export default function Workout({ params }) {
 
     if (noWorkout) {
         return (
-            <div className='mx-auto my-auto flex flex-col items-center space-y-16 h-screen w-full p-8'>
+            <div className='mx-auto my-auto flex flex-col items-center space-y-16 h-screen w-full p-8 h-100% pb-16'>
                 <h2>No Workout Available</h2>
                 <p>Please Create or Find a Program to Start a Workout</p>
                 <div className='flex'>

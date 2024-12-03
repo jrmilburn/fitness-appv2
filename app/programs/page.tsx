@@ -69,7 +69,7 @@ export default async function Programs() {
     
 
   return (
-    <main className="max-w-screen-sm mx-auto">
+    <main className="max-w-screen-sm mx-auto h-100% pb-16 sm:pb-0">
       <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">
       <h1 className="text-2xl sm:text-3xl inter text-primary-text">Your Programs</h1>
       <button

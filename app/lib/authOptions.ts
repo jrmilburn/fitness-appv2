@@ -6,6 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./prisma";
 import bcrypt from "bcryptjs";
+import BoxyHQSAMLProvider from 'next-auth/providers/boxyhq-saml';
 
 import { DefaultSession } from "next-auth";
 
@@ -56,6 +57,7 @@ export const authOptions: NextAuthOptions = {
                 return user;
             },
         }),
+    
     ],
     session: {
         strategy: "jwt",
