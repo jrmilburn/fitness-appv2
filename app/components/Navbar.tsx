@@ -4,35 +4,51 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation"; // Import usePathname
+
+// Import Outline Icons
 import {
-  LightningBoltIcon,
-  PlusCircleIcon,
-  ClipboardListIcon,
-  PencilAltIcon,
-  UserGroupIcon,
-  UserIcon,
-  SearchIcon,
-  CogIcon,
-  MoonIcon,
-  SunIcon
+  LightningBoltIcon as LightningBoltOutlineIcon,
+  PlusCircleIcon as PlusCircleOutlineIcon,
+  ClipboardListIcon as ClipboardListOutlineIcon,
+  PencilAltIcon as PencilAltOutlineIcon,
+  UserGroupIcon as UserGroupOutlineIcon,
+  UserIcon as UserOutlineIcon,
+  SearchIcon as SearchOutlineIcon,
+  CogIcon as CogOutlineIcon,
+  MoonIcon as MoonOutlineIcon,
 } from "@heroicons/react/outline";
+
+// Import Solid Icons
+import {
+  LightningBoltIcon as LightningBoltSolidIcon,
+  PlusCircleIcon as PlusCircleSolidIcon,
+  ClipboardListIcon as ClipboardListSolidIcon,
+  PencilAltIcon as PencilAltSolidIcon,
+  UserGroupIcon as UserGroupSolidIcon,
+  UserIcon as UserSolidIcon,
+  SearchIcon as SearchSolidIcon,
+  CogIcon as CogSolidIcon,
+  SunIcon as SunSolidIcon,
+} from "@heroicons/react/solid";
+
 import ChatIcon from "./ChatIcon/ChatIcon";
 
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
-  const [activeLink, setActiveLink] = useState("/workouts/current");
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const pathname = usePathname(); // Get the current pathname
 
   const toggleNav = () => setNavOpen(!navOpen);
 
   useEffect(() => {
     // Check if user has a saved preference
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark');
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
       setIsDarkMode(true);
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
       setIsDarkMode(false);
     }
   }, []);
@@ -41,26 +57,73 @@ export default function Navbar() {
     setIsDarkMode((prevMode) => {
       const newMode = !prevMode;
       if (newMode) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('theme', 'dark');
+        document.documentElement.classList.add("dark");
+        localStorage.setItem("theme", "dark");
       } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('theme', 'light');
+        document.documentElement.classList.remove("dark");
+        localStorage.setItem("theme", "light");
       }
       return newMode;
     });
   };
-  
-  
+
+  // Reusable NavItem Component for Main Navigation
+  const NavItem = ({ href, label, IconOutline, IconSolid }) => {
+    const isActive = pathname === href; // Determine if the link is active based on pathname
+    return (
+      <li className={`text-xl p-2 ${isActive ? "bg-highlight rounded-lg" : ""}`}>
+        <Link
+          href={href}
+          onClick={() => {
+            setNavOpen(false);
+          }}
+          className="flex items-center space-x-2"
+        >
+          {isActive ? (
+            <IconSolid className="h-6 w-6 text-primary-text" />
+          ) : (
+            <IconOutline className="h-6 w-6 text-primary-text" />
+          )}
+          <span>{label}</span>
+        </Link>
+      </li>
+    );
+  };
+
+  // Reusable QuickNavItem Component for Bottom Quick Navigation
+  const QuickNavItem = ({ href, IconOutline, IconSolid }) => {
+    const isActive = pathname === href; // Determine if the link is active based on pathname
+    return (
+      <Link href={href}>
+        <div
+          onClick={() => setNavOpen(false)}
+          className={`flex flex-col items-center space-y-1 ${
+            isActive ? "text-primary-text" : "text-primary-text"
+          }`}
+        >
+          {isActive ? (
+            <IconSolid className="h-6 w-6" />
+          ) : (
+            <IconOutline className="h-6 w-6" />
+          )}
+        </div>
+      </Link>
+    );
+  };
 
   return (
     <div className="relative">
       {/* Top Bar for Small Screens */}
       <div className="fixed top-0 left-0 w-full h-16 bg-background flex items-center justify-between px-4 shadow-md md:hidden z-50">
         {/* App Logo */}
-        <Link href="/workouts/current">
+        <Link href={pathname === "/workouts/current" ? "/workouts/current" : "/"}>
           <div className="flex items-center space-x-2 sm:hidden">
-            <Image src={!isDarkMode ? "/logo.png" : "/dark-logo.png"} alt="App Logo" width={32} height={32} />
+            <Image
+              src={!isDarkMode ? "/logo.png" : "/dark-logo.png"}
+              alt="App Logo"
+              width={32}
+              height={32}
+            />
             <h2 className="font-bold text-lg relative">
               JFit <em className="absolute text-xs">Classic</em>
             </h2>
@@ -69,6 +132,7 @@ export default function Navbar() {
 
         {/* Hamburger Button */}
         <button
+          aria-label="Toggle Navigation Menu" // Accessibility: ARIA label
           className="flex flex-col items-center justify-center space-y-1 w-8 h-8 bg-background text-primary-text rounded-md z-50"
           onClick={toggleNav}
         >
@@ -114,158 +178,62 @@ export default function Navbar() {
           {/* Navigation Links */}
           <ul className="flex flex-col space-y-2">
             <p className="border-b-2">Training</p>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/workouts/current"
-                  ? "bg-highlight rounded-lg"
-                  : ""
-              }`}
-            >
-              <Link
-                href="/workouts/current"
-                onClick={() => {
-                  setActiveLink("/workouts/current");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <LightningBoltIcon className="h-6 w-6 text-primary-text" />
-                <span>Current Workout</span>
-              </Link>
-            </li>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/create-program"
-                  ? "bg-highlight rounded-lg"
-                  : ""
-              }`}
-            >
-              <Link
-                href="/create-program"
-                onClick={() => {
-                  setActiveLink("/create-program");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <PlusCircleIcon className="h-6 w-6 text-primary-text" />
-                <span>New Program</span>
-              </Link>
-            </li>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/programs" ? "bg-highlight rounded-lg" : ""
-              }`}
-            >
-              <Link
-                href="/programs"
-                onClick={() => {
-                  setActiveLink("/programs");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <ClipboardListIcon className="h-6 w-6 text-primary-text" />
-                <span>Programs</span>
-              </Link>
-            </li>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/custom-excercises"
-                  ? "bg-highlight rounded-lg"
-                  : ""
-              }`}
-            >
-              <Link
-                href="/custom-excercises"
-                onClick={() => {
-                  setActiveLink("/custom-excercises");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <PencilAltIcon className="h-6 w-6 text-primary-text" />
-                <span>Custom Exercises</span>
-              </Link>
-            </li>
+            <NavItem
+              href="/workouts/current"
+              label="Current Workout"
+              IconOutline={LightningBoltOutlineIcon}
+              IconSolid={LightningBoltSolidIcon}
+            />
+            <NavItem
+              href="/create-program"
+              label="New Program"
+              IconOutline={PlusCircleOutlineIcon}
+              IconSolid={PlusCircleSolidIcon}
+            />
+            <NavItem
+              href="/programs"
+              label="Programs"
+              IconOutline={ClipboardListOutlineIcon}
+              IconSolid={ClipboardListSolidIcon}
+            />
+            <NavItem
+              href="/custom-excercises"
+              label="Custom Exercises"
+              IconOutline={PencilAltOutlineIcon}
+              IconSolid={PencilAltSolidIcon}
+            />
           </ul>
 
           <ul className="flex flex-col space-y-2">
             <p className="border-b-2">Coaching</p>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/coaching/clients"
-                  ? "bg-highlight rounded-lg"
-                  : ""
-              }`}
-            >
-              <Link
-                href="/coaching/clients"
-                onClick={() => {
-                  setActiveLink("/coaching/clients");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <UserGroupIcon className="h-6 w-6 text-primary-text" />
-                <span>Clients</span>
-              </Link>
-            </li>
+            <NavItem
+              href="/coaching/clients"
+              label="Clients"
+              IconOutline={UserGroupOutlineIcon}
+              IconSolid={UserGroupSolidIcon}
+            />
           </ul>
 
           <ul className="flex flex-col space-y-2">
             <p className="border-b-2">User</p>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/profile" ? "bg-highlight rounded-lg" : ""
-              }`}
-            >
-              <Link
-                href="/profile"
-                onClick={() => {
-                  setActiveLink("/profile");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <UserIcon className="h-6 w-6 text-primary-text" />
-                <span>Profile</span>
-              </Link>
-            </li>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/search" ? "bg-highlight rounded-lg" : ""
-              }`}
-            >
-              <Link
-                href="/search"
-                onClick={() => {
-                  setActiveLink("/search");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <SearchIcon className="h-6 w-6 text-primary-text" />
-                <span>Search</span>
-              </Link>
-            </li>
-            <li
-              className={`text-xl p-2 ${
-                activeLink === "/settings" ? "bg-highlight rounded-lg" : ""
-              }`}
-            >
-              <Link
-                href="/settings"
-                onClick={() => {
-                  setActiveLink("/settings");
-                  setNavOpen(false);
-                }}
-                className="flex items-center space-x-2"
-              >
-                <CogIcon className="h-6 w-6 text-primary-text" />
-                <span>Settings</span>
-              </Link>
-            </li>
+            <NavItem
+              href="/profile"
+              label="Profile"
+              IconOutline={UserOutlineIcon}
+              IconSolid={UserSolidIcon}
+            />
+            <NavItem
+              href="/search"
+              label="Search"
+              IconOutline={SearchOutlineIcon}
+              IconSolid={SearchSolidIcon}
+            />
+            <NavItem
+              href="/settings"
+              label="Settings"
+              IconOutline={CogOutlineIcon}
+              IconSolid={CogSolidIcon}
+            />
             <li className="text-xl p-2">
               <button
                 className="flex items-center space-x-2 focus:outline-none"
@@ -273,20 +241,21 @@ export default function Navbar() {
                   toggleDarkMode();
                   setNavOpen(false); // Close the nav if needed
                 }}
+                aria-label="Toggle Dark Mode" // Accessibility: ARIA label
               >
                 {isDarkMode ? (
                   <>
-                    <SunIcon className="h-6 w-6 text-primary-text" />
+                    <SunSolidIcon className="h-6 w-6 text-primary-text" />
                     <span>Light Mode</span>
                   </>
                 ) : (
                   <>
-                    <MoonIcon className="h-6 w-6 text-primary-text" />
+                    <MoonOutlineIcon className="h-6 w-6 text-primary-text" />
                     <span>Dark Mode</span>
                   </>
                 )}
               </button>
-          </li>
+            </li>
           </ul>
 
           <button
@@ -297,30 +266,30 @@ export default function Navbar() {
           </button>
         </ul>
       </nav>
-            {/* Bottom Navigation Bar for Mobile */}
-            <div className="fixed bottom-0 left-0 w-full h-16 bg-background flex justify-around items-center px-4 shadow-md md:hidden z-30">
-        <Link href="/workouts/current">
-          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/workouts/current" ? "text-highlight" : "text-primary-text"}`}>
-            <LightningBoltIcon className="h-6 w-6" />
-          </div>
-        </Link>
-        <Link href="/search">
-          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/search" ? "text-highlight" : "text-primary-text"}`}>
-            <SearchIcon className="h-6 w-6" />
-          </div>
-        </Link>
-        <Link href="/coaching/clients">
-          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/coaching/clients" ? "text-highlight" : "text-primary-text"}`}>
-            <UserGroupIcon className="h-6 w-6" />
-          </div>
-        </Link>
-        <Link href="/profile">
-          <div className={`flex flex-col items-center space-y-1 ${activeLink === "/profile" ? "text-highlight" : "text-primary-text"}`}>
-            <UserIcon className="h-6 w-6" />
-          </div>
-        </Link>
-        <ChatIcon 
-          navbar={true}/>
+
+      {/* Bottom Navigation Bar for Mobile */}
+      <div className="fixed bottom-0 left-0 w-full h-16 bg-background flex justify-around items-center px-4 shadow-md md:hidden z-30">
+        <QuickNavItem
+          href="/workouts/current"
+          IconOutline={LightningBoltOutlineIcon}
+          IconSolid={LightningBoltSolidIcon}
+        />
+        <QuickNavItem
+          href="/search"
+          IconOutline={SearchOutlineIcon}
+          IconSolid={SearchSolidIcon}
+        />
+        <QuickNavItem
+          href="/coaching/clients"
+          IconOutline={UserGroupOutlineIcon}
+          IconSolid={UserGroupSolidIcon}
+        />
+        <QuickNavItem
+          href="/profile"
+          IconOutline={UserOutlineIcon}
+          IconSolid={UserSolidIcon}
+        />
+        <ChatIcon navbar={true} />
       </div>
     </div>
   );
