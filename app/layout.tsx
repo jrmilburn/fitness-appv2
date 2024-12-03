@@ -131,9 +131,7 @@ export default function RootLayout({ children }) {
               {children}
             </main>
 
-            {shouldShowNavbar && (
-              <ChatIcon />
-              )}
+            {shouldShowNavbar && <ChatIcon />}
           </ProtectedRoute>
 
           <ToastContainer />
