@@ -118,7 +118,7 @@ export default function RootLayout({ children }) {
       </head>
       <SessionProvider>
         <body
-          className={`antialiased flex flex-col md:flex-row max-h-screen overflow-auto pt-16 md:pt-0 bg-background text-primary-text dark:bg-background dark:text-primary-text font-sans inter-main`}
+          className={`antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-auto pt-16 md:pt-0 bg-background text-primary-text dark:bg-background dark:text-primary-text font-sans inter-main`}
         >
           <ProtectedRoute>
             {shouldShowNavbar && <Navbar />}

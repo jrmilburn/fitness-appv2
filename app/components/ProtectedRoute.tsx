@@ -12,7 +12,7 @@ export default function ProtectedRoute({ children }) {
   const pathname = usePathname();
   const [shouldFadeOut, setShouldFadeOut] = useState(false);
 
-  const unprotectedPaths = ["/landingpage/register", "/landingpage/login"];
+  const unprotectedPaths = ["/landingpage/register", "/landingpage/login", "/landingpage/checkout"];
   const isUnprotectedPath = unprotectedPaths.includes(pathname);
 
   useEffect(() => {
