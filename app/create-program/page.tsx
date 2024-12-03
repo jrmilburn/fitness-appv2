@@ -27,7 +27,7 @@ export default function CreateProgram() {
     }
 
     return (
-        <main className="w-full h-[100%] flex items-baseline">
+        <main className="w-full h-100% pb-16 sm:pb-0 flex items-baseline">
 
             {formPage === 0 ? (
                 <div className='flex flex-col space-y-4 w-full'>
