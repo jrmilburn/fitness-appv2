@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
     // Parse the request body
     const { subscriptionId, userId } = await req.json();
 
+    console.log('info', subscriptionId, userId);
+
     if (!subscriptionId || !userId) {
       return NextResponse.json(
         { error: "Missing subscriptionId or userId" },
