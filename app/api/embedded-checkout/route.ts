@@ -56,6 +56,8 @@ export async function POST(request: NextRequest) {
       return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,
     });
 
+    console.log('SESSION', session);
+
     // Return the session ID and client secret
     return NextResponse.json({
       id: session.id,
