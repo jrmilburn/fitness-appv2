@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
         },
         data: {
           plan: "PREMIUM", // Assuming the plan corresponds to the role
-          status: subscription.status as any, // Map Stripe subscription status
+          status: "ACTIVE"
         },
       });
 
