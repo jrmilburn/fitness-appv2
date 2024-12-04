@@ -30,7 +30,13 @@ export async function POST(req: Request) {
             },
         });
 
-        return NextResponse.json({ message: 'User registered successfully', user: newUser }, { status: 201 });
+        const newSubscription = await prisma.subscription.create({
+            data: {
+                userId: newUser.id,
+            }
+        })
+
+        return NextResponse.json({ message: 'User registered successfully', user: newUser, subscription: newSubscription }, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ message: 'Internal server error' }, { status: 500 });

@@ -233,14 +233,15 @@ export default function Navbar() {
             <NavItem
               href="/settings"
               label="Settings"
-              IconOutline={CreditCardOutlineIcon}
-              IconSolid={CreditCardSolidIcon}
+              IconOutline={CogOutlineIcon}
+              IconSolid={CogSolidIcon}
+
             />
             <NavItem
               href="/subscription"
               label="Subscription"
-              IconOutline={CogOutlineIcon}
-              IconSolid={CogSolidIcon}
+              IconOutline={CreditCardOutlineIcon}
+              IconSolid={CreditCardSolidIcon}
             />
             <li className="text-xl p-2">
               <button

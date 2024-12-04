@@ -11,7 +11,8 @@ datasource db {
 
 enum Role {
   USER
-  COACH
+  PREMIUM
+  ADMIN
 }
 
 model CoachingRequest {
@@ -65,6 +66,32 @@ model User {
   coachingRequestsAsCoach  CoachingRequest[] @relation("coachingRequestsAsCoach")
 
   excercises Excercise[] @relation(name: "UserExcercises")
+
+  subscription   Subscription? @relation("UserSubscription")
+}
+
+model Subscription {
+  id                    String      @id @default(cuid())
+  user                  User        @relation("UserSubscription", fields: [userId], references: [id], onDelete: Cascade)
+  userId                String      @unique
+  stripeSubscriptionId  String?     @unique
+  status                SubscriptionStatus @default(PENDING)
+  plan                  Plan        @default(BASIC)
+  currentPeriodEnd      DateTime?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PENDING
+  CANCELED
+  PAUSED
+}
+
+enum Plan {
+  BASIC
+  PREMIUM
 }
 
 model BodyWeight {

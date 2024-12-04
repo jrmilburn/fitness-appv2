@@ -62,7 +62,9 @@ export default function EmbeddedCheckoutButton() {
         >
           <h3 className="font-bold text-2xl text-gray-900 dark:text-white">JFit Premium Subscription</h3>
           <p className="mt-2 text-gray-700 dark:text-gray-300">
-            Unlock exclusive features and enjoy an ad-free experience with our Premium plan.
+          Unlock exclusive features and enjoy an ad-free experience with our Premium plan.
+          </p>
+
             <ul className="mt-6 text-gray-700">
               <li className="flex items-center">
                 <svg
@@ -101,7 +103,6 @@ export default function EmbeddedCheckoutButton() {
                 Access to regularly updated JFit templates
               </li>
             </ul>
-          </p>
           <div className="py-4 self-center">
             {showCheckout && (
               <EmbeddedCheckoutProvider stripe={stripePromise} options={options}>
