@@ -40,23 +40,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Create a Stripe Checkout session
-const session = await stripe.checkout.sessions.create({
-  ui_mode: "embedded",
-  payment_method_types: ["card"],
-  line_items: [
-    {
-      price: priceId,
-      quantity: 1,
-    },
-  ],
-  mode: "subscription",
-  subscription_data: {
-    metadata: {
-      userId: user.id.toString(), // Add userId to the subscription's metadata
-    },
-  },
-  return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,
-});
+    const session = await stripe.checkout.sessions.create({
+      ui_mode: "embedded",
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      mode: "subscription",
+      subscription_data: {
+        metadata: {
+          userId: user.id.toString(), // Add userId to the subscription's metadata
+        },
+      },
+      return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,
+    });
 
     console.log('SESSION', session);
 

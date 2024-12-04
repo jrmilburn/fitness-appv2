@@ -85,14 +85,21 @@ export async function POST(req: NextRequest) {
         data: { role },
       });
 
-      // Update the subscription in the database
-      const updatedSubscription = await prisma.subscription.update({
+      const updatedSubscription = await prisma.subscription.upsert({
         where: {
-          userId: user.id,
+          userId: userId, // Match by userId
         },
-        data: {
-          plan: "PREMIUM", // Assuming the plan corresponds to the role
-          status: "ACTIVE"
+        update: {
+          plan: "PREMIUM", // Update these fields if the record exists
+          status: "ACTIVE",
+          currentPeriodEnd: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // Now + 30 days
+        },
+        create: {
+          userId: userId, // Create a new record with these fields if no match is found
+          stripeSubscriptionId: subscription.id,
+          currentPeriodEnd: new Date(new Date().getTime() + 30 * 24 * 60 * 60 * 1000), // Now + 30 days
+          plan: "PREMIUM",
+          status: "ACTIVE",
         },
       });
 
