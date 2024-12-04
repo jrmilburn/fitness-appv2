@@ -49,11 +49,14 @@ export async function POST(request: NextRequest) {
           quantity: 1,
         },
       ],
-      metadata: {
-        userId: user.id.toString(), // Convert userId to a string
-      },
       mode: "subscription",
-      return_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,
+      subscription_data: {
+        metadata: {
+          userId: user.id.toString(), // Add userId to the subscription's metadata
+        },
+      },
+      success_url: `${request.headers.get("origin")}/return?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${request.headers.get("origin")}/cancel`,
     });
 
     console.log('SESSION', session);
