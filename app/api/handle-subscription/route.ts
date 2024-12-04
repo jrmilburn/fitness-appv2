@@ -59,6 +59,15 @@ export async function POST(req: NextRequest) {
       data: { role }, // Use the Role enum value
     });
 
+    const updatedSubscription = await prisma.subscription.update({
+        where: {
+            userId: user.id
+        },
+        data: {
+            plan: 'PREMIUM'
+        }
+    })
+
     return NextResponse.json(
       {
         message: "Subscription updated successfully",
