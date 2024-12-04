@@ -8,11 +8,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // Map Stripe product IDs to roles
 const productToRoles: Record<string, Role> = {
-  prod_RKmDcsx840rcWE: Role.PREMIUM, // Use Prisma Role enum values here
+    prod_RKmDcsx840rcWE: Role.PREMIUM, // Use Prisma Role enum values here
 };
 
 export async function POST(req: NextRequest) {
   try {
+
+    console.log('HELLOOOOOOO');
+
     // Parse the request body
     const { subscriptionId, userId } = await req.json();
 
@@ -45,6 +48,8 @@ export async function POST(req: NextRequest) {
 
     // Map product ID to a role
     const role = productToRoles[productId] || Role.USER; // Default to Role.USER
+
+    console.log("USER ROLE", role);
 
     // Update the user's role in the database
     const user = await prisma.user.update({
