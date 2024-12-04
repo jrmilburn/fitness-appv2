@@ -20,30 +20,27 @@ export async function POST(req: NextRequest) {
 
   let event: Stripe.Event;
 
-  try {
-    // Get the raw body for signature verification
-    const rawBody = await req.text();
-
-    console.log('RAW BODY', rawBody);
-
-    // Verify the Stripe signature
-    event = stripe.webhooks.constructEvent(
-      rawBody,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
-    );
-
-    console.log("Webhook verified:", event.type);
-
-    console.log('EVENT', event);
-
-  } catch (err) {
-    console.error("Webhook signature verification failed:", err);
-    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
-  }
-
   // Handle the event
   if (event.type === "customer.subscription.updated") {
+
+    try {
+        // Get the raw body for signature verification
+        const rawBody = await req.text();
+    
+        // Verify the Stripe signature
+        event = stripe.webhooks.constructEvent(
+          rawBody,
+          sig,
+          process.env.STRIPE_WEBHOOK_SECRET_ADD!
+        );
+    
+        console.log("Webhook verified:", event.type);
+    
+      } catch (err) {
+        console.error("Webhook signature verification failed:", err);
+        return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+      }
+
     const subscription = event.data.object as Stripe.Subscription;
 
     const subscriptionId = subscription.id;
@@ -61,9 +58,6 @@ export async function POST(req: NextRequest) {
     }
 
     const userId = subscription.metadata?.userId; // Assuming userId is stored in subscription metadata
-
-    console.log('SUBSCRIPTION METADATA', subscription.metadata);
-    console.log('SUBSCRIPTION', subscription);
 
     if (!userId) {
       console.error("Missing userId in subscription metadata");
@@ -121,6 +115,25 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "customer.subscription.deleted") {
+
+    try {
+        // Get the raw body for signature verification
+        const rawBody = await req.text();
+    
+        // Verify the Stripe signature
+        event = stripe.webhooks.constructEvent(
+          rawBody,
+          sig,
+          process.env.STRIPE_WEBHOOK_SECRET_DELETE!
+        );
+    
+        console.log("Webhook verified:", event.type);
+    
+      } catch (err) {
+        console.error("Webhook signature verification failed:", err);
+        return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+      }
+
     const subscription = event.data.object as Stripe.Subscription;
   
     const subscriptionId = subscription.id;
