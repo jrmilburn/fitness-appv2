@@ -1,17 +1,15 @@
 // components/PremiumDetails.tsx
 
-import { User } from '@prisma/client';
+import { User, Subscription } from '@prisma/client';
 import { format } from 'date-fns';
 import { FaStar } from 'react-icons/fa';
 
 interface PremiumDetailsProps {
-    user: User;
+    user: User & { subscription: Subscription | null };
 }
 
-export default function PremiumDetails({ user }: PremiumDetailsProps) {
-    // Assuming you have subscription details linked to the user
-    // If not, adjust accordingly
-    const { subscription } = user; // Adjust based on your Prisma schema
+const PremiumDetails: React.FC<PremiumDetailsProps> = ({ user }) => {
+    const { subscription } = user;
 
     return (
         <div className="bg-green-50 dark:bg-green-900 p-6 rounded-lg shadow-md">
@@ -24,9 +22,9 @@ export default function PremiumDetails({ user }: PremiumDetailsProps) {
             <div className="mt-4">
                 <h3 className="text-xl font-medium text-green-700 dark:text-green-300">Subscription Details:</h3>
                 <ul className="list-disc list-inside mt-2 text-green-600 dark:text-green-200">
-                    <li><strong>Plan:</strong> Premium</li>
-                    <li><strong>Status:</strong> Active</li>
-                    <li><strong>Renewal Date:</strong> {subscription?.renewalDate ? format(new Date(subscription.renewalDate), 'PPP') : 'N/A'}</li>
+                    <li><strong>Plan:</strong> {subscription?.plan ?? 'N/A'}</li>
+                    <li><strong>Status:</strong> {subscription?.status ?? 'N/A'}</li>
+                    <li><strong>Renewal Date:</strong> {subscription?.currentPeriodEnd ? format(new Date(subscription.currentPeriodEnd), 'PPP') : 'N/A'}</li>
                     {/* Add more details as needed */}
                 </ul>
             </div>
@@ -39,3 +37,5 @@ export default function PremiumDetails({ user }: PremiumDetailsProps) {
         </div>
     );
 }
+
+export default PremiumDetails;
