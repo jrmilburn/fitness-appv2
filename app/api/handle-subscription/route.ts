@@ -57,6 +57,8 @@ export async function POST(req: NextRequest) {
 
     const userId = subscription.metadata?.userId; // Assuming userId is stored in subscription metadata
 
+    console.log('SUBSCRIPTION METADATA', subscription.metadata);
+
     if (!userId) {
       console.error("Missing userId in subscription metadata");
       return NextResponse.json(
