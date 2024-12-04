@@ -1,87 +1,110 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { prisma } from "@/app/lib/prisma"; // Assuming you're using Prisma to manage your database
-import { Role } from "@prisma/client"; // Import Role enum from Prisma
+import { prisma } from "@/app/lib/prisma";
+import { Role } from "@prisma/client";
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 // Map Stripe product IDs to roles
 const productToRoles: Record<string, Role> = {
-    prod_RKmDcsx840rcWE: Role.PREMIUM, // Use Prisma Role enum values here
+  prod_RKmDcsx840rcWE: Role.PREMIUM, // Use Prisma Role enum values here
 };
 
 export async function POST(req: NextRequest) {
+  const sig = req.headers.get("stripe-signature");
+
+  if (!sig) {
+    return NextResponse.json({ error: "Missing Stripe signature" }, { status: 400 });
+  }
+
+  let event: Stripe.Event;
+
   try {
+    // Get the raw body for signature verification
+    const rawBody = await req.text();
 
-    console.log('HELLOOOOOOO');
+    // Verify the Stripe signature
+    event = stripe.webhooks.constructEvent(
+      rawBody,
+      sig,
+      process.env.STRIPE_WEBHOOK_SECRET!
+    );
 
-    // Parse the request body
-    const { subscriptionId, userId } = await req.json();
+    console.log("Webhook verified:", event.type);
+  } catch (err) {
+    console.error("Webhook signature verification failed:", err);
+    return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
+  }
 
-    console.log('info', subscriptionId, userId);
+  // Handle the event
+  if (event.type === "customer.subscription.updated") {
+    const subscription = event.data.object as Stripe.Subscription;
 
-    if (!subscriptionId || !userId) {
+    const subscriptionId = subscription.id;
+    const product = subscription.items.data[0]?.price.product;
+
+    // Ensure `product` is a string
+    const productId = typeof product === "string" ? product : null;
+
+    if (!subscriptionId || !productId) {
+      console.error("Missing subscriptionId or valid productId");
       return NextResponse.json(
-        { error: "Missing subscriptionId or userId" },
+        { error: "Missing required data" },
         { status: 400 }
       );
     }
 
-    // Retrieve subscription details from Stripe
-    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    const userId = subscription.metadata?.userId; // Assuming userId is stored in subscription metadata
 
-    if (!subscription) {
+    if (!userId) {
+      console.error("Missing userId in subscription metadata");
       return NextResponse.json(
-        { error: "Subscription not found" },
-        { status: 404 }
-      );
-    }
-
-    // Extract product ID from subscription
-    const productId = subscription.items.data[0]?.price.product;
-
-    if (typeof productId !== "string") {
-      return NextResponse.json(
-        { error: "Invalid product ID" },
+        { error: "Missing userId" },
         { status: 400 }
       );
     }
+
+    console.log("Updating subscription for user:", userId);
 
     // Map product ID to a role
-    const role = productToRoles[productId] || Role.USER; // Default to Role.USER
+    const role = productToRoles[productId] || Role.USER;
 
-    console.log("USER ROLE", role);
+    try {
+      // Update the user's role in the database
+      const user = await prisma.user.update({
+        where: { id: userId },
+        data: { role },
+      });
 
-    // Update the user's role in the database
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: { role }, // Use the Role enum value
-    });
-
-    const updatedSubscription = await prisma.subscription.update({
+      // Update the subscription in the database
+      const updatedSubscription = await prisma.subscription.update({
         where: {
-            userId: user.id
+          userId: user.id,
         },
         data: {
-            plan: 'PREMIUM'
-        }
-    })
+          plan: "PREMIUM", // Assuming the plan corresponds to the role
+          status: subscription.status as any, // Map Stripe subscription status
+        },
+      });
 
-    return NextResponse.json(
-      {
-        message: "Subscription updated successfully",
-        updatedSubscription,
-        user,
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Error updating subscription:", error);
-
-    return NextResponse.json(
-      { error: "Failed to update subscription" },
-      { status: 500 }
-    );
+      return NextResponse.json(
+        {
+          message: "Subscription updated successfully",
+          updatedSubscription,
+          user,
+        },
+        { status: 200 }
+      );
+    } catch (err) {
+      console.error("Error updating subscription:", err);
+      return NextResponse.json(
+        { error: "Database update failed" },
+        { status: 500 }
+      );
+    }
   }
+
+  console.log("Unhandled event type:", event.type);
+  return NextResponse.json({ message: "Event received" }, { status: 200 });
 }
