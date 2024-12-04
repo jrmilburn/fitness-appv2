@@ -17,6 +17,7 @@ import {
   SearchIcon as SearchOutlineIcon,
   CogIcon as CogOutlineIcon,
   MoonIcon as MoonOutlineIcon,
+  CreditCardIcon as CreditCardOutlineIcon
 } from "@heroicons/react/outline";
 
 // Import Solid Icons
@@ -30,6 +31,7 @@ import {
   SearchIcon as SearchSolidIcon,
   CogIcon as CogSolidIcon,
   SunIcon as SunSolidIcon,
+  CreditCardIcon as CreditCardSolidIcon
 } from "@heroicons/react/solid";
 
 import ChatIcon from "./ChatIcon/ChatIcon";
@@ -231,6 +233,12 @@ export default function Navbar() {
             <NavItem
               href="/settings"
               label="Settings"
+              IconOutline={CreditCardOutlineIcon}
+              IconSolid={CreditCardSolidIcon}
+            />
+            <NavItem
+              href="/subscription"
+              label="Subscription"
               IconOutline={CogOutlineIcon}
               IconSolid={CogSolidIcon}
             />

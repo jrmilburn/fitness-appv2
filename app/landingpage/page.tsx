@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import EmbeddedCheckoutButton from '../components/Stripe/EmbeddedCheckoutForm';
 
 export default function LandingPage() {
   const { data: session } = useSession();
@@ -156,6 +157,7 @@ export default function LandingPage() {
                 </svg>
               </button>
             </Link>
+            <EmbeddedCheckoutButton />
           </div>
         </div>
 
