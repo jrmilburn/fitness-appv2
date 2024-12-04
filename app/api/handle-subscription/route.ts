@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         message: "Subscription updated successfully",
-        subscription,
+        updatedSubscription,
         user,
       },
       { status: 200 }
