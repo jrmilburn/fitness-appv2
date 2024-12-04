@@ -120,6 +120,61 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  if (event.type === "customer.subscription.deleted") {
+    const subscription = event.data.object as Stripe.Subscription;
+  
+    const subscriptionId = subscription.id;
+  
+    console.log("Handling subscription deletion for ID:", subscriptionId);
+  
+    try {
+      // Find the subscription in your database
+      const dbSubscription = await prisma.subscription.findUnique({
+        where: { stripeSubscriptionId: subscriptionId },
+      });
+  
+      if (!dbSubscription) {
+        console.error("Subscription not found in the database.");
+        return NextResponse.json(
+          { error: "Subscription not found" },
+          { status: 404 }
+        );
+      }
+  
+      // Update the subscription status to CANCELED
+      const canceledSubscription = await prisma.subscription.update({
+        where: { stripeSubscriptionId: subscriptionId },
+        data: {
+          status: "CANCELED", // Mark subscription as canceled
+          currentPeriodEnd: null, // Optionally clear the period end date
+        },
+      });
+  
+      // Optionally update the user's role
+      const updatedUser = await prisma.user.update({
+        where: { id: dbSubscription.userId },
+        data: { role: "USER" }, // Demote to free tier or default role
+      });
+  
+      console.log("Subscription and user role updated successfully:", {
+        canceledSubscription,
+        updatedUser,
+      });
+  
+      return NextResponse.json({
+        message: "Subscription deleted successfully",
+        canceledSubscription,
+        updatedUser,
+      });
+    } catch (err) {
+      console.error("Error handling subscription deletion:", err);
+      return NextResponse.json(
+        { error: "Failed to handle subscription deletion" },
+        { status: 500 }
+      );
+    }
+  }
+
   console.log("Unhandled event type:", event.type);
   return NextResponse.json({ message: "Event received" }, { status: 200 });
 }
