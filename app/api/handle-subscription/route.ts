@@ -24,6 +24,8 @@ export async function POST(req: NextRequest) {
     // Get the raw body for signature verification
     const rawBody = await req.text();
 
+    console.log('RAW BODY', rawBody);
+
     // Verify the Stripe signature
     event = stripe.webhooks.constructEvent(
       rawBody,
