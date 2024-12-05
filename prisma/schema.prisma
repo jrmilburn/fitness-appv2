@@ -172,6 +172,7 @@ model Program {
   weeks         Week[] // No `onDelete` here; it's specified in `Week`
   currentWeekId String?
   completed     Boolean   @default(false)
+  isPremium     Boolean @default(true)
 }
 
 model Week {
