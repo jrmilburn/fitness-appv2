@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
       // Update the user's role in the database
       const user = await prisma.user.update({
         where: { id: userId },
-        data: { role },
+        data: { role: "USER" },
       });
 
       const updatedSubscription = await prisma.subscription.update({

@@ -1,5 +1,3 @@
-// lib/authOptions.ts
-
 import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -13,6 +11,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
+      role: string;
     } & DefaultSession["user"];
   }
 }
@@ -56,22 +55,25 @@ export const authOptions: NextAuthOptions = {
                 return user;
             },
         }),
-    
     ],
     session: {
         strategy: "jwt",
     },
     callbacks: {
         async jwt({ token, user }) {
-            console.log("JWT Callback", { token, user });
             if (user) {
+                const userFromDb = await prisma.user.findUnique({
+                    where: { id: user.id },
+                    select: { role: true },
+                });
                 token.id = user.id;
+                token.role = userFromDb?.role || "user";
             }
             return token;
         },
         async session({ session, token }) {
-            console.log("Session Callback", { session, token });
             session.user.id = token.id as string;
+            session.user.role = token.role as string;
             return session;
         },
     },

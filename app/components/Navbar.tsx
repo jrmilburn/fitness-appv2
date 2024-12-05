@@ -5,6 +5,7 @@ import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation"; // Import usePathname
+import PremiumIcon from "./PremiumIcon";
 
 // Import Outline Icons
 import {
@@ -36,10 +37,15 @@ import {
 
 import ChatIcon from "./ChatIcon/ChatIcon";
 
+import { useSession } from "next-auth/react"; 
+
+
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const pathname = usePathname(); // Get the current pathname
+
+  const { data: session } = useSession();
 
   const toggleNav = () => setNavOpen(!navOpen);
 
@@ -69,17 +75,17 @@ export default function Navbar() {
     });
   };
 
-  // Reusable NavItem Component for Main Navigation
-  const NavItem = ({ href, label, IconOutline, IconSolid }) => {
+  const NavItem = ({ href, label, IconOutline, IconSolid, isPremium = false }) => {
     const isActive = pathname === href; // Determine if the link is active based on pathname
+    const { data: session } = useSession();
+    const userRole = session?.user?.role || "USER";
+  
     return (
       <li className={`text-xl p-2 ${isActive ? "bg-highlight rounded-lg" : ""}`}>
         <Link
           href={href}
-          onClick={() => {
-            setNavOpen(false);
-          }}
-          className="flex items-center space-x-2"
+          onClick={() => setNavOpen(false)}
+          className="flex items-center space-x-2 relative"
         >
           {isActive ? (
             <IconSolid className="h-6 w-6 text-primary-text" />
@@ -87,6 +93,9 @@ export default function Navbar() {
             <IconOutline className="h-6 w-6 text-primary-text" />
           )}
           <span>{label}</span>
+          {isPremium && userRole !== "PREMIUM" && (
+            <PremiumIcon text={`${label} has premium features`} />
+          )}
         </Link>
       </li>
     );
@@ -191,6 +200,7 @@ export default function Navbar() {
               label="New Program"
               IconOutline={PlusCircleOutlineIcon}
               IconSolid={PlusCircleSolidIcon}
+              isPremium={true}
             />
             <NavItem
               href="/programs"
@@ -203,6 +213,7 @@ export default function Navbar() {
               label="Custom Exercises"
               IconOutline={PencilAltOutlineIcon}
               IconSolid={PencilAltSolidIcon}
+              isPremium={true}
             />
           </ul>
 
@@ -213,6 +224,7 @@ export default function Navbar() {
               label="Clients"
               IconOutline={UserGroupOutlineIcon}
               IconSolid={UserGroupSolidIcon}
+              isPremium={true}
             />
           </ul>
 
