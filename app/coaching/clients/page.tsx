@@ -2,6 +2,7 @@ import { prisma } from '../../lib/prisma'
 import ClientList from '@/app/components/Coaching/ClientList';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/authOptions';
+import StandardUserDetails from '@/app/components/Subscription/StandardUserDetails';
 
 export default async function Clients() {
 
@@ -12,6 +13,17 @@ export default async function Clients() {
             email: session?.user.email,
         }
     });
+
+    if(user?.role === "USER") {
+
+        return(
+            <>
+                <p>Coaching is only available to premium users.</p>
+                <StandardUserDetails />
+            </>
+        )
+
+    }
 
     const clients = await prisma.coachingRequest.findMany({
       where: {
