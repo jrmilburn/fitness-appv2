@@ -4,8 +4,13 @@ import Workout from './Workout';
 import { useRouter } from "next/navigation";
 import { useState } from 'react';
 import Loader from '../Loader';
+import { useSession } from "next-auth/react";
+import PremiumIcon from '../PremiumIcon'; 
 
 export default function ProgramExercises({ program, setProgram, type, onPrevious }) {
+
+  const { data: session } = useSession();
+
   const [isLoading, setIsLoading] = useState(false);
   const [advanced, setAdvanced] = useState(false);
   const router = useRouter();
@@ -102,8 +107,10 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
           <button
             className="inter-bold border-2 text-primary-text border-border px-4 py-2 hover:bg-highlight rounded flex gap-2 mt-4 sm:mt-0"
             onClick={toggleAdvanced}
+            disabled={session?.user?.role === "USER" ? true : false}
           >
             {advanced ? 'Switch to Basic Builder' : 'Switch to Advanced Builder'}
+            {session?.user?.role === "USER" ? <PremiumIcon text='Advanced Builder is a premium feature'/> : <></> }
           </button>
         </div>
 
