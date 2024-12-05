@@ -5,11 +5,14 @@ import CustomExcercise from "./CustomExcercise";
 import NewExcercise from '../CreateProgram/NewExcercise';
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { useMediaQuery } from 'react-responsive';
+import { useSession } from 'next-auth/react';
+import PremiumIcon from '../PremiumIcon';
 
 export default function CustomExcercises({ excercises, muscleGroups }) {
   const [newShown, setNewShown] = useState(false);
   const [show, setShow] = useState(false); // State to control modal animation
   const [customExcercises, setCustomExcercises] = useState(excercises);
+  const { data: session } = useSession();
 
   // Determine if the screen is mobile
   const isMobile = useMediaQuery({ maxWidth: 640 }); // Tailwind's 'sm' breakpoint is 640px
@@ -70,9 +73,11 @@ export default function CustomExcercises({ excercises, muscleGroups }) {
       <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">
         <h2 className="text-2xl sm:text-3xl text-primary-text">Custom Exercises</h2>
         <button
-          className="inter-bold border-2 p-2 hover:bg-background-secondary rounded flex gap-2 text-primary-text"
+          className=" relative inter-bold border-2 p-2 hover:bg-background-secondary rounded flex gap-2 text-primary-text"
           onClick={handleOpen}
+          disabled={session?.user?.role === "USER" && customExcercises.length >=3}
         >
+          {session?.user?.role === "USER" && <PremiumIcon text={`Upgrade to premium for unlimited custom excercises. ${3 - customExcercises.length} remaining`}/>}
           New <PlusCircleIcon className="h-6 w-6 text-primary-text" />
         </button>
       </div>
