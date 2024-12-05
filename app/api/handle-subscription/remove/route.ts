@@ -75,14 +75,12 @@ export async function POST(req: NextRequest) {
 
     console.log("Updating subscription for user:", userId);
 
-    // Map product ID to a role
     const role = productToRoles[productId] || Role.USER;
 
     try {
-      // Update the user's role in the database
       const user = await prisma.user.update({
         where: { id: userId },
-        data: { role: "USER" },
+        data: { role: role },
       });
 
       const updatedSubscription = await prisma.subscription.update({
