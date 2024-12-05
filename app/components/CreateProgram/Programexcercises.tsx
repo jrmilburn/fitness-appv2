@@ -11,6 +11,8 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
 
   const { data: session } = useSession();
 
+  console.log(session.user);
+
   const [isLoading, setIsLoading] = useState(false);
   const [advanced, setAdvanced] = useState(false);
   const router = useRouter();
