@@ -107,7 +107,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
             <strong>{program.name}</strong> Exercises
           </h2>
           <button
-            className="inter-bold border-2 text-primary-text border-border px-4 py-2 hover:bg-highlight rounded flex gap-2 mt-4 sm:mt-0"
+            className="relative inter-bold border-2 text-primary-text border-border px-4 py-2 hover:bg-highlight rounded flex gap-2 mt-4 sm:mt-0"
             onClick={toggleAdvanced}
             disabled={session?.user?.role === "USER" ? true : false}
           >

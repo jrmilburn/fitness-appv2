@@ -77,6 +77,7 @@ export default function Navbar() {
     const isActive = pathname === href; // Determine if the link is active based on pathname
     const { data: session } = useSession();
     const userRole = session?.user?.role || "USER";
+    console.log(session.user);
   
     return (
       <li className={`text-xl p-2 ${isActive ? "bg-highlight rounded-lg" : ""}`}>
