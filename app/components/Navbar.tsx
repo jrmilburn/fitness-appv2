@@ -45,8 +45,6 @@ export default function Navbar() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const pathname = usePathname(); // Get the current pathname
 
-  const { data: session } = useSession();
-
   const toggleNav = () => setNavOpen(!navOpen);
 
   useEffect(() => {
