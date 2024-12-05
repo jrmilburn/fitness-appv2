@@ -297,6 +297,20 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
 
             {muscle?.name === 'Cardio' ? (
                 <>
+                {excercise.sets.map((set, index) => (
+                    <Set
+                        key={index}
+                        setId={set.id}
+                        Rir={weekRir}
+                        workout={workout}
+                        setWorkout={setWorkout}
+                        onDelete={() => handleDeleteSet(set.id)}
+                        onAdd={handleAddSet}
+                        onDataFetch={handleSetDataFetch}
+                        disabled={disabled} // Pass disabled prop
+                        type='cardio'
+                    />
+                ))}
                   <button
                     onClick={handlePlayClick}
                     className="bg-highlight text-primary-text px-4 py-2 rounded mt-4 flex items-center justify-center"

@@ -3,11 +3,13 @@ import verteditIcon from '../../assets/edit-vert.svg';
 import Image from 'next/image';
 import SetForm from './SetForm';
 
-export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, onDataFetch, disabled=false }) {
+export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, onDataFetch, disabled=false, type='hypertrophy' }) {
   const [isChecked, setIsChecked] = useState(false);
   const [focusedInput, setFocusedInput] = useState(''); 
   const [weight, setWeight] = useState(null);
   const [reps, setReps] = useState(null);
+  const [activity, setActivity] = useState(0);
+  const [rest, setRest] = useState(0);
   const [recommendedReps, setRecommendedReps] = useState(null);
   const [lowerBoundWeight, setLowerBoundWeight] = useState(null);
   const [recommendedWeight, setRecommendedWeight] = useState(null);
@@ -120,33 +122,70 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
             alt='edit set'
           />
         </button>
-        <input
-          type="number"
-          placeholder={`Weight`}
-          className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
-          onFocus={() => setFocusedInput('weight')}
-          onBlur={() => setFocusedInput('')}
-          value={weight !== null ? weight : ''}
-          onChange={(e) => {
-            const value = e.target.value;
-            setWeight(value === '' ? null : +value);
-          }}
-          disabled={workout.completed || disabled}
-        />
-        
-        <input
-          type="number"
-          placeholder={`${Rir} RIR`}
-          className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
-          onFocus={() => setFocusedInput('reps')}
-          onBlur={() => setFocusedInput('')}
-          value={reps !== null ? reps : ''}
-          onChange={(e) => {
-            const value = e.target.value;
-            setReps(value === '' ? null : +value);
-          }}
-          disabled={workout.completed || disabled}
-        />
+        {type === 'hypertrophy' && (
+              <>
+                  <input
+                  type="number"
+                  placeholder={`Weight`}
+                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+                  onFocus={() => setFocusedInput('weight')}
+                  onBlur={() => setFocusedInput('')}
+                  value={weight !== null ? weight : ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setWeight(value === '' ? null : +value);
+                  }}
+                  disabled={workout.completed || disabled}
+                />
+                
+                <input
+                  type="number"
+                  placeholder={`${Rir} RIR`}
+                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+                  onFocus={() => setFocusedInput('reps')}
+                  onBlur={() => setFocusedInput('')}
+                  value={reps !== null ? reps : ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setReps(value === '' ? null : +value);
+                  }}
+                  disabled={workout.completed || disabled}
+                />
+              </>
+        ) }
+
+{type === 'cardio' && (
+              <>
+                  <input
+                  type="number"
+                  placeholder={`Activity`}
+                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+                  onFocus={() => setFocusedInput('weight')}
+                  onBlur={() => setFocusedInput('')}
+                  value={activity !== null ? activity : ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setActivity(value === '' ? null : +value);
+                  }}
+                  disabled={workout.completed || disabled}
+                />
+                
+                <input
+                  type="number"
+                  placeholder={`Rest`}
+                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+                  onFocus={() => setFocusedInput('reps')}
+                  onBlur={() => setFocusedInput('')}
+                  value={rest !== null ? rest : ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setRest(value === '' ? null : +value);
+                  }}
+                  disabled={workout.completed || disabled}
+                />
+              </>
+        ) }
+
 
         
         <button

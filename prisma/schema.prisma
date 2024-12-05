@@ -230,6 +230,8 @@ model Excercise {
   autoRegulator   autoRegulator? @relation(fields: [autoRegulatorId], references: [id])
   autoRegulatorId String?
 
+  
+
   @@unique([workoutId, name])
 }
 
