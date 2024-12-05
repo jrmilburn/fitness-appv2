@@ -32,7 +32,7 @@ export async function GET() {
   const programs = await prisma.program.findMany({
     where: {
       userId: adminUser.id,
-      isPremium: premiumUser
+      isPremium: premiumUser || false
     },
     include: {
       weeks: {
