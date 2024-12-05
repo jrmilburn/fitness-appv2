@@ -5,7 +5,7 @@ export default function PremiumIcon({ text }: { text: string }) {
 
   return (
     <div
-      className="absolute right-5 top-0 flex items-center"
+      className="absolute right-0 top-0 flex items-center"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
