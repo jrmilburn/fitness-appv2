@@ -297,6 +297,10 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
 
             {muscle?.name === 'Cardio' ? (
                 <>
+                    <div className="w-[60%] flex justify-between mx-8 my-2 text-secondary-text inter-main">
+                        <h2>Activity</h2>
+                        <h2>Rest</h2>
+                    </div>
                 {excercise.sets.map((set, index) => (
                     <Set
                         key={index}
