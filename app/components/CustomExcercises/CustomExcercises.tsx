@@ -71,7 +71,7 @@ export default function CustomExcercises({ excercises, muscleGroups }) {
   return (
     <div className="max-w-2xl flex flex-col mx-auto">
       <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">
-        <h2 className="relative text-2xl sm:text-3xl text-primary-text">Custom Exercises
+        <h2 className="relative text-2xl w-full sm:text-3xl text-primary-text">Custom Exercises
           {session?.user?.role === "USER" && <PremiumIcon text={`Upgrade to premium for unlimited custom excercises. ${3 - customExcercises.length} remaining`}/>}
         </h2>
         <button
