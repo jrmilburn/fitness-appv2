@@ -1,15 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@/app/lib/prisma";
-import { Role } from "@prisma/client";
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
-
-// Map Stripe product IDs to roles
-const productToRoles: Record<string, Role> = {
-  prod_RKmDcsx840rcWE: Role.PREMIUM, // Use Prisma Role enum values here
-};
 
 export async function POST(req: NextRequest) {
   const sig = req.headers.get("stripe-signature");
@@ -74,13 +68,10 @@ export async function POST(req: NextRequest) {
     }
 
     console.log("Updating subscription for user:", userId);
-
-    const role = productToRoles[productId] || Role.USER;
-
     try {
       const user = await prisma.user.update({
         where: { id: userId },
-        data: { role: role },
+        data: { role: "USER" },
       });
 
       const updatedSubscription = await prisma.subscription.update({
