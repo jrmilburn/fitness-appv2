@@ -18,6 +18,8 @@ export async function PUT(
         data: {
             weight: weight,
             reps: reps,
+            activity: activity,
+            rest: rest,
             completed: completed
         }
     })

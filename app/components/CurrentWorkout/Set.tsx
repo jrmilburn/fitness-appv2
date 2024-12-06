@@ -74,6 +74,8 @@ export default function Set({
       } else {
         setWeight(data.weight);
         setReps(data.reps);
+        setActivity(data.activity);
+        setRest(data.rest);
       }
     });
   }, [setId]);

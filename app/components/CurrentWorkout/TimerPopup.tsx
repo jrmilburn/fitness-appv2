@@ -4,22 +4,33 @@ import { PlayArrow, Pause, Close } from '@mui/icons-material';
 import { submitSet } from './helper-functions';
 
 function TimerPopup({ sets, onClose, visible, setWorkout }) {
+    // Find the first incomplete set
+    const firstIncompleteIndex = sets.findIndex((set) => !set.completed);
+    const initialCycle = firstIncompleteIndex !== -1 ? firstIncompleteIndex + 1 : 1;
+
     const [isRunning, setIsRunning] = useState(false);
-    const [currentCycle, setCurrentCycle] = useState(1);
-    const [isActivity, setIsActivity] = useState(true); // True for activity, false for rest
+    const [currentCycle, setCurrentCycle] = useState(initialCycle);
+    const [isActivity, setIsActivity] = useState(true);
+    const [activityTime, setActivityTime] = useState([]);
+    const [restTime, setRestTime] = useState([]);
+    const [timeLeft, setTimeLeft] = useState(0);
 
-    // Derive arrays and cycle count from sets
-    const activityTime = sets.map((set) => Number(set.activity) || 0);
-    const restTime = sets.map((set) => Number(set.rest) || 0);
+    // Derive arrays from sets
+    useEffect(() => {
+      const newActivityTime = sets.map((set) => Number(set.activity) || 0);
+      const newRestTime = sets.map((set) => Number(set.rest) || 0);
+      setActivityTime(newActivityTime);
+      setRestTime(newRestTime);
+    }, [sets]);
 
-    console.log('activityTime:', activityTime);
-    console.log('restTime:', restTime);
-
+    // Update timeLeft whenever the currentCycle or times change
+    useEffect(() => {
+      if (activityTime.length > 0 && currentCycle - 1 < activityTime.length) {
+        setTimeLeft(isActivity ? activityTime[currentCycle - 1] : restTime[currentCycle - 1]);
+      }
+    }, [activityTime, restTime, currentCycle, isActivity]);
 
     const cycles = sets.length;
-
-    const [timeLeft, setTimeLeft] = useState(activityTime[currentCycle - 1]);
-
     const beepSound = '/sounds/beep.mp3';
 
     const completeSet = async (index) => {
@@ -37,32 +48,25 @@ function TimerPopup({ sets, onClose, visible, setWorkout }) {
       });
     };
 
-    // Whenever currentCycle or isActivity changes, reset the timeLeft
-    useEffect(() => {
-        if (!visible) return; // If the dialog is not visible, do nothing
-        const newTime = isActivity
-            ? activityTime[currentCycle - 1]
-            : restTime[currentCycle - 1];
-        setTimeLeft(newTime);
-    }, [currentCycle, isActivity, activityTime, restTime, visible]);
-
     useEffect(() => {
       let timer;
       const beepAudio = new Audio(beepSound);
     
       if (isRunning && visible) {
         timer = setInterval(() => {
-          const currentSetIndex = currentCycle - 1; // Define currentSetIndex here
+          const currentSetIndex = currentCycle - 1;
     
           setTimeLeft((prev) => {
             const newTime = prev - 1;
     
-            if (newTime <= 1) {
+            if (newTime < 1) {
               clearInterval(timer);
               if (isActivity) {
+                // Switch to rest
                 setIsActivity(false);
+                return restTime[currentSetIndex];
               } else {
-                // Use currentSetIndex now that it's defined
+                // Complete set and move to next cycle
                 completeSet(currentSetIndex);
                 setCurrentCycle((prevCycle) => {
                   const nextCycle = prevCycle + 1;
@@ -75,7 +79,7 @@ function TimerPopup({ sets, onClose, visible, setWorkout }) {
                 });
                 setIsActivity(true);
               }
-            } else if (newTime <= 4) {
+            } else if (newTime < 4) {
               beepAudio.play();
             }
     
@@ -85,14 +89,13 @@ function TimerPopup({ sets, onClose, visible, setWorkout }) {
       }
     
       return () => clearInterval(timer);
-    }, [isRunning, isActivity, currentCycle, cycles, onClose, visible, setWorkout]);
-  
+    }, [isRunning, isActivity, currentCycle, cycles, onClose, visible, setWorkout, restTime, activityTime]);
 
     const handleStart = () => setIsRunning(true);
     const handlePause = () => setIsRunning(false);
     const handleClose = () => {
-        setIsRunning(false);
-        setTimeout(() => onClose(), 300); // Wait for animation to finish
+      setIsRunning(false);
+      setTimeout(() => onClose(), 300);
     };
 
     return (
