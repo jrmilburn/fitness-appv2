@@ -42,7 +42,11 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
                     setProgression: excercise.progressionType || excercise.setProgression,
                     startSets: excercise.startSets,
                     endSets: excercise.endSets,
-                    excerciseNo: excercise.excerciseNo
+                    excerciseNo: excercise.excerciseNo,
+                    cycles: excercise.cycles,
+                    excerciseType: excercise.trainingType,
+                    activityTime: excercise.activityTime,
+                    restTime: excercise.restTime
                 }))
             }))
         }))

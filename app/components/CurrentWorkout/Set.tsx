@@ -3,21 +3,43 @@ import verteditIcon from '../../assets/edit-vert.svg';
 import Image from 'next/image';
 import SetForm from './SetForm';
 
-export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, onDataFetch, disabled=false, type='hypertrophy' }) {
-  const [isChecked, setIsChecked] = useState(false);
+export default function Set({ 
+  setId, 
+  Rir, 
+  workout, 
+  setWorkout, 
+  onDelete, 
+  onAdd, 
+  onDataFetch, 
+  disabled=false, 
+  activityTime, 
+  restTime, 
+  type='hypertrophy',
+  updatingSets = {}, 
+  onSetUpdate
+}) {
   const [focusedInput, setFocusedInput] = useState(''); 
   const [weight, setWeight] = useState(null);
   const [reps, setReps] = useState(null);
-  const [activity, setActivity] = useState(0);
-  const [rest, setRest] = useState(0);
+  const [activity, setActivity] = useState(activityTime);
+  const [rest, setRest] = useState(restTime);
   const [recommendedReps, setRecommendedReps] = useState(null);
   const [lowerBoundWeight, setLowerBoundWeight] = useState(null);
   const [recommendedWeight, setRecommendedWeight] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [sendingSet, setSendingSet] = useState(false);
   const formRef = useRef(null);
 
-  // Helper function to round up to the nearest 2.5
+  const exercise = workout?.excercises?.find(e => e.sets.some(s => s.id === setId));
+  const currentSet = exercise ? exercise.sets.find(s => s.id === setId) : null;
+
+  const isChecked = currentSet?.completed ?? false;
+  const sendingSet = updatingSets[setId] || false;
+
+  useEffect(() => {
+    if (activityTime !== undefined) setActivity(activityTime);
+    if (restTime !== undefined) setRest(restTime);
+  }, [activityTime, restTime]);
+
   const roundToNearest2_5 = (num) => {
     return Math.ceil(num / 2.5) * 2.5;
   };
@@ -31,14 +53,11 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
     })
     .then(response => response.json())
     .then(data => {
-      setIsChecked(data.completed);
       setRecommendedReps(data.recommendedReps || null);
-      
-
       const roundedWeight = data.recommendedWeight ? roundToNearest2_5(data.recommendedWeight) : null;
       setRecommendedWeight(roundedWeight);
       
-      const lowerBound = Math.floor((roundedWeight / 1.05) / 2.5) * 2.5;
+      const lowerBound = roundedWeight ? Math.floor((roundedWeight / 1.05) / 2.5) * 2.5 : null;
       setLowerBoundWeight(lowerBound);
 
       if (onDataFetch) {
@@ -55,40 +74,22 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
       } else {
         setWeight(data.weight);
         setReps(data.reps);
-        setIsChecked(data.completed);
       }
     });
   }, [setId]);
 
   const handleSubmit = async (e, setId) => {
     e.preventDefault();
-
-    setSendingSet(true);
-
     const newCheckedValue = !isChecked;
-    setIsChecked(newCheckedValue);
-  
-    // Update the workout state
-    setWorkout(prev => ({
-      ...prev,
-      excercises: prev.excercises.map(excercise => ({
-        ...excercise,
-        sets: excercise.sets.map(set => 
-          set.id === setId ? { ...set, completed: newCheckedValue } : set
-        )
-      }))
-    }));
-  
-    // Save the updated completed state to the server
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL!}/api/set/${setId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ weight, reps, completed: newCheckedValue })
+    await onSetUpdate({
+      setId,
+      weight,
+      reps,
+      activity,
+      rest,
+      completed: newCheckedValue,
+      setWorkout
     });
-
-    setSendingSet(false);
   };
 
   const handleEditClick = () => {
@@ -112,6 +113,41 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
     };
   }, [isEditing]);
 
+// Update workout state when activity changes
+const handleActivityChange = (e) => {
+  const value = e.target.value;
+  const numericValue = value === '' ? 0 : Number(value); // Default to 0 instead of null
+  setActivity(numericValue);
+
+  setWorkout((prev) => ({
+    ...prev,
+    excercises: prev.excercises.map((exc) => ({
+      ...exc,
+      sets: exc.sets.map((s) =>
+        s.id === setId ? { ...s, activity: numericValue } : s
+      ),
+    })),
+  }));
+};
+
+// Update workout state when rest changes
+const handleRestChange = (e) => {
+  const value = e.target.value;
+  const numericValue = value === '' ? 0 : Number(value); // Default to 0 instead of null
+  setRest(numericValue);
+
+  setWorkout((prev) => ({
+    ...prev,
+    excercises: prev.excercises.map((exc) => ({
+      ...exc,
+      sets: exc.sets.map((s) =>
+        s.id === setId ? { ...s, rest: numericValue } : s
+      ),
+    })),
+  }));
+};
+
+
   return (
     <>
       <div className="flex justify-between space-x-8 items-center relative">
@@ -123,77 +159,90 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
           />
         </button>
         {type === 'hypertrophy' && (
-              <>
-                  <input
-                  type="number"
-                  placeholder={`Weight`}
-                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
-                  onFocus={() => setFocusedInput('weight')}
-                  onBlur={() => setFocusedInput('')}
-                  value={weight !== null ? weight : ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setWeight(value === '' ? null : +value);
-                  }}
-                  disabled={workout.completed || disabled}
-                />
-                
-                <input
-                  type="number"
-                  placeholder={`${Rir} RIR`}
-                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
-                  onFocus={() => setFocusedInput('reps')}
-                  onBlur={() => setFocusedInput('')}
-                  value={reps !== null ? reps : ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setReps(value === '' ? null : +value);
-                  }}
-                  disabled={workout.completed || disabled}
-                />
-              </>
-        ) }
+          <>
+            <input
+              type="number"
+              placeholder={`Weight`}
+              className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+              onFocus={() => setFocusedInput('weight')}
+              onBlur={() => setFocusedInput('')}
+              value={weight !== null ? weight : ''}
+              onChange={(e) => {
+                const value = e.target.value;
+                setWeight(value === '' ? null : +value);
+                // Update workout globally if needed, similar to activity/rest
+                setWorkout((prev) => ({
+                  ...prev,
+                  excercises: prev.excercises.map((exc) => ({
+                    ...exc,
+                    sets: exc.sets.map((s) =>
+                      s.id === setId ? { ...s, weight: value === '' ? null : +value } : s
+                    ),
+                  })),
+                }));
+              }}
+              disabled={workout.completed || disabled || sendingSet}
+            />
+            
+            <input
+              type="number"
+              placeholder={`${Rir} RIR`}
+              className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+              onFocus={() => setFocusedInput('reps')}
+              onBlur={() => setFocusedInput('')}
+              value={reps !== null ? reps : ''}
+              onChange={(e) => {
+                const value = e.target.value;
+                const numericValue = value === '' ? null : +value;
+                setReps(numericValue);
+                // Update workout globally if needed
+                setWorkout((prev) => ({
+                  ...prev,
+                  excercises: prev.excercises.map((exc) => ({
+                    ...exc,
+                    sets: exc.sets.map((s) =>
+                      s.id === setId ? { ...s, reps: numericValue } : s
+                    ),
+                  })),
+                }));
+              }}
+              disabled={workout.completed || disabled || sendingSet}
+            />
+          </>
+        )}
 
-{type === 'cardio' && (
-              <>
-                  <input
-                  type="number"
-                  placeholder={`Activity`}
-                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
-                  onFocus={() => setFocusedInput('weight')}
-                  onBlur={() => setFocusedInput('')}
-                  value={activity !== null ? activity : ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setActivity(value === '' ? null : +value);
-                  }}
-                  disabled={workout.completed || disabled}
-                />
-                
-                <input
-                  type="number"
-                  placeholder={`Rest`}
-                  className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
-                  onFocus={() => setFocusedInput('reps')}
-                  onBlur={() => setFocusedInput('')}
-                  value={rest !== null ? rest : ''}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setRest(value === '' ? null : +value);
-                  }}
-                  disabled={workout.completed || disabled}
-                />
-              </>
-        ) }
+        {type === 'cardio' && (
+          <>
+            <input
+              type="number"
+              placeholder={`Activity`}
+              className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+              onFocus={() => setFocusedInput('weight')}
+              onBlur={() => setFocusedInput('')}
+              value={activity !== null ? activity : ''}
+              onChange={handleActivityChange}
+              disabled={workout.completed || disabled || sendingSet}
+            />
+            
+            <input
+              type="number"
+              placeholder={`Rest`}
+              className="w-[50%] mt-2 p-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-background"
+              onFocus={() => setFocusedInput('reps')}
+              onBlur={() => setFocusedInput('')}
+              value={rest !== null ? rest : ''}
+              onChange={handleRestChange}
+              disabled={workout.completed || disabled || sendingSet}
+            />
+          </>
+        )}
 
-
-        
         <button
           onClick={(e) => handleSubmit(e, setId)}
           className={`w-8 h-8 rounded-sm border-2 ${
             isChecked ? 'bg-green-500 border-blue-500' : 'border-gray-300'
           } flex items-center justify-center transition-all duration-300`}
-          disabled={workout.completed || sendingSet || disabled} // Disable button while sending
+          disabled={workout.completed || sendingSet || disabled}
         >
           {sendingSet ? (
             // Spinner
@@ -241,45 +290,47 @@ export default function Set({ setId, Rir, workout, setWorkout, onDelete, onAdd, 
         )}
       </div>
 
-      <div
-        className={`relative w-full mt-4 overflow-hidden transition-max-height duration-500 ease-in-out ${
-          focusedInput ? 'max-h-20' : 'max-h-0'
-        }`}
-      >
-        <div className="w-full h-7 overflow-hidden text-center">
-          <div
-            className={`transition-opacity transition-transform duration-500 ease-in-out ${
-              focusedInput === 'weight'
-                ? 'opacity-100 translate-y-0'
-                : focusedInput === 'reps' 
-                ? 'opacity -translate-y-full'
-                : 'opacity translate-y-full'
-            }`}
-          >
-            {recommendedWeight ? (
-              <p className='text-secondary-text'>Recommended weight: {lowerBoundWeight}kg - {recommendedWeight}kg</p>
-            ) : (
-              <p className='text-secondary-text'>Recommended {Rir} RIR</p>
-            )}
-          </div>
-          
-          <div
-            className={`transition-opacity transition-transform duration-500 ease-in-out ${
-              focusedInput === 'reps'
-                ? 'opacity-100 -translate-y-full'
-                : focusedInput === 'weight'
-                ? 'opacity translate-y-0'
-                : 'opacity translate-y-full'
-            }`}
-          >
-            {recommendedReps ? (
-              <p className='text-secondary-text'>Aim for {recommendedReps} reps this set</p>
-            ) : (
-              <p className='text-secondary-text'>Recommended {Rir} RIR</p>
-            )}
+      {type === "hypertrophy" && (
+        <div
+          className={`relative w-full mt-4 overflow-hidden transition-max-height duration-500 ease-in-out ${
+            focusedInput ? 'max-h-20' : 'max-h-0'
+          }`}
+        >
+          <div className="w-full h-7 overflow-hidden text-center">
+            <div
+              className={`transition-opacity transition-transform duration-500 ease-in-out ${
+                focusedInput === 'weight'
+                  ? 'opacity-100 translate-y-0'
+                  : focusedInput === 'reps' 
+                  ? 'opacity -translate-y-full'
+                  : 'opacity translate-y-full'
+              }`}
+            >
+              {recommendedWeight ? (
+                <p className='text-secondary-text'>Recommended weight: {lowerBoundWeight}kg - {recommendedWeight}kg</p>
+              ) : (
+                <p className='text-secondary-text'>Recommended {Rir} RIR</p>
+              )}
+            </div>
+            
+            <div
+              className={`transition-opacity transition-transform duration-500 ease-in-out ${
+                focusedInput === 'reps'
+                  ? 'opacity-100 -translate-y-full'
+                  : focusedInput === 'weight'
+                  ? 'opacity translate-y-0'
+                  : 'opacity translate-y-full'
+              }`}
+            >
+              {recommendedReps ? (
+                <p className='text-secondary-text'>Aim for {recommendedReps} reps this set</p>
+              ) : (
+                <p className='text-secondary-text'>Recommended {Rir} RIR</p>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

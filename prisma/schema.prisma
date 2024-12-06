@@ -227,10 +227,12 @@ model Excercise {
   excerciseNo     Int?
   autoregulation  Boolean     @default(true)
 
+  excerciseType   String?
+
   autoRegulator   autoRegulator? @relation(fields: [autoRegulatorId], references: [id])
   autoRegulatorId String?
 
-  
+
 
   @@unique([workoutId, name])
 }
@@ -249,6 +251,8 @@ model Set {
   setNo             Int
   reps              Int?
   weight            Float?
+  activity      Int?
+  rest  Int?
   recommendedReps   Int?
   recommendedWeight Float?
   excercise         Excercise @relation(fields: [excerciseId], references: [id], onDelete: Cascade)

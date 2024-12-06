@@ -6,11 +6,12 @@ export async function PUT(
   { params }: { params: { id: string } }  // Destructure params to get the `id`
 ) {
   const { id } = params;
-  const { weight, reps, completed } = await req.json();
+  const { weight, reps, activity, rest, completed } = await req.json();
 
   try {
 
-    const set = await prisma.set.update({
+    if (weight === null && reps === null) {
+      const set = await prisma.set.update({
         where: {
             id: id
         },
@@ -21,6 +22,7 @@ export async function PUT(
         }
     })
 
+
     console.log('UPDATED SET: ', set);
 
     // If no exercise is found, return 404
@@ -29,6 +31,30 @@ export async function PUT(
     }
 
     return NextResponse.json(set);  // Return the exercise as JSON
+    } else {
+
+      const set = await prisma.set.update({
+        where: {
+            id: id
+        },
+        data: {
+            activity: activity,
+            rest: rest,
+            completed: completed
+        }
+    })
+
+
+    console.log('UPDATED SET: ', set);
+
+    // If no exercise is found, return 404
+    if (!set) {
+      return new NextResponse('Program not found', { status: 404 });
+    }
+
+    return NextResponse.json(set);  // Return the exercise as JSON
+
+    }
   } catch (error) {
     console.error('Error fetching exercise:', error);
     return new NextResponse('Failed to fetch exercise', { status: 500 });

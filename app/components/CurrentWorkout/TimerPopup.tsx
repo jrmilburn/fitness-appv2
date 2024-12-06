@@ -1,57 +1,92 @@
 import { useState, useEffect } from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, IconButton } from '@mui/material';
 import { PlayArrow, Pause, Close } from '@mui/icons-material';
+import { submitSet } from './helper-functions';
 
-
-function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
+function TimerPopup({ sets, onClose, visible, setWorkout }) {
     const [isRunning, setIsRunning] = useState(false);
     const [currentCycle, setCurrentCycle] = useState(1);
     const [isActivity, setIsActivity] = useState(true); // True for activity, false for rest
-    const [timeLeft, setTimeLeft] = useState(activityTime);
+
+    // Derive arrays and cycle count from sets
+    const activityTime = sets.map((set) => Number(set.activity) || 0);
+    const restTime = sets.map((set) => Number(set.rest) || 0);
+
+    console.log('activityTime:', activityTime);
+    console.log('restTime:', restTime);
+
+
+    const cycles = sets.length;
+
+    const [timeLeft, setTimeLeft] = useState(activityTime[currentCycle - 1]);
 
     const beepSound = '/sounds/beep.mp3';
 
+    const completeSet = async (index) => {
+      const currentSet = sets[index];
+      if (!currentSet) return; // Safety check
+
+      await submitSet({
+        setId: currentSet.id,
+        weight: null, 
+        reps: null, 
+        activity: currentSet.activity, 
+        rest: currentSet.rest, 
+        completed: true,
+        setWorkout
+      });
+    };
+
+    // Whenever currentCycle or isActivity changes, reset the timeLeft
+    useEffect(() => {
+        if (!visible) return; // If the dialog is not visible, do nothing
+        const newTime = isActivity
+            ? activityTime[currentCycle - 1]
+            : restTime[currentCycle - 1];
+        setTimeLeft(newTime);
+    }, [currentCycle, isActivity, activityTime, restTime, visible]);
 
     useEffect(() => {
-        let timer;
-        const beepAudio = new Audio(beepSound);
-
-        if (isRunning) {
-            timer = setInterval(() => {
-                setTimeLeft((prev) => {
-                    if (prev <= 1) {
-                        // End of activity or rest
-                        clearInterval(timer);
-                        if (isActivity) {
-                            // Switch to rest
-                            setIsActivity(false);
-                            setTimeLeft(restTime);
-                        } else {
-                            // Switch to activity or complete cycle
-                            setCurrentCycle((prevCycle) => {
-                                if (prevCycle >= cycles) {
-                                    // All cycles completed
-                                    setIsRunning(false);
-                                    onClose();
-                                    return prevCycle;
-                                }
-                                return prevCycle + 1;
-                            });
-                            setIsActivity(true);
-                            setTimeLeft(activityTime);
-                        }
-                    } else if (prev <= 4) {
-                        // Play beep sound during the last 3 seconds
-                        beepAudio.play();
-                    }
-                    return prev - 1;
+      let timer;
+      const beepAudio = new Audio(beepSound);
+    
+      if (isRunning && visible) {
+        timer = setInterval(() => {
+          const currentSetIndex = currentCycle - 1; // Define currentSetIndex here
+    
+          setTimeLeft((prev) => {
+            const newTime = prev - 1;
+    
+            if (newTime <= 1) {
+              clearInterval(timer);
+              if (isActivity) {
+                setIsActivity(false);
+              } else {
+                // Use currentSetIndex now that it's defined
+                completeSet(currentSetIndex);
+                setCurrentCycle((prevCycle) => {
+                  const nextCycle = prevCycle + 1;
+                  if (nextCycle > cycles) {
+                    setIsRunning(false);
+                    onClose();
+                    return prevCycle;
+                  }
+                  return nextCycle;
                 });
-            }, 1000);
-        }
-        return () => clearInterval(timer);
-    }, [isRunning, isActivity, timeLeft, restTime, activityTime, cycles, onClose]);
+                setIsActivity(true);
+              }
+            } else if (newTime <= 4) {
+              beepAudio.play();
+            }
     
+            return newTime;
+          });
+        }, 1000);
+      }
     
+      return () => clearInterval(timer);
+    }, [isRunning, isActivity, currentCycle, cycles, onClose, visible, setWorkout]);
+  
 
     const handleStart = () => setIsRunning(true);
     const handlePause = () => setIsRunning(false);
@@ -61,21 +96,20 @@ function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
     };
 
     return (
-            <Dialog
-              open={visible}
-              onClose={handleClose}
-              maxWidth="sm" // Options: 'xs', 'sm', 'md', 'lg', 'xl', false
-              fullWidth={true}
-              PaperProps={{
-                sx: {
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  padding: 2,
-                },
-              }}
-            >
-
+        <Dialog
+          open={visible}
+          onClose={handleClose}
+          maxWidth="sm"
+          fullWidth={true}
+          PaperProps={{
+            sx: {
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: 2,
+            },
+          }}
+        >
             <DialogTitle>
                 {isActivity ? 'Activity' : 'Rest'} - Cycle {currentCycle}/{cycles}
                 <IconButton
@@ -128,7 +162,6 @@ function TimerPopup({ activityTime, restTime, cycles, onClose, visible }) {
                 Close
               </Button>
             </DialogActions>
-          
         </Dialog>
     );
 }

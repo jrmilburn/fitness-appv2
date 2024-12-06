@@ -25,45 +25,89 @@ export function processProgramData(program) {
       workout.excercises.forEach((excercise) => {
         let setCount;
 
-        if (excercise.setProgression === 'auto' && weekIndex > 0) {
-          // For weeks beyond the first, exercises with 'auto' progression have no sets
-          setCount = 0;
-        } else if (totalWeeks <= 1 || excercise.setProgression === 'none') {
-          // If there is only 1 week or progression is 'none', use startSets
-          setCount = excercise.startSets;
-        } else if (excercise.setProgression === 'auto') {
-          // For the first week, exercises with 'auto' progression use startSets
-          setCount = excercise.startSets;
-        } else if (weekIndex === totalWeeks - 1) {
-          // Last week has startSets
-          setCount = excercise.startSets;
-        } else {
-          // Progression weeks from week 0 to second-to-last week
-          const progressionWeeks = totalWeeks - 1;
-          const step = weekIndex; // weekIndex ranges from 0 to totalWeeks - 2
-          const totalSteps = progressionWeeks - 1;
+        //Handle generation for cardio excercises 
 
-          if (totalSteps === 0) {
-            // Only one progression week
-            setCount = excercise.endSets;
+        if(excercise.muscle === "Cardio") {
+
+                // Set the excerciseType to trainingType
+          excercise.excerciseType = excercise.trainingType;
+          console.log('EXCERCISE', excercise);
+
+          if (excercise.trainingType === "LISS") {
+            // LISS: single continuous set, no cycles
+            setCount = 1;
+            const sets = [
+              {
+                activityTime: excercise.activityTime,
+                restTime: excercise.restTime
+              }
+            ];
+            Object.assign(excercise, {
+              setCount,
+              sets
+            });
           } else {
-            setCount =
-              excercise.startSets +
-              Math.round(
-                ((excercise.endSets - excercise.startSets) * step) / totalSteps
-              );
+            // HIIT or MISS: one set per cycle
+            const cycleCount = excercise.cycles || 0;
+            setCount = cycleCount;
+
+            console.log('SET COUNT', setCount);
+
+            const sets = Array.from({ length: setCount }, () => ({
+              activityTime: excercise.activityTime,
+              restTime: excercise.restTime
+            }));
+
+            console.log('SETS', sets);
+            Object.assign(excercise, {
+              setCount,
+              sets
+            });
           }
+
+        } else {
+
+          if (excercise.setProgression === 'auto' && weekIndex > 0) {
+            // For weeks beyond the first, exercises with 'auto' progression have no sets
+            setCount = 0;
+          } else if (totalWeeks <= 1 || excercise.setProgression === 'none') {
+            // If there is only 1 week or progression is 'none', use startSets
+            setCount = excercise.startSets;
+          } else if (excercise.setProgression === 'auto') {
+            // For the first week, exercises with 'auto' progression use startSets
+            setCount = excercise.startSets;
+          } else if (weekIndex === totalWeeks - 1) {
+            // Last week has startSets
+            setCount = excercise.startSets;
+          } else {
+            // Progression weeks from week 0 to second-to-last week
+            const progressionWeeks = totalWeeks - 1;
+            const step = weekIndex; // weekIndex ranges from 0 to totalWeeks - 2
+            const totalSteps = progressionWeeks - 1;
+  
+            if (totalSteps === 0) {
+              // Only one progression week
+              setCount = excercise.endSets;
+            } else {
+              setCount =
+                excercise.startSets +
+                Math.round(
+                  ((excercise.endSets - excercise.startSets) * step) / totalSteps
+                );
+            }
+          }
+  
+          const sets = Array.from({ length: setCount }, () => ({
+            reps: 0,
+            weight: 0,
+          }));
+  
+          Object.assign(excercise, {
+            setCount,
+            sets,
+          });
+
         }
-
-        const sets = Array.from({ length: setCount }, () => ({
-          reps: 0,
-          weight: 0,
-        }));
-
-        Object.assign(excercise, {
-          setCount,
-          sets,
-        });
       });
     });
   });
@@ -125,7 +169,6 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
       });
 
       for (const [excerciseIndex, excercise] of workout.excercises.entries()) {
-        console.log('EXCERCISE DATA: ', excercise);
 
         // Ensure the MuscleGroup exists or create it if necessary
         const muscleGroupName = excercise.muscle || excercise.muscleGroup?.name;
@@ -154,6 +197,7 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           endSets: excercise.endSets,
           actualSets: excercise.startSets,
           progressionType: excercise.setProgression,
+          excerciseType: excercise.excerciseType,
           excerciseNo: excerciseIndex + 1, // Use the index + 1 for excerciseNo
         };
 
@@ -178,6 +222,8 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
               excerciseId: createdExcercise.id,
               weight: set.weight,
               reps: set.reps,
+              activity: set.activityTime,
+              rest: set.restTime,
               setNo: setIndex + 1,
             },
           });
