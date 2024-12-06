@@ -154,7 +154,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
           <div className="mt-4 flex flex-col sm:flex-row sm:space-x-4 justify-center items-center">
             <button
               type="button"
-              onClick={handleCreate}
+              onClick={() => handleCreate(true)}
               className="w-full sm:w-auto px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 mb-2 sm:mb-0"
             >
               Create Program
@@ -178,7 +178,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
           <div className="mt-4 flex flex-col sm:flex-row sm:space-x-4 justify-center items-center">
             <button
               type="button"
-              onClick={handleCreate}
+              onClick={() => handleCreate(true)}
               className="w-full sm:w-auto px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300 mb-2 sm:mb-0"
             >
               Copy Program
@@ -195,7 +195,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
           <div className="mt-4 flex justify-center items-center">
             <button
               type="button"
-              onClick={handleCreate}
+              onClick={() => handleCreate(false)}
               className="w-full sm:w-auto px-6 py-3 bg-black text-white font-semibold rounded-lg hover:bg-gray-900 transition-all duration-300"
             >
               Assign Program
