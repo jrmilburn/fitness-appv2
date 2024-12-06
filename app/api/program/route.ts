@@ -31,12 +31,14 @@ export async function POST(req) {
 
     let userId;
 
-    if(program.userId) {
+    if(program.self) {
+      userId = await determineUserId(userEmail);
+    } else if (!program.self && program.userId) {
       userId = program.userId;
     } else {
       userId = await determineUserId(userEmail);
-
     }
+
     // Process the program data
     const processedProgram = processProgramData(program);
 

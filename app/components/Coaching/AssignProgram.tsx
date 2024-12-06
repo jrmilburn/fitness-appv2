@@ -63,6 +63,7 @@ export default function AssignProgram({ program, clientId }) {
                     setProgram={setCopyProgram}
                     type={2}
                     onPrevious={onPrevious}
+                    clientId={clientId}
                 />
             )}
             <button

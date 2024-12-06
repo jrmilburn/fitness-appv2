@@ -7,7 +7,7 @@ import Loader from '../Loader';
 import { useSession } from "next-auth/react";
 import PremiumIcon from '../PremiumIcon'; 
 
-export default function ProgramExercises({ program, setProgram, type, onPrevious }) {
+export default function ProgramExercises({ program, setProgram, type, onPrevious, clientId }) {
 
   const { data: session } = useSession();
 
@@ -31,7 +31,8 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
         days: program.days,
         length: program.length,
         name: program.name,
-        userId: self ? null : program.userId,
+        userId: clientId,
+        self: self,
         weeks: program.weeks.map((week) => ({
             weekNumber: week.weekNo || week.weekNumber,
             workouts: week.workouts.map((workout) => ({
