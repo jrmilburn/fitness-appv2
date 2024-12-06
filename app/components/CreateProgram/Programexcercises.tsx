@@ -7,7 +7,7 @@ import Loader from '../Loader';
 import { useSession } from "next-auth/react";
 import PremiumIcon from '../PremiumIcon'; 
 
-export default function ProgramExercises({ program, setProgram, type, onPrevious, clientId }) {
+export default function ProgramExercises({ program, setProgram, type, onPrevious, clientId=null }) {
 
   const { data: session } = useSession();
 
