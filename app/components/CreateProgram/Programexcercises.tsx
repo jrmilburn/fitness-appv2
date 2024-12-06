@@ -17,7 +17,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
   const [advanced, setAdvanced] = useState(false);
   const router = useRouter();
 
-  const handleCreate = async () => {
+  const handleCreate = async (self=true) => {
     setIsLoading(true);
     console.log('CREATED PROGRAM: ', program);
 
@@ -31,7 +31,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
         days: program.days,
         length: program.length,
         name: program.name,
-        userId: program.userId || null,
+        userId: self ? null : program.userId,
         weeks: program.weeks.map((week) => ({
             weekNumber: week.weekNo || week.weekNumber,
             workouts: week.workouts.map((workout) => ({
