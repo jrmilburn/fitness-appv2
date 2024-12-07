@@ -29,20 +29,19 @@ export default function ProgramTab({
   workoutId,
 }: ProgramTabProps) {
   return (
+    <Link href={`/workouts/${workoutId}`}>
     <div
       className={`w-3xl border-2 ${
         id === userProgramId ? 'border-green-200' : 'border-border'
-      } p-4 relative bg-background-secondary`}
+      } p-4 relative bg-background-secondary hover:bg-background transition-all duration-300`}
     >
       <div className="w-full flex justify-between space-x-16 p-2">
         {userProgramId === null && !completed ? (
           <>
-            <Link href={`/workouts/${workoutId}`}>
               <div>
                 <h2 className="text-xl text-primary-text">{name}</h2>
                 <p className="text-sm text-secondary-text">Saved</p>
               </div>
-            </Link>
             <div className="flex flex-col space-y-4 justify-center text-primary-text">
               {canDelete && id !== userProgramId && onDelete && !completed && (
                 <button onClick={onDelete}>
@@ -53,7 +52,6 @@ export default function ProgramTab({
           </>
         ) : completed ? (
           <>
-            <Link href={`/workouts/${workoutId}`}>
               <div>
                 <h2 className="text-xl text-primary-text">{name}</h2>
                 <p className="text-sm text-secondary-text">
@@ -61,13 +59,10 @@ export default function ProgramTab({
                 </p>
                 <p className="text-sm text-secondary-text">Created: {created}</p>
               </div>
-            </Link>
-            {/* If needed, you can add other elements here */}
           </>
         ) : (
           <>
             <div className="flex justify-between w-full">
-              <Link href={`/workouts/${workoutId}`}>
                 <div>
                   <h2 className="text-xl text-primary-text">{name}</h2>
                   <p className="text-sm text-secondary-text">
@@ -75,7 +70,6 @@ export default function ProgramTab({
                   </p>
                   <p className="text-sm text-secondary-text">Created: {created}</p>
                 </div>
-              </Link>
               <div className="flex flex-col space-y-4 justify-center text-primary-text">
                 {canDelete && id !== userProgramId && onDelete && (
                   <button onClick={onDelete}>
@@ -85,8 +79,11 @@ export default function ProgramTab({
               </div>
             </div>
           </>
+          
         )}
       </div>
     </div>
+    </Link>
+
   );
 }

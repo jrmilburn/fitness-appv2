@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import verteditIcon from '../../assets/edit-vert.svg';
 import Image from 'next/image';
 import SetForm from './SetForm';
+import Loader from '../Loader';
 
 export default function Set({ 
   setId, 
@@ -115,40 +116,39 @@ export default function Set({
     };
   }, [isEditing]);
 
-// Update workout state when activity changes
-const handleActivityChange = (e) => {
-  const value = e.target.value;
-  const numericValue = value === '' ? 0 : Number(value); // Default to 0 instead of null
-  setActivity(numericValue);
+  // Update workout state when activity changes
+  const handleActivityChange = (e) => {
+    const value = e.target.value;
+    const numericValue = value === '' ? 0 : Number(value);
+    setActivity(numericValue);
 
-  setWorkout((prev) => ({
-    ...prev,
-    excercises: prev.excercises.map((exc) => ({
-      ...exc,
-      sets: exc.sets.map((s) =>
-        s.id === setId ? { ...s, activity: numericValue } : s
-      ),
-    })),
-  }));
-};
+    setWorkout((prev) => ({
+      ...prev,
+      excercises: prev.excercises.map((exc) => ({
+        ...exc,
+        sets: exc.sets.map((s) =>
+          s.id === setId ? { ...s, activity: numericValue } : s
+        ),
+      })),
+    }));
+  };
 
-// Update workout state when rest changes
-const handleRestChange = (e) => {
-  const value = e.target.value;
-  const numericValue = value === '' ? 0 : Number(value); // Default to 0 instead of null
-  setRest(numericValue);
+  // Update workout state when rest changes
+  const handleRestChange = (e) => {
+    const value = e.target.value;
+    const numericValue = value === '' ? 0 : Number(value);
+    setRest(numericValue);
 
-  setWorkout((prev) => ({
-    ...prev,
-    excercises: prev.excercises.map((exc) => ({
-      ...exc,
-      sets: exc.sets.map((s) =>
-        s.id === setId ? { ...s, rest: numericValue } : s
-      ),
-    })),
-  }));
-};
-
+    setWorkout((prev) => ({
+      ...prev,
+      excercises: prev.excercises.map((exc) => ({
+        ...exc,
+        sets: exc.sets.map((s) =>
+          s.id === setId ? { ...s, rest: numericValue } : s
+        ),
+      })),
+    }));
+  };
 
   return (
     <>
@@ -172,7 +172,6 @@ const handleRestChange = (e) => {
               onChange={(e) => {
                 const value = e.target.value;
                 setWeight(value === '' ? null : +value);
-                // Update workout globally if needed, similar to activity/rest
                 setWorkout((prev) => ({
                   ...prev,
                   excercises: prev.excercises.map((exc) => ({
@@ -197,7 +196,6 @@ const handleRestChange = (e) => {
                 const value = e.target.value;
                 const numericValue = value === '' ? null : +value;
                 setReps(numericValue);
-                // Update workout globally if needed
                 setWorkout((prev) => ({
                   ...prev,
                   excercises: prev.excercises.map((exc) => ({
@@ -247,27 +245,8 @@ const handleRestChange = (e) => {
           disabled={workout.completed || sendingSet || disabled}
         >
           {sendingSet ? (
-            // Spinner
-            <svg
-              className="animate-spin h-5 w-5 text-blue-500"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-              ></path>
-            </svg>
+            // Use the Loader component here
+            <Loader />
           ) : isChecked ? (
             // Checkbox icon
             <svg

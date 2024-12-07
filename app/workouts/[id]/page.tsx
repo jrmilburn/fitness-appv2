@@ -60,7 +60,7 @@ export default function Workout({ params }) {
         setWorkout(data?.workout);
         setUser(data?.user); // Set the user data
         setIsLoading(false);
-        console.log(data.workout);
+        console.log(data);
       })
       .catch((error) => {
         console.error('Error fetching workout:', error);
@@ -99,7 +99,7 @@ export default function Workout({ params }) {
       {isLoading ? (
         <Skeleton height={30} width={200} />
       ) : user ? (
-        <p className="text-secondary-text inter item-start">{user.name} {workout.name}</p>
+        <p className="text-secondary-text inter item-start">You are viewing {user.name}&apos;s workout - {workout.name}</p>
       ) : (
         <></>
     )}

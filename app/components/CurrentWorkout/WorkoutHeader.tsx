@@ -8,6 +8,7 @@ import WorkoutOptions from './WorkoutOptions';
 export default function WorkoutHeader({ weekId, name, setWorkout, workout, week, setWeek, disabled=false }) {
     interface ProgramWorkouts {
         weeks: Week[];
+        name: string;
     }
 
     interface Week {
@@ -121,7 +122,7 @@ export default function WorkoutHeader({ weekId, name, setWorkout, workout, week,
         <div className="w-[100%] max-w-screen-sm mx-auto border-2 border-border bg-background-secondary p-4">
             <div className="w-[100%] flex justify-between p-2">
                 <div>
-                    <p className="font-sm text-secondary-text">Whole Body</p>
+                    <p className="font-sm text-secondary-text">{programWorkouts?.name}</p>
                     <h2 className="text-xl text-primary-text">Week {week?.weekNo} {name}</h2>
                     {workout.skipped && (
                     <p className='font-sm text-background p-2 bg-highlight'>Skipped</p>
