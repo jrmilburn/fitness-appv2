@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import {
-  PlusCircleIcon,
   ChevronUpIcon,
 } from "@heroicons/react/outline";
 
@@ -64,6 +62,8 @@ export default function ProgramTemplates({ setProgram, onNext }) {
           <div
             key={program.id}
             className={`w-full bg-background-secondary p-4 rounded border-b-2 border-border shadow-md hover:bg-background cursor-pointer`}
+            onClick={() => onSelect(program.id)}
+            
           >
             <div className="w-full flex justify-between items-start">
               <div>
