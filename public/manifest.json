@@ -3,7 +3,7 @@
     "name": "JFit Classic",
     "icons": [
       {
-        "src": "/pwa-logo.jpg",
+        "src": "/pwa-logo.png",
         "sizes": "192x192",
         "type": "image/png"
       }
