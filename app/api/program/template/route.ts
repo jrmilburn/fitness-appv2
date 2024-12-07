@@ -4,36 +4,42 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/authOptions';
 
 export async function GET() {
-
   const userSession = await getServerSession(authOptions);
-  const userEmail = userSession?.user.email;
+  const userEmail = userSession?.user?.email;
+
+  if (!userEmail) {
+    return NextResponse.json({ error: 'User not logged in' }, { status: 401 });
+  }
 
   const user = await prisma.user.findUnique({
-    where: {
-      email: userEmail
-    },
-    select: {
-      role: true
-    }
-  })
-
-  const premiumUser = user.role === "PREMIUM" ? true : false;
-
-  const adminUser = await prisma.user.findUnique({
-    where: {
-      email: 'admin@jfit.com.au',
-    },
+    where: { email: userEmail },
+    select: { role: true }
   });
 
-  if (!adminUser) {
+  // Check if user exists
+  if (!user) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
+  const premiumUser = user.role === 'PREMIUM';
+
+  // Fetch admin user (the template owner)
+  const adminUser = await prisma.user.findUnique({
+    where: { email: 'admin@jfit.com.au' }
+  });
+
+  if (!adminUser) {
+    return NextResponse.json({ error: 'Admin user not found' }, { status: 404 });
+  }
+
+  // Construct the 'where' clause conditionally
+  const whereClause = {
+    userId: adminUser.id,
+    ...(premiumUser ? {} : { isPremium: false })
+  };
+
   const programs = await prisma.program.findMany({
-    where: {
-      userId: adminUser.id,
-      isPremium: premiumUser || false
-    },
+    where: whereClause,
     include: {
       weeks: {
         include: {
