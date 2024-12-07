@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import {
@@ -44,7 +43,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
       <div className="flex justify-between items-center w-full p-2">
         <h2 className="text-left text-2xl sm:text-3xl text-primary-text">Previous programs</h2>
         <button
-          className="inter-bold border-2 text-primary-text border-border p-2 hover:bg-highlight rounded flex gap-2"
+          className="inter-bold border-2 text-primary-text border-border p-2 hover:bg-highlight transition-all duration-300 rounded flex gap-2"
           onClick={() => onNext(1)}
         >
           New <PlusCircleIcon className="h-6 w-6 text-primary-text" />
@@ -61,13 +60,12 @@ export default function PreviousPrograms({ setProgram, onNext }) {
         previousPrograms.map((program) => (
           <div
             key={program.id}
-            className={`w-full bg-background-secondary p-4 rounded shadow-md border-b-2 border-border`}
+            className={`w-full bg-background-secondary p-4 rounded shadow-md border-b-2 border-border hover:bg-background cursor-pointer`}
+            onClick={() => onSelect(program.id)}
           >
             <div className="w-full flex justify-between items-start">
               <div>
-                <Link href={`/programs/${program.id}`}>
-                  <h2 className="text-xl inter-bold text-primary-text">{program.name}</h2>
-                </Link>
+                <h2 className="text-xl inter-bold text-primary-text">{program.name}</h2>
                 <p className="text-sm text-secondary-text">
                   {program.length} Weeks - {program.days} Days / Week
                 </p>
@@ -76,24 +74,19 @@ export default function PreviousPrograms({ setProgram, onNext }) {
                 </p>
               </div>
               <div className="flex flex-col space-y-2">
-                <button
-                  onClick={() => onSelect(program.id)}
-                  className="p-2 rounded flex justify-center"
-                  aria-label="Select Program"
-                >
-                  <PlusCircleIcon className="h-8 w-8 text-primary-text hover:text-secondary-text transition duration-300" />
-                </button>
-                <button
-                  onClick={() => toggleSummary(program.id)}
-                  className="p-2 rounded flex justify-center"
-                  aria-label="Toggle Summary"
-                >
-                  {expandedProgramId === program.id ? (
-                    <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300" />
-                  ) : (
-                    <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300 rotate-180" />
-                  )}
-                </button>
+              <button
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevent the click from reaching parent div
+                  toggleSummary(program.id);
+                }}
+                className="text-primary-text p-2 rounded"
+              >
+                {expandedProgramId === program.id ? (
+                  <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300" />
+                ) : (
+                  <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300 rotate-180" />
+                )}
+              </button>
               </div>
             </div>
 

@@ -63,13 +63,11 @@ export default function ProgramTemplates({ setProgram, onNext }) {
         programTemplates.map((program) => (
           <div
             key={program.id}
-            className={`w-full bg-background-secondary p-4 rounded border-b-2 border-border shadow-md`}
+            className={`w-full bg-background-secondary p-4 rounded border-b-2 border-border shadow-md hover:bg-background cursor-pointer`}
           >
             <div className="w-full flex justify-between items-start">
               <div>
-                <Link href={`/programs/${program.id}`}>
-                  <h2 className="text-xl inter-bold text-primary-text">{program.name}</h2>
-                </Link>
+                <h2 className="text-xl inter-bold text-primary-text">{program.name}</h2>
   
                 <p className="text-sm text-secondary-text">
                   {program.length} Weeks - {program.days} Days / Week
@@ -78,23 +76,20 @@ export default function ProgramTemplates({ setProgram, onNext }) {
                   Created: {new Date(program.createdAt).toLocaleDateString()}
                 </p>
               </div>
-              <div className="flex flex-col space-y-2 items-center">
-                <button
-                  onClick={() => onSelect(program.id)}
-                  className="text-black p-2 rounded"
-                >
-                  <PlusCircleIcon className="h-8 w-8 text-primary-text hover:text-secondary-text transition duration-300" />
-                </button>
-                <button
-                  onClick={() => toggleSummary(program.id)}
-                  className="text-primary-text p-2 rounded"
-                >
-                  {expandedProgramId === program.id ? (
-                    <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300" />
-                  ) : (
-                    <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300 rotate-180" />
-                  )}
-                </button>
+              <div className="flex flex-col justify-center h-full space-y-2 items-center">
+              <button
+                onClick={(event) => {
+                  event.stopPropagation(); // Prevent the click from reaching parent div
+                  toggleSummary(program.id);
+                }}
+                className="text-primary-text p-2 rounded"
+              >
+                {expandedProgramId === program.id ? (
+                  <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300" />
+                ) : (
+                  <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-secondary-text transition-all duration-300 rotate-180" />
+                )}
+              </button>
               </div>
             </div>
   
