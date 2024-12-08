@@ -11,7 +11,6 @@ import { motion } from 'framer-motion'
 export default function HeroSection() {
 
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
-  const [circleStyle, setCircleStyle] = useState({});
 
   const cards = [
     {
@@ -61,18 +60,7 @@ export default function HeroSection() {
     requestAnimationFrame(raf);
   }, [])
 
-  const handleSignUp = (e) => {
-    const rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left; // X-coordinate relative to the button
-    const y = e.clientY - rect.top;  // Y-coordinate relative to the button
-
-    // Set the transform origin based on the click position
-    setCircleStyle({
-      top: `${e.clientY}px`,
-      left: `${e.clientX}px`,
-      transformOrigin: `${x}px ${y}px`,
-    });
-
+  const handleSignUp = () => {
     setIsSignUpOpen(true);
   };
 
