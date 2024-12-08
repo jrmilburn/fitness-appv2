@@ -2,17 +2,17 @@
 
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Link from 'next/link';
+//import Image from 'next/image';
+//import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import EmbeddedCheckoutButton from '../components/Stripe/EmbeddedCheckoutForm';
+//import EmbeddedCheckoutButton from '../components/Stripe/EmbeddedCheckoutForm';
 import HeroSection from '../components/LandingPage/Header';
 
 export default function LandingPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const [userCount, setUserCount] = useState(0);
-  const [displayedCount, setDisplayedCount] = useState(0);
+  //const [displayedCount, setDisplayedCount] = useState(0);
 
   // Redirect if session is available
   useEffect(() => {
@@ -52,12 +52,12 @@ export default function LandingPage() {
       const rawProgress = Math.min(progress / duration, 1);
       const easedProgress = easeOutCubic(rawProgress);
       const currentCount = Math.floor(easedProgress * userCount);
-      setDisplayedCount(currentCount);
+      //setDisplayedCount(currentCount);
 
       if (progress < duration) {
         animationFrameId = requestAnimationFrame(animateCount);
       } else {
-        setDisplayedCount(userCount); // Ensure it finishes at the exact count
+        //setDisplayedCount(userCount); // Ensure it finishes at the exact count
       }
     };
 
