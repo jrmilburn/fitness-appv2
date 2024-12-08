@@ -17,7 +17,7 @@ export default function Card({ card, i, range, targetScale, progress }) {
     return(
         <div className={styles.cardContainer} ref={container}>
         <motion.div className={styles.card} style={{scale, top: `calc(-10% + ${i * 50}px)`}}>
-            <div className='bg-background-secondary rounded-xl w-full h-full border-border p-4'>
+            <div className='rounded-xl w-full h-full border-border p-4' style={{backgroundColor: card.backgroundColor}}>
                 <h2 className='inter-bold text-xl '>{card.title}</h2>
                 <p className='inter text-md'>{card.description}</p>
                 <div className={styles.imageContainer}>

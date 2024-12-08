@@ -10,27 +10,31 @@ import Lenis from '@studio-freight/lenis'
 export default function HeroSection() {
   const cards = [
     {
-      title: "Easy Workout Logging",
-      description: "Super easy workout logging to keep track of your progress!",
-      image: "/pwa-logo.png"
+        title: "Easy Workout Logging",
+        description: "Super easy workout logging to keep track of your progress!",
+        image: "/pwa-logo.png",
+        backgroundColor: "#FFDEE9" // Soft pink gradient
     },
     {
-      title: "Nutrition Guidance",
-      description: "Get detailed meal plans and track your macros easily!",
-      image: "/pwa-logo.png"
+        title: "Nutrition Guidance",
+        description: "Get detailed meal plans and track your macros easily!",
+        image: "/pwa-logo.png",
+        backgroundColor: "#B5F3E1" // Mint green gradient
     },
     {
-      title: "Community Challenges",
-      description: "Stay motivated with group events and challenges.",
-      image: "/pwa-logo.png"
+        title: "Community Challenges",
+        description: "Stay motivated with group events and challenges.",
+        image: "/pwa-logo.png",
+        backgroundColor: "#D9E4FF" // Soft blue gradient
     },
     {
-      title: "Advanced Analytics",
-      description: "Dive deep into your performance with comprehensive analytics.",
-      image: "/pwa-logo.png"
+        title: "Advanced Analytics",
+        description: "Dive deep into your performance with comprehensive analytics.",
+        image: "/pwa-logo.png",
+        backgroundColor: "#FFD9B5" // Warm peach gradient
     },
     // Add more cards as needed
-  ];
+];
 
   const container = useRef(null);
 
