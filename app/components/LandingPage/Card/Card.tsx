@@ -16,10 +16,15 @@ export default function Card({ card, i, range, targetScale, progress }) {
 
     return(
         <div className={styles.cardContainer} ref={container}>
-        <motion.div className={styles.card} style={{scale, top: `calc(-10% + ${i * 50}px)`}}>
-            <div className='rounded-xl w-full h-full border-border p-4' style={{backgroundColor: card.backgroundColor}}>
-                <h2 className='inter-bold text-xl '>{card.title}</h2>
-                <p className='inter text-md'>{card.description}</p>
+        <motion.div className={styles.card} style={{scale, top: `calc(-5% + ${i * 75}px)`}}>
+            <div className='rounded-xl w-full h-full border-border p-8 flex flex-col gap-8' style={{backgroundColor: card.backgroundColor}}>
+            <h2 className='inter-bold text-xl text-left w-full border-b border-highlight'>{card.title}</h2>
+
+                <div className='flex h-full w-full gap-8'>
+                <div className='flex flex-col gap-4 flex-1'>
+                    <p className='inter text-md text-left'>{card.description}</p>
+                    <button className='text-left'>See more</button>
+                </div>
                 <div className={styles.imageContainer}>
                 <motion.div style={{scale: imageScale}} className={styles.inner}>
                     <Image 
@@ -27,6 +32,7 @@ export default function Card({ card, i, range, targetScale, progress }) {
                         src={card.image}
                         alt='image'/>
                 </motion.div>
+            </div>
             </div>
             </div>
         </motion.div>
