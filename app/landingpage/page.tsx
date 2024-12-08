@@ -39,26 +39,26 @@ export default function LandingPage() {
     let animationFrameId;
     let startTime;
     let delayTimeout;
-    const duration = 800; // Adjusted duration for faster animation
+    //const duration = 800; // Adjusted duration for faster animation
 
     // Ease-out cubic function
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    //const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
     const animateCount = (timestamp) => {
       if (!startTime) {
         startTime = timestamp;
       }
-      const progress = timestamp - startTime;
-      const rawProgress = Math.min(progress / duration, 1);
-      const easedProgress = easeOutCubic(rawProgress);
-      const currentCount = Math.floor(easedProgress * userCount);
+      //const progress = timestamp - startTime;
+      //const rawProgress = Math.min(progress / duration, 1);
+      //const easedProgress = easeOutCubic(rawProgress);
+      //const currentCount = Math.floor(easedProgress * userCount);
       //setDisplayedCount(currentCount);
 
-      if (progress < duration) {
-        animationFrameId = requestAnimationFrame(animateCount);
-      } else {
+      //if (progress < duration) {
+      //  animationFrameId = requestAnimationFrame(animateCount);
+      //} else {
         //setDisplayedCount(userCount); // Ensure it finishes at the exact count
-      }
+      //}
     };
 
     if (userCount > 0) {

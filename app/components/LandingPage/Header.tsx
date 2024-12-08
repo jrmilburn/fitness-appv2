@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Navbar from "./LandingPageNav";
 import Card from "./Card/Card"
-import { motion, useScroll } from 'framer-motion'
+import { useScroll } from 'framer-motion'
 import { useEffect, useRef } from "react";
 import Lenis from '@studio-freight/lenis'
 
