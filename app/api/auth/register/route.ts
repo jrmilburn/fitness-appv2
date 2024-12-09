@@ -9,24 +9,28 @@ const allowedOrigins = [
   "https://fitness-appv2.vercel.app",
 ];
 
-// Helper function to set CORS headers
-function setCorsHeaders(req, res) {
-    const origin = req.headers.origin;
+// Helper function to set CORS headers dynamically
+function setCorsHeaders(req) {
+    const origin = req.headers.get("origin");
 
-    // Check if the request origin is in the allowed list
     if (allowedOrigins.includes(origin)) {
-        res.setHeader("Access-Control-Allow-Origin", origin);
-        res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS");
-        res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        return {
+            "Access-Control-Allow-Origin": origin,
+            "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        };
     }
+    return {};
 }
 
 // Handle POST requests
-export async function POST(req, res) {
-    setCorsHeaders(req, res);
+export async function POST(req) {
+    const corsHeaders = setCorsHeaders(req);
 
     try {
         const { email, firstName, lastName, phone, password } = await req.json();
+
+        console.log(email);
 
         // Check if the user already exists
         const existingUser = await prisma.user.findUnique({
@@ -34,7 +38,13 @@ export async function POST(req, res) {
         });
 
         if (existingUser) {
-            return NextResponse.json({ message: "User already exists" }, { status: 400 });
+            return NextResponse.json(
+                { message: "User already exists" },
+                {
+                    status: 400,
+                    headers: corsHeaders,
+                }
+            );
         }
 
         // Hash the password
@@ -57,15 +67,34 @@ export async function POST(req, res) {
             },
         });
 
-        return NextResponse.json({ message: "User registered successfully", user: newUser, subscription: newSubscription }, { status: 201 });
+        return NextResponse.json(
+            {
+                message: "User registered successfully",
+                user: newUser,
+                subscription: newSubscription,
+            },
+            {
+                status: 201,
+                headers: corsHeaders,
+            }
+        );
     } catch (error) {
         console.error(error);
-        return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+        return NextResponse.json(
+            { message: "Internal server error" },
+            {
+                status: 500,
+                headers: corsHeaders,
+            }
+        );
     }
 }
 
 // Handle OPTIONS (preflight requests)
-export async function OPTIONS(req, res) {
-    setCorsHeaders(req, res);
-    res.status(200).end(); // Preflight response must end here
+export async function OPTIONS(req) {
+    const corsHeaders = setCorsHeaders(req);
+    return new Response(null, {
+        status: 200,
+        headers: corsHeaders,
+    });
 }
