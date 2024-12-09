@@ -38,7 +38,7 @@ export default function Login() {
 
         setStep(2); // Move to OTP verification step
       } catch (err) {
-        setError("Something went wrong. Please try again.");
+        setError(err);
       } finally {
         setLoadingSend(false);
       }
@@ -64,7 +64,7 @@ export default function Login() {
           window.location.href = "/workouts/current"; // Redirect to a protected page
         }
       } catch (err) {
-        setError("Something went wrong. Please try again.");
+        setError(err);
       } finally {
         setLoadingVerify(false);
       }
