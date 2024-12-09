@@ -12,12 +12,12 @@ export default function ProtectedRoute({ children }) {
   const pathname = usePathname();
   const [shouldFadeOut, setShouldFadeOut] = useState(false);
 
-  const unprotectedPaths = ["/landingpage/register", "/landingpage/login", "/landingpage/checkout"];
+  const unprotectedPaths = ["/login"];
   const isUnprotectedPath = unprotectedPaths.includes(pathname);
 
   useEffect(() => {
     if (status === "unauthenticated" && !isUnprotectedPath) {
-      router.push("/landingpage");
+      router.push("/login");
     }
   }, [status, router, isUnprotectedPath]);
 
@@ -33,7 +33,7 @@ export default function ProtectedRoute({ children }) {
   return (
     <>
       {/* Render main content underneath the splash screen */}
-      {(status === "authenticated" || isUnprotectedPath) ? children : <LandingPage />}
+      {(status === "authenticated" || isUnprotectedPath) ? children : ''}
 
       {/* Splash screen overlay */}
       <div
