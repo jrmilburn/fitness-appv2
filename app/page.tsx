@@ -8,7 +8,7 @@ export default function Home() {
 
   useEffect(() => {
     // Redirect to /workouts/current on component mount
-    router.push("/workouts/current");
+    router.push("/login");
   }, [router]);
 
   return (
