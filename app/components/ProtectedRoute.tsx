@@ -12,7 +12,7 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { data: session, status } = useSession();
+  const { data: status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
