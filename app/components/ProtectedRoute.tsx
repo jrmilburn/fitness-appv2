@@ -16,6 +16,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
+  const [shouldFadeOut, setShouldFadeOut] = useState(false);
 
   // Define paths that do not require authentication
   const unprotectedPaths = ["/login"];
@@ -33,10 +34,24 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     }
   }, [status, router, isUnprotectedPath, isClient]);
 
+  useEffect(() => {
+    // Minimum display time for the splash screen (1 second)
+    const timer = setTimeout(() => {
+      setShouldFadeOut(true); // Trigger fade-out
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [status]);
+
   if (status === "loading") {
-    // Display a loading or splash screen while fetching session data
+    // Display a splash screen while fetching session data
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+      <div
+        className={`fixed inset-0 flex items-center justify-center bg-white transition-opacity duration-500 ${
+          shouldFadeOut ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{ zIndex: 50, pointerEvents: shouldFadeOut ? 'none' : 'auto' }}
+      >
         <div className="text-center">
           <div className="animate-bounce">
             <Image src="/logo.png" alt="App logo" width={80} height={80} className="mx-auto" />
