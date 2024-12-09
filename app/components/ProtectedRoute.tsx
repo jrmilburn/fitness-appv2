@@ -32,7 +32,7 @@ export default function ProtectedRoute({ children }) {
   return (
     <>
       {/* Render main content underneath the splash screen */}
-      {(status === "authenticated" || isUnprotectedPath) ? children : ''}
+      {(status === "authenticated" || isUnprotectedPath) && children }
 
       {/* Splash screen overlay */}
       <div
