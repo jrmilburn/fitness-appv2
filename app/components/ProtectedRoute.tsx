@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from 'next/image';
-import LandingPage from "../landingpage/page";
 
 export default function ProtectedRoute({ children }) {
   const { status } = useSession();
