@@ -44,6 +44,7 @@
     "save": "^2.9.0",
     "stripe": "^17.4.0",
     "ts-node": "^10.9.2",
+    "tw-elements-react": "^1.0.0-alpha-end",
     "use-sound": "^4.0.3"
   },
   "devDependencies": {

@@ -167,7 +167,7 @@ export default function SignUp() {
                             <path fill="#FBBC05" d="M10.5 28.2c-1-2.5-1-5.2 0-7.7l-6.9-5.4c-2.9 5.8-2.9 12.7 0 18.5l6.9-5.4z" />
                             <path fill="#4285F4" d="M24 46.5c5.2 0 9.8-1.7 13.1-4.7l-6.1-4.7c-1.7 1.1-3.8 1.8-6.1 1.8-5.8 0-10.8-3.7-12.6-8.9l-6.9 5.4C8.9 42.6 15.4 46.5 24 46.5z" />
                         </svg>
-                        Sign in with Google
+                        Continue with Google
                     </button>
                     <p className="text-center mt-4">
                         Already have an account?{' '}

@@ -3,14 +3,13 @@
 import Image from "next/image";
 import Navbar from "./LandingPageNav";
 import Card from "./Card/Card"
-import { useScroll, useTransform } from 'framer-motion'
-import { useEffect, useRef, useState } from "react";
+import { useScroll } from 'framer-motion'
+import { useEffect, useRef } from "react";
 import Lenis from '@studio-freight/lenis'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 export default function HeroSection() {
-
-  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
   const cards = [
     {
@@ -47,8 +46,6 @@ export default function HeroSection() {
     offset: ['start start', 'end end']
   })
 
-  const textColor = useTransform(scrollYProgress, [0.95, 1], ["#000", "#fff"]);
-
   useEffect(() => {
     const lenis  = new Lenis()
   
@@ -59,14 +56,6 @@ export default function HeroSection() {
   
     requestAnimationFrame(raf);
   }, [])
-
-  const handleSignUp = () => {
-    setIsSignUpOpen(true);
-  };
-
-  const closeSignUp = () => {
-    setIsSignUpOpen(false);
-  };
 
 
   return (
@@ -140,9 +129,8 @@ export default function HeroSection() {
         }}
       >
 
-        <motion.h2 
-          style={{ color: textColor }}
-          className="top-[0%] text-5xl inter-bold sticky p-8">Key Features</motion.h2>
+        <h2 
+          className="top-[0%] text-5xl inter-bold sticky p-8">Key Features</h2>
 
         {/* Navbar fixed at the top-right corner */}
         <div className="fixed top-4 right-4 z-20">
@@ -161,7 +149,7 @@ export default function HeroSection() {
             })}
 
           <motion.div
-            className="bg-black h-[100vh] w-full"
+            className="h-[100vh] w-full"
           ></motion.div>
 
 
@@ -169,63 +157,15 @@ export default function HeroSection() {
         </section>
         <div className="sticky top-[80%] bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400 p-6 rounded-lg shadow-lg text-center">
               <h2 className="text-3xl font-bold text-white mb-4">Interested?</h2>
+              <Link href='/landingpage/register'>
               <button
                 className="relative bg-white text-indigo-600 font-semibold text-lg px-6 py-3 rounded-full shadow-lg transform transition duration-300 hover:bg-indigo-600 hover:text-white hover:scale-105 active:scale-95 active:shadow-none"
-                onClick={handleSignUp}
               >
                 Sign Up Now
                 <p className="absolute top-0 right-0 text-sm text-primary-text translate-x-[100%]"><em>(There&apos;s a free version)</em></p>
               </button>
+              </Link>
             </div>
-
-            {isSignUpOpen && (
-              <motion.div 
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-500 ${isSignUpOpen ? '' : 'rounded-full'} transition-all duration-500`}>
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="bg-white rounded-lg p-8 shadow-2xl w-[90%] md:w-[50%]"
-                >
-                  <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
-                  <form>
-                    <label className="block mb-2">
-                      <span className="text-gray-700">Email</span>
-                      <input
-                        type="email"
-                        className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring focus:ring-indigo-300"
-                        required
-                      />
-                    </label>
-                    <label className="block mb-4">
-                      <span className="text-gray-700">Password</span>
-                      <input
-                        type="password"
-                        className="w-full border border-gray-300 rounded-lg p-2 mt-1 focus:outline-none focus:ring focus:ring-indigo-300"
-                        required
-                      />
-                    </label>
-                    <div className="flex justify-between items-center">
-                      <button
-                        type="submit"
-                        className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 focus:ring focus:ring-indigo-300"
-                      >
-                        Create Account
-                      </button>
-                      <button
-                        type="button"
-                        className="text-gray-500 underline hover:text-gray-700"
-                        onClick={closeSignUp}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </form>
-                </motion.div>
-              </motion.div>
-      )}
     </div>
   );
 }
