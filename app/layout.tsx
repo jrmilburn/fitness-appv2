@@ -27,7 +27,7 @@ const updateThemeColor = () => {
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  const hideNavbarPaths = ["/landingpage/register", "/landingpage/login"];
+  const hideNavbarPaths = ["/register", "/login"];
   const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
 
   useEffect(() => {
