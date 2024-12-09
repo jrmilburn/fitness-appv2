@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
 import { FaSpinner } from "react-icons/fa"; // For spinner icons
+import Image from "next/image";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -89,10 +90,18 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 px-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <div className="flex flex-col justify-center items-center min-h-screen px-4 z-10">
+            <Image
+                src="/auth-background.webp"
+                alt="Background"
+                layout="fill"
+                objectFit="cover"
+                className="absolute inset-0 z-0"
+                priority
+            />
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md z-20">
         <form onSubmit={handleSubmit} className="space-y-6">
-          <h1 className="text-3xl font-bold text-center text-gray-800">
+          <h1 className="text-3xl inter-bold font-bold text-center text-gray-800">
             OTP Sign In
           </h1>
 

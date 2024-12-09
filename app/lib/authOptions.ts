@@ -78,7 +78,7 @@ export const authOptions: NextAuthOptions = {
         },
     },
     pages: {
-        signIn: "/landingpage/login", // Update your sign-in page route if necessary
+        signIn: "/login", // Update your sign-in page route if necessary
     },
     jwt: {
         secret: process.env.NEXTAUTH_SECRET!,
