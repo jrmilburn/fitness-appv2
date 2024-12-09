@@ -28,6 +28,7 @@
     "formidable": "^3.5.2",
     "framer-motion": "^11.13.1",
     "heroicons": "^2.1.5",
+    "libphonenumber-js": "^1.11.16",
     "next": "^14.2.14",
     "next-auth": "^4.24.10",
     "next-pwa": "^5.6.0",
@@ -45,6 +46,7 @@
     "stripe": "^17.4.0",
     "ts-node": "^10.9.2",
     "tw-elements-react": "^1.0.0-alpha-end",
+    "twilio": "^5.3.7",
     "use-sound": "^4.0.3"
   },
   "devDependencies": {

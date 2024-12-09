@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { prisma } from "./prisma";
-import bcrypt from "bcryptjs";
+import { verifyOtp } from "./twilio/SendSms";
 
 import { DefaultSession } from "next-auth";
 
@@ -24,17 +24,18 @@ export const authOptions: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_SECRET!,
         }),
         CredentialsProvider({
-            name: "Credentials",
+            name: "OTP Login",
             credentials: {
                 email: { label: "Email", type: "text" },
-                password: { label: "Password", type: "password" },
+                otp: { label: "OTP", type: "text" },
             },
             async authorize(credentials) {
-                const { email, password } = credentials as {
+                const { email, otp } = credentials as {
                     email: string;
-                    password: string;
+                    otp: string;
                 };
 
+                // Check if the user exists
                 const user = await prisma.user.findUnique({
                     where: { email },
                 });
@@ -43,15 +44,14 @@ export const authOptions: NextAuthOptions = {
                     throw new Error("No user found with this email");
                 }
 
-                const isValidPassword = await bcrypt.compare(
-                    password,
-                    user.password || ""
-                );
+                // Verify the OTP using your Twilio helper function
+                const isValidOtp = await verifyOtp(user.email, otp);
 
-                if (!isValidPassword) {
-                    throw new Error("Incorrect password");
+                if (!isValidOtp) {
+                    throw new Error("Invalid or expired OTP");
                 }
 
+                // Return user object for NextAuth
                 return user;
             },
         }),
@@ -78,7 +78,7 @@ export const authOptions: NextAuthOptions = {
         },
     },
     pages: {
-        signIn: "/landingpage/login",
+        signIn: "/landingpage/login", // Update your sign-in page route if necessary
     },
     jwt: {
         secret: process.env.NEXTAUTH_SECRET!,

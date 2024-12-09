@@ -1,113 +1,187 @@
-'use client';
+"use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import Image from 'next/image';
-import Link from 'next/link';
+import { FaSpinner } from "react-icons/fa"; // For spinner icons
 
 export default function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
+  const [step, setStep] = useState(1);
+  const [error, setError] = useState("");
+  const [loadingSend, setLoadingSend] = useState(false);
+  const [loadingVerify, setLoadingVerify] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  // Refs for OTP inputs to manage focus
+  const otpRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-        const result = await signIn("credentials", {
-            redirect: false,
-            email,
-            password,
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+
+    if (step === 1) {
+      // Handle sending OTP
+      setLoadingSend(true);
+      try {
+        const res = await fetch("/api/auth/send-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
         });
 
-        if (!result.ok) {
-            setError("Invalid email or password");
-        } else {
-            router.push("/workouts/current"); // Redirect to a protected page after login
+        if (!res.ok) {
+          const { message } = await res.json();
+          setError(message || "Failed to send OTP. Please try again.");
+          return;
         }
-    };
 
-    return (
-        <div className="relative h-screen w-full font-sans">
-            {/* Background Image */}
-            <Image
-                src="/auth-background.webp"
-                alt="Background"
-                layout="fill"
-                objectFit="cover"
-                className="absolute inset-0 z-0"
-                priority
+        setStep(2); // Move to OTP verification step
+      } catch (err) {
+        setError("Something went wrong. Please try again.");
+      } finally {
+        setLoadingSend(false);
+      }
+    } else if (step === 2) {
+      // Handle verifying OTP
+      const enteredOtp = otp.join("");
+      if (enteredOtp.length < 6) {
+        setError("Please enter the complete OTP.");
+        return;
+      }
+
+      setLoadingVerify(true);
+      try {
+        const result = await signIn("credentials", {
+          redirect: false,
+          email,
+          otp: enteredOtp,
+        });
+
+        if (!result?.ok) {
+          setError("Invalid or expired OTP");
+        } else {
+          window.location.href = "/workouts/current"; // Redirect to a protected page
+        }
+      } catch (err) {
+        setError("Something went wrong. Please try again.");
+      } finally {
+        setLoadingVerify(false);
+      }
+    }
+  };
+
+  const handleOtpChange = (index: number, value: string) => {
+    if (!/^\d*$/.test(value)) return; // Allow only digits
+
+    const newOtp = [...otp];
+    newOtp[index] = value.slice(-1); // Ensure only one digit
+    setOtp(newOtp);
+
+    if (value && index < 5) {
+      otpRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (index: number, key: string) => {
+    if (key === "Backspace" && !otp[index] && index > 0) {
+      otpRefs.current[index - 1]?.focus();
+    }
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-purple-100 px-4">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <h1 className="text-3xl font-bold text-center text-gray-800">
+            OTP Sign In
+          </h1>
+
+          {error && (
+            <p className="text-red-500 text-center" aria-live="assertive">
+              {error}
+            </p>
+          )}
+
+          {/* Email Input */}
+          <div>
+            <label htmlFor="email" className="block text-gray-700 mb-1">
+              Email Address
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                step === 2 ? "bg-gray-100 cursor-not-allowed" : ""
+              }`}
+              disabled={step === 2}
             />
+          </div>
 
-            {/* Form Section */}
-            <div className="flex flex-col justify-center items-center h-full w-full relative z-10 p-4 sm:p-8">
-                <form className="w-full max-w-md bg-white bg-opacity-90 p-6 sm:p-8 shadow-md flex flex-col space-y-6" onSubmit={handleSubmit}>
-                    <h1 className="text-2xl font-bold mb-4 text-center">Login</h1>
-                    
-                    {error && <p className="text-red-500 text-center">{error}</p>}
-
-                    <div>
-                        <label htmlFor="email" className="font-semibold block mb-1">
-                            Email
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="border border-gray-300 rounded p-2 w-full"
-                            required
-                        />
-                    </div>
-
-                    <div>
-                        <label htmlFor="password" className="font-semibold block mb-1">
-                            Password
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="border border-gray-300 rounded p-2 w-full"
-                            required
-                        />
-                    </div>
-
-                    <button
-                        type="submit"
-                        className="bg-blue-600 text-white font-bold py-2 px-4 rounded transition hover:bg-blue-700 w-full"
-                    >
-                        Login
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() => signIn('google', { callbackUrl: "/workouts/current" })}
-                        className="flex items-center justify-center gap-2 px-6 py-3 bg-white text-black border border-gray-300 font-semibold rounded-lg hover:bg-gray-100 transition duration-300 w-full"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 48 48"
-                            className="w-5 h-5"
-                        >
-                            <path fill="#EA4335" d="M24 9.5c3.2 0 5.8 1.1 7.8 3.1l5.8-5.8C33.8 3.5 29.2 1.5 24 1.5 14.8 1.5 7.2 7.8 4.5 16.2l6.9 5.4C13.2 15.2 18.2 9.5 24 9.5z" />
-                            <path fill="#34A853" d="M46.5 24c0-1.6-.2-3.2-.5-4.7H24v9.4h12.7c-.5 2.5-1.9 4.6-3.9 6.1l6.1 4.7c3.6-3.3 5.6-8.1 5.6-13.5z" />
-                            <path fill="#FBBC05" d="M10.5 28.2c-1-2.5-1-5.2 0-7.7l-6.9-5.4c-2.9 5.8-2.9 12.7 0 18.5l6.9-5.4z" />
-                            <path fill="#4285F4" d="M24 46.5c5.2 0 9.8-1.7 13.1-4.7l-6.1 4.7c-1.7 1.1-3.8 1.8-6.1 1.8-5.8 0-10.8-3.7-12.6-8.9l-6.9 5.4C8.9 42.6 15.4 46.5 24 46.5z" />
-                        </svg>
-                        Login with Google
-                    </button>
-
-                    <p className="text-center mt-4">
-                        Don&apos;t have an account?{' '}
-                        <Link href="/landingpage/register" className="font-bold text-blue-600 hover:text-blue-800">
-                            Register
-                        </Link>
-                    </p>
-                </form>
+          {/* OTP Input - Reveals smoothly when step === 2 */}
+          <div
+            className={`transition-opacity duration-500 ${
+              step === 2 ? "opacity-100 max-h-40 mt-4" : "opacity-0 max-h-0 overflow-hidden"
+            }`}
+          >
+            <label htmlFor="otp" className="block text-gray-700 mb-1">
+              OTP Code
+            </label>
+            <div className="flex space-x-2 justify-center">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  type="text"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) => handleOtpChange(index, e.target.value)}
+                  onKeyDown={(e) => handleOtpKeyDown(index, e.key)}
+                  ref={(el) => (otpRefs.current[index] = el)}
+                  className="w-12 h-12 text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-xl"
+                  disabled={step !== 2}
+                />
+              ))}
             </div>
-        </div>
-    );
+            {step === 2 && (
+              <p className="text-sm text-gray-600 text-center mt-2">
+                We've sent a code to your email
+              </p>
+            )}
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className={`w-full flex items-center justify-center p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors ${
+              (loadingSend || loadingVerify) && "cursor-not-allowed opacity-50"
+            }`}
+            disabled={loadingSend || loadingVerify}
+          >
+            {step === 1 ? (
+              loadingSend ? (
+                <>
+                  <FaSpinner className="animate-spin mr-2" />
+                  Sending...
+                </>
+              ) : (
+                "Send Code"
+              )
+            ) : (
+              loadingVerify ? (
+                <>
+                  <FaSpinner className="animate-spin mr-2" />
+                  Verifying...
+                </>
+              ) : (
+                "Verify Code"
+              )
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }
