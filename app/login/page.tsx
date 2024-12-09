@@ -156,7 +156,7 @@ export default function Login() {
             </div>
             {step === 2 && (
               <p className="text-sm text-gray-600 text-center mt-2">
-                We've sent a code to your email
+                We&apos;ve sent a code to your email
               </p>
             )}
           </div>
