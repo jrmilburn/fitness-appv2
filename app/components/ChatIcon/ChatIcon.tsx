@@ -1,3 +1,7 @@
+// app/components/ChatIcon/ChatIcon.tsx
+
+'use client';
+
 import { useState, useEffect } from 'react';
 import { ChatAlt2Icon, XIcon } from '@heroicons/react/solid';
 import Notification from './Notification';
@@ -9,7 +13,7 @@ export default function ChatIcon({ navbar=false }) {
   const [isVisible, setIsVisible] = useState(true);
   const [shouldRender, setShouldRender] = useState(true);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const user = session?.user;
 
   const toggleChat = () => setIsOpen(!isOpen);
@@ -41,7 +45,7 @@ export default function ChatIcon({ navbar=false }) {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/coach`, {
+        const response = await fetch(`/api/coach`, { // Use relative URL
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -60,12 +64,15 @@ export default function ChatIcon({ navbar=false }) {
       }
     };
 
-    fetchNotifications();
-  }, []);
+    // Fetch notifications only if the user is authenticated
+    if (status === "authenticated") {
+      fetchNotifications();
+    }
+  }, [status]);
 
   const handleAccept = async (id) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/coach/${id}`, {
+      const response = await fetch(`/api/coach/${id}`, { // Use relative URL
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +99,7 @@ export default function ChatIcon({ navbar=false }) {
 
   const handleDecline = async (id) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/coach/${id}`, {
+      const response = await fetch(`/api/coach/${id}`, { // Use relative URL
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -143,16 +150,20 @@ export default function ChatIcon({ navbar=false }) {
             </button>
           </div>
           <div className="p-4 max-h-80 overflow-y-auto">
-            Coaching Requests
-            {notifications.map((notification) => (
-              <Notification 
-                key={notification.id}
-                notification={notification}
-                currentUser={user}
-                onAccept={() => handleAccept(notification.id)}
-                onDecline={() => handleDecline(notification.id)}
-              />
-            ))}
+            <h3 className="text-lg font-medium mb-2">Coaching Requests</h3>
+            {notifications.length > 0 ? (
+              notifications.map((notification) => (
+                <Notification 
+                  key={notification.id}
+                  notification={notification}
+                  currentUser={user}
+                  onAccept={() => handleAccept(notification.id)}
+                  onDecline={() => handleDecline(notification.id)}
+                />
+              ))
+            ) : (
+              <p className="text-sm text-gray-400">No notifications</p>
+            )}
           </div>
         </div>
       )}
