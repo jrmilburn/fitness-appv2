@@ -93,7 +93,7 @@ export async function POST(req) {
     const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
 
     // Email subject and HTML content
-    const subject = 'Verify Your Email - Fitness App';
+    const subject = 'Verify Your Email - JFIT';
     const html = `
       <h1>Welcome to JFIT, ${firstName}!</h1>
       <p>Thank you for registering. Please verify your email by clicking the button below:</p>
