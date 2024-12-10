@@ -29,7 +29,7 @@ export async function POST(req) {
     const corsHeaders = setCorsHeaders(req);
 
     try {
-        const { email, firstName, lastName, phone, password } = await req.json();
+        const { email, firstName, lastName, phone } = await req.json();
 
         console.log(email);
 
