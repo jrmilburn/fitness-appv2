@@ -36,6 +36,9 @@ export async function POST(req) {
 
     console.log(`Registering user with email: ${email}`);
 
+    console.log('CHECK 1', email, firstName, lastName, phone);
+
+
     // Basic validation (enhance as needed)
     if (!email || !firstName || !lastName) {
       return NextResponse.json(
@@ -44,10 +47,14 @@ export async function POST(req) {
       );
     }
 
+    console.log('CHECK 2', email, firstName, lastName, phone);
+
     // Check if the user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
+
+    console.log('existing user', existingUser);
 
     if (existingUser) {
       return NextResponse.json(
