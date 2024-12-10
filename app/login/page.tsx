@@ -24,7 +24,10 @@ export default function Login() {
       // Handle sending OTP
       setLoadingSend(true);
       try {
-        const res = await fetch("/api/auth/send-otp", {
+
+        //Bypass twilio validation in development, uncomment below to use twilio validation
+
+        /*const res = await fetch("/api/auth/send-otp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email }),
@@ -34,7 +37,7 @@ export default function Login() {
           const { message } = await res.json();
           setError(message || "Failed to send OTP. Please try again.");
           return;
-        }
+        }*/
 
         setStep(2); // Move to OTP verification step
       } catch (err) {

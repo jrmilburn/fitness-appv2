@@ -7,6 +7,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://fitness-appv2.vercel.app",
+  "https://fitnessapp-landingpage.vercel.app"
 ];
 
 // Helper function to set CORS headers dynamically

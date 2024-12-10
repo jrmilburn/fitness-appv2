@@ -17,7 +17,9 @@ export default function Excercise({
     excerciseindex,
     onDelete,
     advanced,
-    progressionType
+    progressionType,
+    startSetCount,
+    endSetCount
 }) {
 
     const [showExcercises, setShowExcercises] = useState(false);
@@ -25,8 +27,8 @@ export default function Excercise({
     const [setProgressionType, setSetProgressionType] = useState(progressionType);
 
     // Default sets
-    const [startSets, setStartSets] = useState(excercise?.startSets || 2);
-    const [endSets, setEndSets] = useState(excercise?.endSets || 4);
+    const [startSets, setStartSets] = useState(startSetCount || 2);
+    const [endSets, setEndSets] = useState(endSetCount || 4);
 
     // Cardio-specific states
     const [trainingType, setTrainingType] = useState(excercise?.trainingType || "HIIT"); 
