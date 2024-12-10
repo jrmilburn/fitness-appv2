@@ -90,7 +90,7 @@ export async function POST(req) {
     });
 
     // Construct verification link
-    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
+    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
 
     // Email subject and HTML content
     const subject = 'Verify Your Email - Fitness App';
