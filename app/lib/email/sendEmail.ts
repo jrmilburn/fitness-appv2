@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
  */
 export async function sendEmail(to, subject, html) {
   const mailOptions = {
-    from: `"Fitness App" <${process.env.EMAIL_USER}>`, // Sender address
+    from: `"JFIT" <${process.env.EMAIL_USER}>`, // Sender address
     to, // List of receivers
     subject, // Subject line
     html, // HTML body
