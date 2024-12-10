@@ -75,10 +75,7 @@ export async function GET(req) {
     // return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/verification-success`);
 
     // For API response, return a success message
-    return NextResponse.json(
-      { message: "Email successfully verified! You can now log in." },
-      { status: 200, headers: corsHeaders }
-    );
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_BASE_URL}/login`);
   } catch (error) {
     console.error('Verification Error:', error);
     return NextResponse.json(
