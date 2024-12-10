@@ -37,21 +37,24 @@ enum RequestStatus {
 }
 
 model User {
-  id               String       @id @default(cuid())
-  email            String       @unique
-  phone            String?
-  emailVerified    DateTime?
-  name             String?
-  createdAt        DateTime     @default(now())
-  updatedAt        DateTime     @updatedAt
-  image            String?
-  bio              String?
-  password         String?
-  username         String?
-  currentProgramId String?
-  BodyWeight       BodyWeight[]
-  programs         Program[]
-  role             Role         @default(USER)
+  id                      String       @id @default(cuid())
+  email                   String       @unique
+  phone                   String?
+  emailVerified           DateTime?
+  verified                Boolean      @default(false)
+  verificationToken       String?
+  verificationTokenExpiry DateTime?
+  name                    String?
+  createdAt               DateTime     @default(now())
+  updatedAt               DateTime     @updatedAt
+  image                   String?
+  bio                     String?
+  password                String?
+  username                String?
+  currentProgramId        String?
+  BodyWeight              BodyWeight[]
+  programs                Program[]
+  role                    Role         @default(USER)
 
   accounts Account[]
   sessions Session[]
@@ -67,19 +70,19 @@ model User {
 
   excercises Excercise[] @relation(name: "UserExcercises")
 
-  subscription   Subscription? @relation("UserSubscription")
+  subscription Subscription? @relation("UserSubscription")
 }
 
 model Subscription {
-  id                    String      @id @default(cuid())
-  user                  User        @relation("UserSubscription", fields: [userId], references: [id], onDelete: Cascade)
-  userId                String      @unique
-  stripeSubscriptionId  String?     @unique
-  status                SubscriptionStatus @default(PENDING)
-  plan                  Plan        @default(BASIC)
-  currentPeriodEnd      DateTime?
-  createdAt             DateTime    @default(now())
-  updatedAt             DateTime    @updatedAt
+  id                   String             @id @default(cuid())
+  user                 User               @relation("UserSubscription", fields: [userId], references: [id], onDelete: Cascade)
+  userId               String             @unique
+  stripeSubscriptionId String?            @unique
+  status               SubscriptionStatus @default(PENDING)
+  plan                 Plan               @default(BASIC)
+  currentPeriodEnd     DateTime?
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
 }
 
 enum SubscriptionStatus {
@@ -172,7 +175,7 @@ model Program {
   weeks         Week[] // No `onDelete` here; it's specified in `Week`
   currentWeekId String?
   completed     Boolean   @default(false)
-  isPremium     Boolean @default(true)
+  isPremium     Boolean   @default(true)
 }
 
 model Week {
@@ -227,19 +230,17 @@ model Excercise {
   excerciseNo     Int?
   autoregulation  Boolean     @default(true)
 
-  excerciseType   String?
+  excerciseType String?
 
   autoRegulator   autoRegulator? @relation(fields: [autoRegulatorId], references: [id])
   autoRegulatorId String?
-
-
 
   @@unique([workoutId, name])
 }
 
 model autoRegulator {
   id        String @id @default(cuid())
-  soreness  Int?    @default(0)
+  soreness  Int?   @default(0)
   jointpain Int    @default(0)
   workload  Int    @default(0)
 
@@ -251,8 +252,8 @@ model Set {
   setNo             Int
   reps              Int?
   weight            Float?
-  activity      Int?
-  rest  Int?
+  activity          Int?
+  rest              Int?
   recommendedReps   Int?
   recommendedWeight Float?
   excercise         Excercise @relation(fields: [excerciseId], references: [id], onDelete: Cascade)
@@ -269,4 +270,3 @@ model MuscleGroup {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime?   @updatedAt
 }
-
