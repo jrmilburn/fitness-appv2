@@ -77,3 +77,39 @@ html, body {
 main {
   overscroll-behavior: auto;
 }
+
+@keyframes scan-line {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+.animate-scan-line {
+  animation: scan-line 2s linear infinite;
+}
+
+/* For responsive sizing:
+   On mobile: full screen height (vh)
+   On desktop: a constrained height so it fits in a modal
+*/
+
+.barcode-scanner-container .scanner-wrapper {
+  width: 100%;
+  height: 100vh; /* full screen on mobile */
+}
+
+.barcode-scanner-container .scanner-view {
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #ccc;
+  overflow: hidden;
+}
+
+/* Adjust at a larger breakpoint (e.g. 768px) to fit in a modal instead of full screen */
+@media (min-width: 768px) {
+  .barcode-scanner-container .scanner-wrapper {
+    height: 500px; /* Adjust as needed to fit in your modal */
+  }
+}

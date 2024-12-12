@@ -40,8 +40,14 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   const [newShown, setNewShown] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [scannedFood, setScannedFood] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  // Loading states
+  const [scannerInitializing, setScannerInitializing] = useState(false);
+  const [fetchingData, setFetchingData] = useState(false);
+
+  // Error state for scanning and fetching
   const [scannerError, setScannerError] = useState(null);
+
   const [showConfirmation, setShowConfirmation] = useState(false);
   const router = useRouter();
 
@@ -52,7 +58,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       body: JSON.stringify(food)
     });
 
-    if(response.ok) {
+    if (response.ok) {
       setFoodList((prev) => [...prev, food]);
     } else {
       console.error('Failed to add food');
@@ -70,8 +76,9 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   };
 
   const handleBarcodeDetected = async (barcode) => {
+    // Barcode detected, close scanner and start fetching data
     setShowScanner(false);
-    setLoading(true);
+    setFetchingData(true);
     setScannerError(null);
 
     try {
@@ -82,33 +89,27 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch food data.');
+        throw new Error('Could not find food item for scanned code.');
       }
 
       const data = await response.json();
-      console.log('SCANNED DATA', data);
-      // data should have { success: true, data: { ...foodItem } }
-      // Store the actual food item in scannedFood:
       setScannedFood(data.data);
       setShowConfirmation(true);
     } catch (error) {
       console.error(error);
       setScannerError(error.message || 'An error occurred while fetching food data.');
     } finally {
-      setLoading(false);
+      setFetchingData(false);
     }
   };
 
   const handleScannerError = (error) => {
-    setScannerError(error.message || 'An error occurred during scanning.');
-    setShowScanner(false);
+    setScannerError(error.message || 'An error occurred during scanning initialization.');
   };
 
-  // Confirm adding scanned food
   const handleConfirmAddScannedFood = () => {
     if (scannedFood) {
-      // Since the scanned food is already added to the DB by the scan endpoint,
-      // we just need to update our state here, no need to call addFood again.
+      // The scanned food item is assumed to be logged by the API endpoint
       setFoodList((prev) => [...prev, scannedFood]);
       setScannedFood(null);
       setShowConfirmation(false);
@@ -118,6 +119,11 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   const handleCancelAddScannedFood = () => {
     setScannedFood(null);
     setShowConfirmation(false);
+  };
+
+  const onLoadingChange = (loading) => {
+    // This is triggered by BarcodeScanner to indicate camera initialization state
+    setScannerInitializing(loading);
   };
 
   return (
@@ -155,7 +161,10 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           Add Food Manually
         </button>
         <button
-          onClick={() => setShowScanner(true)}
+          onClick={() => {
+            setScannerError(null);
+            setShowScanner(true);
+          }}
           className="bg-background text-primary-text border-2 rounded border-border py-2 px-4 transition-all duration-300"
         >
           Scan Barcode
@@ -167,8 +176,8 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
       {/* Barcode Scanner Modal */}
       {showScanner && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg w-11/12 md:w-1/2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-2">
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold text-primary-text">Scan Barcode</h3>
               <button onClick={() => setShowScanner(false)}>
@@ -177,9 +186,33 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
                 </svg>
               </button>
             </div>
-            <BarcodeScanner onDetected={handleBarcodeDetected} onError={handleScannerError} />
-            {loading && <p className="mt-4 text-center">Fetching food data...</p>}
-            {scannerError && <p className="mt-4 text-center text-red-500">{scannerError}</p>}
+
+            {scannerError && (
+              <div className="text-red-500 mb-4">
+                {scannerError}
+              </div>
+            )}
+
+            {scannerInitializing && (
+              <div className="text-center mb-4">Initializing camera, please wait...</div>
+            )}
+
+            {!scannerError && (
+              <BarcodeScanner
+                onDetected={handleBarcodeDetected}
+                onError={handleScannerError}
+                onLoadingChange={onLoadingChange}
+              />
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Fetching Data Modal (after scan detected but before confirmation) */}
+      {fetchingData && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-gray-800 p-4 rounded-lg w-full max-w-sm text-center">
+            <p className="text-primary-text font-semibold">Fetching food data...</p>
           </div>
         </div>
       )}
@@ -190,7 +223,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-11/12 md:w-1/3">
             <h3 className="text-lg font-semibold text-primary-text mb-4">Add Scanned Food</h3>
             <div className="space-y-2">
-              {/* Use the fields returned by the scannedFood item directly */}
               <p><strong>Food Item:</strong> {scannedFood.name}</p>
               <p><strong>Calories:</strong> {scannedFood.caloriesPerServe}</p>
               <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPerServe}g</p>
@@ -214,6 +246,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           </div>
         </div>
       )}
+
     </div>
   );
 }
