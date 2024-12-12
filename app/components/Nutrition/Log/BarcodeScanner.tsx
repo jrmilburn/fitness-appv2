@@ -25,7 +25,7 @@ const BarcodeScanner = ({ onDetected, onError }) => {
         (err) => {
           if (err) {
             console.error(err);
-            onError && onError(err);
+            onError(err);
             return;
           }
           Quagga.start();
