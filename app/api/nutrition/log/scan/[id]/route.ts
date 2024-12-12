@@ -42,6 +42,8 @@ export async function POST(
     // Parse the request body
     const { upc } = await req.json();
 
+    console.log('UPC', upc);
+
     // Validate UPC
     if (!upc || typeof upc !== "string") {
       return NextResponse.json(

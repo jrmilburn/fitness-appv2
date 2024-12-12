@@ -80,14 +80,15 @@ main {
 
 @keyframes scan-line {
   0% {
-    transform: translateY(0);
+    top: 0;
   }
   100% {
-    transform: translateY(100%);
+    top: 100%;
   }
 }
+
 .animate-scan-line {
-  animation: scan-line 2s linear infinite;
+  animation: scan-line 2s infinite;
 }
 
 /* For responsive sizing:
