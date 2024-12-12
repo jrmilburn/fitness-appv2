@@ -7,26 +7,24 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/navigation";
 import BarcodeScanner from "./BarcodeScanner";
 
-// Utility function to increment or decrement dateId
 const adjustDate = (currentDateId, increment = true) => {
   const day = parseInt(currentDateId.slice(0, 2), 10);
-  const month = parseInt(currentDateId.slice(2, 4), 10) - 1; // JavaScript months are 0-indexed
+  const month = parseInt(currentDateId.slice(2, 4), 10) - 1;
   const year = parseInt(currentDateId.slice(4, 8), 10);
 
   const currentDate = new Date(year, month, day);
-  currentDate.setDate(currentDate.getDate() + (increment ? 1 : -1)); // Increment or decrement by 1 day
+  currentDate.setDate(currentDate.getDate() + (increment ? 1 : -1));
 
   const newDay = String(currentDate.getDate()).padStart(2, "0");
-  const newMonth = String(currentDate.getMonth() + 1).padStart(2, "0"); // Months are 0-indexed
+  const newMonth = String(currentDate.getMonth() + 1).padStart(2, "0");
   const newYear = currentDate.getFullYear();
 
   return `${newDay}${newMonth}${newYear}`;
 };
 
-// Utility function to convert dateId to a formatted date
 const formatDateId = (dateId) => {
   const day = parseInt(dateId.slice(0, 2), 10);
-  const month = parseInt(dateId.slice(2, 4), 10) - 1; // JavaScript months are 0-indexed
+  const month = parseInt(dateId.slice(2, 4), 10) - 1;
   const year = parseInt(dateId.slice(4, 8), 10);
 
   const months = [
@@ -45,61 +43,41 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   const [loading, setLoading] = useState(false);
   const [scannerError, setScannerError] = useState(null);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const router = useRouter(); // For navigating between routes
+  const router = useRouter();
 
-  // Function to add food to the log
   const addFood = async (food) => {
-    const newFood = {
-      name: food.product_name,
-      carbohydratesPerServe: food.nutriments.carbohydrates,
-      proteinPerServe: food.nutriments.proteins,
-      fatPerServe: food.nutriments.fat,
-      caloriesPerServe: food.nutriments.energy,
-      quantity: food.quantity || 1, // Default quantity
-      unit: food.unit || 'serving',
-    };
-
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nutrition/log/${dailyLogId}`, {
       method: 'POST',
-      headers: {
-        'Content-Type' : 'application/json'
-      },
-      body: JSON.stringify(newFood)
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(food)
     });
 
     if(response.ok) {
-      setFoodList((prev) => [...prev, newFood]);
+      setFoodList((prev) => [...prev, food]);
     } else {
-      // Handle error if needed
       console.error('Failed to add food');
     }
     setNewShown(false);
   };
 
-  // Toggle the NewFood modal
   const handleShowNewFood = () => {
     setNewShown((prev) => !prev);
   };
 
-  // Handle date change
   const handleChangeDate = (increment) => {
-    const newDateId = adjustDate(dateId, increment); // Calculate new dateId
-    router.push(`/nutrition/log/${newDateId}`); // Navigate to the new date route
+    const newDateId = adjustDate(dateId, increment);
+    router.push(`/nutrition/log/${newDateId}`);
   };
 
-  // Handle barcode detection
   const handleBarcodeDetected = async (barcode) => {
     setShowScanner(false);
     setLoading(true);
     setScannerError(null);
 
     try {
-      // Fetch food data via API route to protect API keys
       const response = await fetch(`/api/nutrition/log/scan/${dailyLogId}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ upc: barcode })
       });
 
@@ -108,7 +86,11 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       }
 
       const data = await response.json();
-      setScannedFood(data);
+      console.log('SCANNED DATA', data);
+      // data should have { success: true, data: { ...foodItem } }
+      // Store the actual food item in scannedFood:
+      setScannedFood(data.data);
+      await addFood(data.data);
       setShowConfirmation(true);
     } catch (error) {
       console.error(error);
@@ -118,7 +100,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
     }
   };
 
-  // Handle scanner errors
   const handleScannerError = (error) => {
     setScannerError(error.message || 'An error occurred during scanning.');
     setShowScanner(false);
@@ -127,24 +108,14 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   // Confirm adding scanned food
   const handleConfirmAddScannedFood = () => {
     if (scannedFood) {
-      const foodToAdd = {
-        product_name: scannedFood.item_name,
-        nutriments: {
-          carbohydrates: scannedFood.nf_total_carbohydrate || scannedFood.nf_carbohydrates,
-          proteins: scannedFood.nf_protein || scannedFood.nf_proteins,
-          fat: scannedFood.nf_total_fat || scannedFood.nf_fat,
-          energy: scannedFood.nf_calories,
-        },
-        quantity: 1, // Default quantity, can be customized
-        unit: 'serving', // Default unit, can be customized
-      };
-      addFood(foodToAdd);
+      // Since the scanned food is already added to the DB by the scan endpoint,
+      // we just need to update our state here, no need to call addFood again.
+      setFoodList((prev) => [...prev, scannedFood]);
       setScannedFood(null);
       setShowConfirmation(false);
     }
   };
 
-  // Cancel adding scanned food
   const handleCancelAddScannedFood = () => {
     setScannedFood(null);
     setShowConfirmation(false);
@@ -220,12 +191,12 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-11/12 md:w-1/3">
             <h3 className="text-lg font-semibold text-primary-text mb-4">Add Scanned Food</h3>
             <div className="space-y-2">
-              <p><strong>Food Item:</strong> {scannedFood.item_name}</p>
-              <p><strong>Calories:</strong> {scannedFood.nf_calories}</p>
-              <p><strong>Carbohydrates:</strong> {scannedFood.nf_total_carbohydrate || scannedFood.nf_carbohydrates}g</p>
-              <p><strong>Protein:</strong> {scannedFood.nf_protein || scannedFood.nf_proteins}g</p>
-              <p><strong>Fat:</strong> {scannedFood.nf_total_fat || scannedFood.nf_fat}g</p>
-              {/* Add more details as needed */}
+              {/* Use the fields returned by the scannedFood item directly */}
+              <p><strong>Food Item:</strong> {scannedFood.name}</p>
+              <p><strong>Calories:</strong> {scannedFood.caloriesPerServe}</p>
+              <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPerServe}g</p>
+              <p><strong>Protein:</strong> {scannedFood.proteinPerServe}g</p>
+              <p><strong>Fat:</strong> {scannedFood.fatPerServe}g</p>
             </div>
             <div className="mt-6 flex justify-end space-x-4">
               <button
