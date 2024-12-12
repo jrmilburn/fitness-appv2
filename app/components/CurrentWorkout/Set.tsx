@@ -3,6 +3,7 @@ import verteditIcon from '../../assets/edit-vert.svg';
 import Image from 'next/image';
 import SetForm from './SetForm';
 import Loader from '../Loader';
+import { submitSet } from './helper-functions';
 
 export default function Set({ 
   setId, 
@@ -13,6 +14,8 @@ export default function Set({
   onAdd, 
   onDataFetch, 
   disabled=false, 
+  initialWeight,
+  initialReps,
   activityTime, 
   restTime, 
   type='hypertrophy',
@@ -20,8 +23,8 @@ export default function Set({
   onSetUpdate
 }) {
   const [focusedInput, setFocusedInput] = useState(''); 
-  const [weight, setWeight] = useState(null);
-  const [reps, setReps] = useState(null);
+  const [weight, setWeight] = useState(initialWeight);
+  const [reps, setReps] = useState(initialReps);
   const [activity, setActivity] = useState(activityTime);
   const [rest, setRest] = useState(restTime);
   const [recommendedReps, setRecommendedReps] = useState(null);
@@ -84,6 +87,7 @@ export default function Set({
   const handleSubmit = async (e, setId) => {
     e.preventDefault();
     const newCheckedValue = !isChecked;
+    await submitSet({setId, weight, reps, activity, rest, completed: newCheckedValue, setWorkout})
     await onSetUpdate({
       setId,
       weight,

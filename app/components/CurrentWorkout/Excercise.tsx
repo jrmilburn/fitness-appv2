@@ -28,6 +28,8 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
     // Re-derive the exercise from the global workout each render
     const updatedExcercise = workout.excercises.find(e => e.id === excercise.id) || excercise;
 
+    console.log(excercise);
+
     const handleSetDataFetch = (data) => {
         setLastWeekData((prevData) => {
             const existingIndex = prevData.findIndex((item) => item.setId === data.setId);
@@ -333,6 +335,8 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
                             onAdd={handleAddSet}
                             onDataFetch={handleSetDataFetch}
                             disabled={disabled}
+                            initialWeight={set.weight}
+                            initialReps={set.reps}
                             activityTime={set.activity}
                             restTime={set.rest}
                             type='cardio'
