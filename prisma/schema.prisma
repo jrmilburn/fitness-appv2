@@ -71,6 +71,8 @@ model User {
   excercises Excercise[] @relation(name: "UserExcercises")
 
   subscription Subscription? @relation("UserSubscription")
+
+  dailylog DailyLog[]
 }
 
 model Subscription {
@@ -269,4 +271,34 @@ model MuscleGroup {
   excercises Excercise[]
   createdAt  DateTime    @default(now())
   updatedAt  DateTime?   @updatedAt
+}
+
+model DailyLog {
+  id     String @id @default(cuid())
+  dateId String?
+  user   User?  @relation(fields: [userId], references: [id])
+  userId String
+  foods  Food[]
+
+  totalCalories Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([dateId, userId]) // Ensures no duplicate logs for the same date/user
+}
+
+model Food {
+  id                    String @id @default(cuid())
+  name                  String
+  carbohydratesPerServe Float?
+  proteinPerServe       Float?
+  fatPerServe           Float?
+  caloriesPerServe      Int?
+
+  dailylog   DailyLog @relation(fields: [dailylogId], references: [id])
+  dailylogId String
+
+  quantity    Float?
+  unit String?
 }

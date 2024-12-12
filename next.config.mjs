@@ -20,6 +20,12 @@ const nextConfig = withPWA({
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: "images.openfoodfacts.org",
+        port: '',
+        pathname: '/**'
+      }
     ],
   },
   reactStrictMode: false, // Enable React strict mode
