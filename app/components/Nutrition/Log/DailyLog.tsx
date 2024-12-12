@@ -90,7 +90,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       // data should have { success: true, data: { ...foodItem } }
       // Store the actual food item in scannedFood:
       setScannedFood(data.data);
-      await addFood(data.data);
       setShowConfirmation(true);
     } catch (error) {
       console.error(error);
