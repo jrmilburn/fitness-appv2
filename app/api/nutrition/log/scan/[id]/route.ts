@@ -150,8 +150,7 @@ export async function POST(
     });
 
     return NextResponse.json(
-      { success: true, data: foodItem, original: response },
-      { status: 200 }
+      foodItem
     );
   } catch (error) {
     console.error("Error in /api/nutrition/log/scan/[id]:", error.message || error);

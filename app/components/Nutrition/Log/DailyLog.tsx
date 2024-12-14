@@ -78,12 +78,12 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
     }, 2000); // 2 seconds
 
     // Check cache first
-    const cachedData = localStorage.getItem(`food_${barcode}`);
+    /*const cachedData = localStorage.getItem(`food_${barcode}`);
     if (cachedData) {
       setScannedFood(JSON.parse(cachedData));
       setShowConfirmation(true);
       return;
-    }
+    }*/
 
     // Proceed with fetching data
     setShowScanner(false);
@@ -108,6 +108,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       }
 
       const data = await response.json();
+      console.log(data);
       setScannedFood(data);
       setShowConfirmation(true);
 
@@ -321,13 +322,13 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-11/12 md:w-1/3">
             <h3 className="text-lg font-semibold text-primary-text mb-4">Add Scanned Food</h3>
             <div className="space-y-2">
-              <p><strong>Food Item:</strong> {scannedFood?.name}</p>
               {scannedFood?.image &&
               <Image 
                 src={scannedFood.image}
                 alt={scannedFood.name}
-                height={64}
-                width={64}/> }
+                height={200}
+                width={200}/> }
+              <p><strong>Food Item:</strong> {scannedFood?.name}</p>
               <p><strong>Calories:</strong> {scannedFood.caloriesPerServe * selectedAmount / 100}</p>
               <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPerServe * selectedAmount / 100}g</p>
               <p><strong>Protein:</strong> {scannedFood.proteinPerServe * selectedAmount / 100}g</p>
