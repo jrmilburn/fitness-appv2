@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function LoggedFood({ food }) {
 
     console.log(food);
@@ -25,6 +27,12 @@ export default function LoggedFood({ food }) {
               <span className="font-semibold">Amount Logged:</span> {food?.quantity} {food?.unit}
             </p>
           </div>
+          {food?.image &&           
+          <Image 
+            src={food?.image}
+            alt={food?.name}
+            height={64}
+            width={64}/>}
         </div>
       </div>
     );

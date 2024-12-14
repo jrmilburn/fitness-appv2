@@ -301,4 +301,6 @@ model Food {
 
   quantity    Float?
   unit String?
+
+  image String?
 }

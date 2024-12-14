@@ -73,6 +73,8 @@ export async function POST(
 
     const data = await response.json();
 
+    console.log('PRODUCT DATA', data);
+
     // Check if the product exists
     if (data.status !== 1) {
       return NextResponse.json(
@@ -103,8 +105,9 @@ export async function POST(
       caloriesPerServe: parseFloat(
         nutriments["energy-kcal"] || nutriments.energy || "0"
       ),
-      quantity: 1, // Default quantity; can be modified based on your requirements
-      unit: "serving", // Default unit; can be modified based on your requirements
+      quantity: 100, // Default quantity; can be modified based on your requirements
+      unit: "g", // Default unit; can be modified based on your requirements
+      image: product.image_url,
       upc: upc,
     };
 
@@ -141,12 +144,13 @@ export async function POST(
         caloriesPerServe: foodData.caloriesPerServe,
         quantity: foodData.quantity,
         unit: foodData.unit,
-        dailylogId: dailyLogId
+        dailylogId: dailyLogId,
+        image: foodData.image
       },
     });
 
     return NextResponse.json(
-      { success: true, data: foodItem },
+      { success: true, data: foodItem, original: response },
       { status: 200 }
     );
   } catch (error) {

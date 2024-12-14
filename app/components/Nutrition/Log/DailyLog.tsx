@@ -6,6 +6,7 @@ import NewFood from "./NewFood";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/navigation";
 import BarcodeScanner from "./BarcodeScanner";
+import Image from "next/image";
 
 const adjustDate = (currentDateId, increment = true) => {
   const day = parseInt(currentDateId.slice(0, 2), 10);
@@ -140,9 +141,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
   const addFood = async (food) => {
     try {
-
-      console.log('FOOD BEING SENT', food);
-
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nutrition/log/${dailyLogId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -151,9 +149,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
       if (response.ok) {
         const newFood = await response.json();
-
-        console.log('NEW FOOD RETURNED', newFood);
-
         setFoodList((prev) => [...prev, newFood]);
       } else {
         const errorData = await response.json();
@@ -178,12 +173,11 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
   const handleConfirmAddScannedFood = () => {
     if (scannedFood) {
-      console.log('SCANNED FOOD', scannedFood);
       // Add the food with the selected amount and unit
       addFood({
         ...scannedFood,
         quantity: selectedAmount,
-        unit: selectedUnit
+        unit: selectedUnit,
       });
 
       setScannedFood(null);
@@ -327,7 +321,13 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-11/12 md:w-1/3">
             <h3 className="text-lg font-semibold text-primary-text mb-4">Add Scanned Food</h3>
             <div className="space-y-2">
-              <p><strong>Food Item:</strong> {scannedFood.name}</p>
+              <p><strong>Food Item:</strong> {scannedFood?.name}</p>
+              {scannedFood?.image &&
+              <Image 
+                src={scannedFood.image}
+                alt={scannedFood.name}
+                height={64}
+                width={64}/> }
               <p><strong>Calories:</strong> {scannedFood.caloriesPerServe * selectedAmount / 100}</p>
               <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPerServe * selectedAmount / 100}g</p>
               <p><strong>Protein:</strong> {scannedFood.proteinPerServe * selectedAmount / 100}g</p>
