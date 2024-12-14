@@ -28,6 +28,8 @@ const BarcodeScanner = ({ onDetected, onError, onStop }) => {
       )}
       <BarcodeScannerComponent
         onUpdate={handleUpdate}
+        height={'100%'}
+        width={"100%"}
       />
       <button
         onClick={() => { 
