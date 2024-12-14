@@ -50,7 +50,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   const router = useRouter();
 
   // States for amount and unit selection
-  const [selectedAmount, setSelectedAmount] = useState(1);
+  const [selectedAmount, setSelectedAmount] = useState(100);
   const [selectedUnit, setSelectedUnit] = useState("g");
 
   // Processing state to debounce detections
@@ -107,7 +107,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       }
 
       const data = await response.json();
-      setScannedFood(data.data);
+      setScannedFood(data);
       setShowConfirmation(true);
 
       // Cache the data
@@ -140,6 +140,9 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
   const addFood = async (food) => {
     try {
+
+      console.log('FOOD BEING SENT', food);
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nutrition/log/${dailyLogId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -148,7 +151,10 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
       if (response.ok) {
         const newFood = await response.json();
-        setFoodList((prev) => [...prev, newFood.data]);
+
+        console.log('NEW FOOD RETURNED', newFood);
+
+        setFoodList((prev) => [...prev, newFood]);
       } else {
         const errorData = await response.json();
         console.error('Failed to add food:', errorData.error);
@@ -176,12 +182,13 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       // Add the food with the selected amount and unit
       addFood({
         ...scannedFood,
-        amount: selectedAmount,
+        quantity: selectedAmount,
         unit: selectedUnit
       });
+
       setScannedFood(null);
       setShowConfirmation(false);
-      setSelectedAmount(1);
+      setSelectedAmount(100);
       setSelectedUnit("g");
     }
   };
@@ -189,7 +196,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   const handleCancelAddScannedFood = () => {
     setScannedFood(null);
     setShowConfirmation(false);
-    setSelectedAmount(1);
+    setSelectedAmount(100);
     setSelectedUnit("g");
   };
 
@@ -321,10 +328,10 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
             <h3 className="text-lg font-semibold text-primary-text mb-4">Add Scanned Food</h3>
             <div className="space-y-2">
               <p><strong>Food Item:</strong> {scannedFood.name}</p>
-              <p><strong>Calories:</strong> {scannedFood.caloriesPerServe}</p>
-              <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPerServe}g</p>
-              <p><strong>Protein:</strong> {scannedFood.proteinPerServe}g</p>
-              <p><strong>Fat:</strong> {scannedFood.fatPerServe}g</p>
+              <p><strong>Calories:</strong> {scannedFood.caloriesPerServe * selectedAmount / 100}</p>
+              <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPerServe * selectedAmount / 100}g</p>
+              <p><strong>Protein:</strong> {scannedFood.proteinPerServe * selectedAmount / 100}g</p>
+              <p><strong>Fat:</strong> {scannedFood.fatPerServe * selectedAmount / 100}g</p>
             </div>
             <div className="mt-4">
               <label className="block mb-2 text-primary-text font-semibold">Amount:</label>
@@ -332,7 +339,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
                 type="number"
                 min="1"
                 value={selectedAmount}
-                onChange={(e) => setSelectedAmount(parseInt(e.target.value, 10) || 1)}
+                onChange={(e) => setSelectedAmount(parseInt(e.target.value, 10))}
                 className="border border-border rounded px-2 py-1 w-full"
               />
             </div>
@@ -344,9 +351,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
                 className="border border-border rounded px-2 py-1 w-full"
               >
                 <option value="g">Grams (g)</option>
-                <option value="oz">Ounces (oz)</option>
-                <option value="ml">Milliliters (ml)</option>
-                <option value="cup">Cup(s)</option>
               </select>
             </div>
             <div className="mt-6 flex justify-end space-x-4">
