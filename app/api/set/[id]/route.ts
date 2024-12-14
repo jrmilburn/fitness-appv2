@@ -8,9 +8,12 @@ export async function PUT(
   const { id } = params;
   const { weight, reps, activity, rest, completed } = await req.json();
 
+  console.log('WEIGHT', weight);
+  console.log('REPS', reps);
+
   try {
 
-    if (weight === null && reps === null) {
+    if (weight !== null && reps !== null) {
       const set = await prisma.set.update({
         where: {
             id: id
@@ -23,9 +26,6 @@ export async function PUT(
             completed: completed
         }
     })
-
-
-    console.log('UPDATED SET: ', set);
 
     // If no exercise is found, return 404
     if (!set) {

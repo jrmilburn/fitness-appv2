@@ -78,24 +78,6 @@ main {
   overscroll-behavior: auto;
 }
 
-@keyframes scan-line {
-  0% {
-    top: 0;
-  }
-  100% {
-    top: 100%;
-  }
-}
-
-.animate-scan-line {
-  animation: scan-line 2s infinite;
-}
-
-/* For responsive sizing:
-   On mobile: full screen height (vh)
-   On desktop: a constrained height so it fits in a modal
-*/
-
 .barcode-scanner-container .scanner-wrapper {
   width: 100%;
   height: 100vh; /* full screen on mobile */

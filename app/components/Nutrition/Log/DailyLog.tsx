@@ -294,12 +294,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
               </div>
             )}
 
-            {tempScannerError && (
-              <div className="text-yellow-500 mb-4">
-                {tempScannerError}
-              </div>
-            )}
-
             {!scannerError && (
               <BarcodeScanner
                 onDetected={handleDetected}
