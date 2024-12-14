@@ -45,7 +45,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
   // Error state for scanning and fetching
   const [scannerError, setScannerError] = useState(null);
-  const [tempScannerError, setTempScannerError] = useState(null);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const router = useRouter();
@@ -127,10 +126,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
     if (error.message && error.message.includes("No MultiFormat Readers were able to detect the code")) {
       // Non-critical error: no barcode detected in this frame
       // Do not close the scanner; optionally, show a temporary message or ignore
-      setTempScannerError("No barcode detected. Please align the barcode within the frame.");
-      setTimeout(() => {
-        setTempScannerError(null);
-      }, 2000);
       return;
     } else if (error.name === 'NotAllowedError') {
       // Critical error: camera access denied
@@ -244,7 +239,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
         <button
           onClick={() => {
             setScannerError(null);
-            setTempScannerError(null);
             setShowScanner(true);
           }}
           className="bg-background text-primary-text border-2 rounded border-border py-2 px-4 transition-all duration-300"
