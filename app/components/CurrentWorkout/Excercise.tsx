@@ -335,10 +335,10 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
                             onAdd={handleAddSet}
                             onDataFetch={handleSetDataFetch}
                             disabled={disabled}
-                            initialWeight={set.weight}
-                            initialReps={set.reps}
-                            activityTime={set.activity}
-                            restTime={set.rest}
+                            initialWeight={set?.weight}
+                            initialReps={set?.reps}
+                            activityTime={set?.activity}
+                            restTime={set?.rest}
                             type='cardio'
                             updatingSets={updatingSets}
                             onSetUpdate={onSetUpdate}
@@ -390,6 +390,8 @@ export default function Excercise({ excercise, weekRir, weekNo, workout, setWork
                             onAdd={handleAddSet}
                             onDataFetch={handleSetDataFetch}
                             disabled={disabled}
+                            initialReps={null}
+                            initialWeight={null}
                             activityTime={set.activity}
                             restTime={set.rest}
                             updatingSets={updatingSets}
