@@ -20,7 +20,7 @@ const BarcodeScanner = ({ onDetected, onError, onStop }) => {
   };
 
   return (
-    <div className="fixed inset-0 sm:relative w-full h-full border-2 border-dashed border-gray-300 overflow-hidden">
+    <div className="fixed inset-0 sm:relative w-full h-full border-2 border-dashed border-gray-300 overflow-hidden scale-150">
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-50">
           <p className="text-primary-text">Initializing camera...</p>
