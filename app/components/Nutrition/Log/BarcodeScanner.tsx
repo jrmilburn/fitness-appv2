@@ -45,7 +45,7 @@ const BarcodeScanner = ({ onDetected, onError, onStop }) => {
         onClick={() => {
           if (onStop) onStop(); // Inform parent to stop scanning
         }}
-        className="mt-2 px-4 py-2 bg-red-500 text-white rounded absolute bottom-2 right-2 z-10"
+        className="mt-2 px-4 py-2 bg-red-500 text-white rounded absolute bottom-5 right-2 z-10"
         aria-label="Stop Scanning"
       >
         Stop Scanning

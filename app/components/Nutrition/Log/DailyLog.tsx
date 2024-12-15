@@ -44,21 +44,17 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
   const [fetchingData, setFetchingData] = useState(false);
 
-  // Error state for scanning and fetching
   const [scannerError, setScannerError] = useState(null);
 
   const [showConfirmation, setShowConfirmation] = useState(false);
   const router = useRouter();
 
-  // States for amount and unit selection
   const [selectedAmount, setSelectedAmount] = useState(100);
   const [selectedUnit, setSelectedUnit] = useState("g");
 
-  // Processing state to debounce detections
   const [isProcessing, setIsProcessing] = useState(false);
   const detectionTimeout = useRef(null);
 
-  // Memoized callbacks to prevent unnecessary re-renders
   const handleStopScanning = useCallback(() => {
     setShowScanner(false);
   }, []);
@@ -67,31 +63,19 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
     if (isProcessing) return;
     setIsProcessing(true);
 
-    // Clear any existing timeout
     if (detectionTimeout.current) {
       clearTimeout(detectionTimeout.current);
     }
 
-    // Set a timeout to reset processing state
     detectionTimeout.current = setTimeout(() => {
       setIsProcessing(false);
-    }, 2000); // 2 seconds
+    }, 2000);
 
-    // Check cache first
-    /*const cachedData = localStorage.getItem(`food_${barcode}`);
-    if (cachedData) {
-      setScannedFood(JSON.parse(cachedData));
-      setShowConfirmation(true);
-      return;
-    }*/
-
-    // Proceed with fetching data
     setShowScanner(false);
     setFetchingData(true);
     setScannerError(null);
 
     try {
-      // Check network connectivity
       if (!navigator.onLine) {
         throw new Error("No internet connection. Please check your connection and try again.");
       }
@@ -112,7 +96,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       setScannedFood(data);
       setShowConfirmation(true);
 
-      // Cache the data
       localStorage.setItem(`food_${barcode}`, JSON.stringify(data.data));
     } catch (error) {
       console.error(error);
@@ -126,15 +109,11 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
     console.error("Scanner error:", error);
 
     if (error.message && error.message.includes("No MultiFormat Readers were able to detect the code")) {
-      // Non-critical error: no barcode detected in this frame
-      // Do not close the scanner; optionally, show a temporary message or ignore
       return;
     } else if (error.name === 'NotAllowedError') {
-      // Critical error: camera access denied
       setScannerError("Camera access was denied. Please allow camera access and try again.");
       setShowScanner(false);
     } else {
-      // Other critical errors
       setScannerError(error.message || 'An error occurred during scanning initialization.');
       setShowScanner(false);
     }
@@ -154,13 +133,30 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       } else {
         const errorData = await response.json();
         console.error('Failed to add food:', errorData.error);
-        // Optionally, display error to user
       }
     } catch (error) {
       console.error('Error adding food:', error);
-      // Optionally, display error to user
     }
     setNewShown(false);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/nutrition/log/${id}`, {
+        method: 'DELETE'
+      });
+
+      if (response.ok) {
+        setFoodList((prev) => prev.filter((food) => food.id !== id));
+      } else {
+        const errorData = await response.json();
+        console.error('Failed to delete food:', errorData.error);
+        // Optionally, display error to user
+      }
+    } catch (error) {
+      console.error('Error deleting food:', error);
+      // Optionally, display error to user
+    }
   };
 
   const handleShowNewFood = () => {
@@ -174,7 +170,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
   const handleConfirmAddScannedFood = () => {
     if (scannedFood) {
-      // Add the food with the selected amount and unit
       addFood({
         ...scannedFood,
         quantity: selectedAmount,
@@ -195,7 +190,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
     setSelectedUnit("g");
   };
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (detectionTimeout.current) {
@@ -225,7 +219,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       ) : (
         <div className="space-y-4">
           {foodList?.map((food, index) => (
-            <LoggedFood key={index} food={food} />
+            <LoggedFood key={index} food={food} onDelete={() => handleDelete(food.id)} />
           ))}
         </div>
       )}
@@ -265,7 +259,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
               </button>
             </div>
 
-            {/* User Instructions */}
             <div className="text-center mb-4">
               <p className="text-primary-text">Align the barcode within the frame for best results.</p>
             </div>
@@ -371,7 +364,6 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           </div>
         </div>
       )}
-
     </div>
   );
 }

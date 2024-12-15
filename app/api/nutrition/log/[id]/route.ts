@@ -62,3 +62,20 @@ export async function POST(  req: Request,
 
     return NextResponse.json(newFood);
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }  // Destructure params to get the `id`
+)  {
+
+  const { id } = params;
+
+  const deleteFood = await prisma.food.delete({
+    where:{
+      id
+    }
+  })
+
+  return NextResponse.json(deleteFood);
+
+}

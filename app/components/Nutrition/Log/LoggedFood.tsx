@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { TrashIcon } from "@heroicons/react/outline";
 
-export default function LoggedFood({ food }) {
+export default function LoggedFood({ food, onDelete }) {
 
     console.log(food);
 
@@ -27,12 +28,16 @@ export default function LoggedFood({ food }) {
               <span className="font-semibold">Amount Logged:</span> {food?.quantity} {food?.unit}
             </p>
           </div>
-          {food?.image &&           
-          <Image 
-            src={food?.image}
-            alt={food?.name}
-            height={64}
-            width={64}/>}
+          <div className="flex flex-col items-end justify-between h-full gap-8">
+          <button onClick={onDelete}><TrashIcon className="h-7 w-7 text-primary-text hover:text-red-400 transition-all duration-300"/></button>
+
+          {food?.image &&   
+            <Image 
+              src={food?.image}
+              alt={food?.name}
+              height={64}
+              width={64}/>}
+          </div>       
         </div>
       </div>
     );
