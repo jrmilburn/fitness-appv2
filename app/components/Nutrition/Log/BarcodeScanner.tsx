@@ -25,7 +25,7 @@ const BarcodeScanner = ({ onDetected, onError, onStop }) => {
         fixed top-16 bottom-20 left-0 right-0 w-full h-full
         border-2 border-dashed border-gray-300
         overflow-hidden
-        flex items-center justify-center
+        flex flex-col items-center justify-center
 
         sm:relative sm:top-auto sm:bottom-auto sm:left-auto sm:right-auto
         sm:mx-auto sm:my-16

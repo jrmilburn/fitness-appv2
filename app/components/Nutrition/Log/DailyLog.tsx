@@ -7,6 +7,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/navigation";
 import BarcodeScanner from "./BarcodeScanner";
 import Image from "next/image";
+import DailyLogHeader from "./DailyLogHeader";
 
 const adjustDate = (currentDateId, increment = true) => {
   const day = parseInt(currentDateId.slice(0, 2), 10);
@@ -199,7 +200,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto bg-background p-4 pb-24 rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto bg-background pb-24 mt-4 rounded-lg shadow-md">
       {/* Header with Date and Navigation */}
       <div className="flex justify-between items-center w-full mb-4">
         <button onClick={() => handleChangeDate(false)}>
@@ -210,6 +211,8 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           <ChevronRightIcon className="h-6 w-6 text-primary-text" />
         </button>
       </div>
+
+      <DailyLogHeader foods={foodList}/>
 
       {/* Food List */}
       {foodList?.length === 0 ? (
