@@ -205,7 +205,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
   }, []);
 
   return (
-    <div className="max-w-3xl mx-auto bg-background p-4 rounded-lg shadow-md">
+    <div className="max-w-3xl mx-auto bg-background p-4 pb-24 rounded-lg shadow-md">
       {/* Header with Date and Navigation */}
       <div className="flex justify-between items-center w-full mb-4">
         <button onClick={() => handleChangeDate(false)}>
