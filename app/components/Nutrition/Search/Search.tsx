@@ -20,7 +20,7 @@ const FoodSearch = ( { addFood, filter } ) => {
       const response = await fetch(
         `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(
           searchTerm
-        )}${filter ? '&search_simple=1&json=1&tagtype_0=origins&tag_contains_0=contains&tag_0=Australia' : ''}`
+        )}&search_simple=1&json=1&tagtype_0=origins&tag_contains_0=contains&tag_0=Australia`
       );
   
       if (!response.ok) {
