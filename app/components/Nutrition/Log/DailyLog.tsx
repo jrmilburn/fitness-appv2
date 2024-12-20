@@ -315,7 +315,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       {/* Confirmation Modal */}
       {showConfirmation && scannedFood && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-11/12 md:w-1/3">
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-11/12 md:w-1/3  max-h-[80%] overflow-y-auto">
             <h3 className="text-lg font-semibold text-primary-text mb-4">Add Scanned Food</h3>
             <div className="space-y-2">
               {scannedFood?.image &&
@@ -325,10 +325,10 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
                 height={200}
                 width={200}/> }
               <p><strong>Food Item:</strong> {scannedFood?.name}</p>
-              <p><strong>Calories:</strong> {scannedFood.caloriesPerServe * selectedAmount / 100}</p>
-              <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPerServe * selectedAmount / 100}g</p>
-              <p><strong>Protein:</strong> {scannedFood.proteinPerServe * selectedAmount / 100}g</p>
-              <p><strong>Fat:</strong> {scannedFood.fatPerServe * selectedAmount / 100}g</p>
+              <p><strong>Energy (kJ):</strong> {scannedFood.energyPer100 * selectedAmount / 100}</p>
+              <p><strong>Carbohydrates:</strong> {scannedFood.carbohydratesPer100 * selectedAmount / 100}g</p>
+              <p><strong>Protein:</strong> {scannedFood.proteinPer100 * selectedAmount / 100}g</p>
+              <p><strong>Fat:</strong> {scannedFood.fatPer100 * selectedAmount / 100}g</p>
             </div>
             <div className="mt-4">
               <label className="block mb-2 text-primary-text font-semibold">Amount:</label>

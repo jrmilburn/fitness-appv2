@@ -5,7 +5,7 @@ import SearchItem from "./SearchItem";
 import { PlusCircleIcon } from "@heroicons/react/outline";
 
 
-const FoodSearch = ( { addFood, filter } ) => {
+const FoodSearch = ( { addFood } ) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);

@@ -93,17 +93,17 @@ export async function POST(
 
     const foodData = {
       name: product.product_name || "Unknown Product",
-      carbohydratesPerServe: parseFloat(
-        nutriments.carbohydrates || nutriments["carbohydrates_100g"] || "0"
+      carbohydratesPer100: parseFloat(
+        nutriments["carbohydrates_100g"] || "0"
       ),
-      proteinPerServe: parseFloat(
-        nutriments.proteins || nutriments["proteins_100g"] || "0"
+      proteinPer100: parseFloat(
+        nutriments["proteins_100g"] || "0"
       ),
-      fatPerServe: parseFloat(
-        nutriments.fat || nutriments["fat_100g"] || "0"
+      fatPer100: parseFloat(
+        nutriments["fat_100g"] || "0"
       ),
-      caloriesPerServe: parseFloat(
-        nutriments["energy-kcal"] || nutriments.energy || "0"
+      energyPer100: parseFloat(
+        nutriments["energy-kj"] || nutriments.energy || "0"
       ),
       quantity: 100, // Default quantity; can be modified based on your requirements
       unit: "g", // Default unit; can be modified based on your requirements
@@ -135,19 +135,17 @@ export async function POST(
     }
 
     // Create the FoodItem and associate it with the DailyLog
-    const foodItem = await prisma.food.create({
-      data: {
+    const foodItem = {
         name: foodData.name,
-        carbohydratesPerServe: foodData.carbohydratesPerServe,
-        proteinPerServe: foodData.proteinPerServe,
-        fatPerServe: foodData.fatPerServe,
-        caloriesPerServe: foodData.caloriesPerServe,
+        carbohydratesPer100: foodData.carbohydratesPer100,
+        proteinPer100: foodData.proteinPer100,
+        fatPer100: foodData.fatPer100,
+        energyPer100: foodData.energyPer100,
         quantity: foodData.quantity,
         unit: foodData.unit,
         dailylogId: dailyLogId,
         image: foodData.image
-      },
-    });
+      }
 
     return NextResponse.json(
       foodItem

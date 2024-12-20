@@ -291,10 +291,10 @@ model DailyLog {
 model Food {
   id                    String @id @default(cuid())
   name                  String
-  carbohydratesPerServe Float?
-  proteinPerServe       Float?
-  fatPerServe           Float?
-  caloriesPerServe      Int?
+  carbohydratesPer100 Float?
+  proteinPer100       Float?
+  fatPer100           Float?
+  energyPer100      Int?
 
   dailylog   DailyLog @relation(fields: [dailylogId], references: [id])
   dailylogId String

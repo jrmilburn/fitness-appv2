@@ -38,10 +38,10 @@ export async function POST(  req: Request,
   ) {
     const { id } = params;
 
-    const { name, carbohydratesPerServe,
-        proteinPerServe,
-        fatPerServe,
-        caloriesPerServe,
+    const { name, carbohydratesPer100,
+        proteinPer100,
+        fatPer100,
+        energyPer100,
         quantity,
         unit } = await req.json();
   
@@ -50,10 +50,10 @@ export async function POST(  req: Request,
         data: {
             dailylogId: id,
             name: name,
-            carbohydratesPerServe: carbohydratesPerServe,
-            proteinPerServe: proteinPerServe,
-            fatPerServe: fatPerServe,
-            caloriesPerServe: caloriesPerServe,
+            carbohydratesPer100: carbohydratesPer100,
+            proteinPer100: proteinPer100,
+            fatPer100: fatPer100,
+            energyPer100: energyPer100,
             quantity: quantity,
             unit: unit
 

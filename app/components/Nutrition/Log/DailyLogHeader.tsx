@@ -7,10 +7,10 @@ const DailyLogHeader = ({ foods }) => {
 
     const totals = foods.reduce(
         (accumulator, currentFood) => {
-          accumulator.totalCalories += currentFood.caloriesPerServe;
-          accumulator.totalProtein += currentFood.proteinPerServe;
-          accumulator.totalCarbs += currentFood.carbohydratesPerServe;
-          accumulator.totalFats += currentFood.fatPerServe;
+          accumulator.totalCalories += currentFood.energyPer100 * currentFood.quantity / 100;
+          accumulator.totalProtein += currentFood.proteinPer100 * currentFood.quantity / 100;
+          accumulator.totalCarbs += currentFood.carbohydratesPer100 * currentFood.quantity / 100;
+          accumulator.totalFats += currentFood.fatPer100 * currentFood.quantity / 100;
           return accumulator;
         },
         { totalCalories: 0, totalProtein: 0, totalCarbs: 0, totalFats: 0 }
@@ -19,7 +19,7 @@ const DailyLogHeader = ({ foods }) => {
   return (
     <div className="flex justify-around items-center border-2 border-gray-300 bg-gray-100 hover:bg-gray-200 p-4 my-2">
       <div className="flex flex-col items-center">
-        <span className="text-sm text-gray-600">Calories</span>
+        <span className="text-sm text-gray-600">Energy</span>
         <span className="text-lg font-semibold text-red-500">{Math.round(totals.totalCalories)} kcal</span>
       </div>
       <div className="flex flex-col items-center">

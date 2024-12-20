@@ -13,16 +13,16 @@ export default function LoggedFood({ food, onDelete }) {
           <div>
             <h2 className="text-xl text-primary-text font-bold">{food?.name}</h2>
             <p className="text-sm text-secondary-text mt-2">
-              <span className="font-semibold">Carbohydrates:</span> {food?.carbohydratesPerServe * food?.quantity / 100} g
+              <span className="font-semibold">Carbohydrates:</span> {food?.carbohydratesPer100 * food?.quantity / 100} g
             </p>
             <p className="text-sm text-secondary-text">
-              <span className="font-semibold">Protein:</span> {food?.proteinPerServe * food?.quantity / 100} g
+              <span className="font-semibold">Protein:</span> {food?.proteinPer100 * food?.quantity / 100} g
             </p>
             <p className="text-sm text-secondary-text">
-              <span className="font-semibold">Fat:</span> {food?.fatPerServe * food?.quantity / 100} g
+              <span className="font-semibold">Fat:</span> {food?.fatPer100 * food?.quantity / 100} g
             </p>
             <p className="text-sm text-secondary-text">
-              <span className="font-semibold">Calories:</span> {Math.round((food?.caloriesPerServe / 4.184) * food?.quantity / 100)} kcal
+              <span className="font-semibold">Energy:</span> {Math.round((food?.energyPer100) * food?.quantity / 100)} kj
             </p>
             <p className="text-sm text-secondary-text mt-2">
               <span className="font-semibold">Amount Logged:</span> {food?.quantity} {food?.unit}
