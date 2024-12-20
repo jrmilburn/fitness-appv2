@@ -24,6 +24,7 @@ export default function NewFood({ visible, addFood, onClose }) {
                   setFoodItem(selectedFood);
                   setStage(2);
                 }}
+                filter={false}
               />
             ) : (
               <Quantity 

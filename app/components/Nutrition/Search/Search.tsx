@@ -5,7 +5,7 @@ import SearchItem from "./SearchItem";
 import { PlusCircleIcon } from "@heroicons/react/outline";
 
 
-const FoodSearch = ( { addFood } ) => {
+const FoodSearch = ( { addFood, filter } ) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ const FoodSearch = ( { addFood } ) => {
       const response = await fetch(
         `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(
           searchTerm
-        )}&search_simple=1&json=1&tagtype_0=origins&tag_contains_0=contains&tag_0=Australia`
+        )}${filter ? '&search_simple=1&json=1&tagtype_0=origins&tag_contains_0=contains&tag_0=Australia' : ''}`
       );
   
       if (!response.ok) {
