@@ -230,7 +230,7 @@ model Excercise {
   actualSets      Float?
   progressionType String?     @default("linear")
   excerciseNo     Int?
-  autoregulation  Boolean     @default(true)
+  autoregulation  Boolean     @default(false)
 
   excerciseType String?
 
