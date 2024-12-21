@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import BarcodeScanner from "./BarcodeScanner";
 import Image from "next/image";
 import DailyLogHeader from "./DailyLogHeader";
+import CustomFoods from "../CustomFoods/CustomFoods";
 
 const adjustDate = (currentDateId, increment = true) => {
   const day = parseInt(currentDateId.slice(0, 2), 10);
@@ -52,6 +53,20 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
 
   const [selectedAmount, setSelectedAmount] = useState(100);
   const [selectedUnit, setSelectedUnit] = useState("g");
+
+  const [showCustomFoods, setShowCustomFoods] = useState(false);
+  const [customFoods, setCustomFoods] = useState([]);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/foods/create`, {
+      method: 'GET',
+      headers: {
+        'Content-Type' : 'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(data => setCustomFoods(data));
+  }, [])
 
   const [isProcessing, setIsProcessing] = useState(false);
   const detectionTimeout = useRef(null);
@@ -199,6 +214,14 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
     };
   }, []);
 
+  const handleShowCustomFoods = () => {
+
+    setShowScanner(false);
+    setShowConfirmation(false);
+    setShowCustomFoods(true);
+
+  }
+
   return (
     <div className="max-w-3xl mx-auto bg-background pb-24 mt-4 rounded-lg shadow-md">
       {/* Header with Date and Navigation */}
@@ -228,7 +251,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       )}
 
       {/* Add Food Buttons */}
-      <div className="mt-6 w-full flex justify-center space-x-4">
+      <div className="mt-6 w-full flex flex-wrap justify-center space-x-4">
         <button
           onClick={handleShowNewFood}
           className="bg-background text-primary-text border-2 rounded border-border py-2 px-4 transition-all duration-300"
@@ -243,6 +266,12 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
           className="bg-background text-primary-text border-2 rounded border-border py-2 px-4 transition-all duration-300"
         >
           Scan Barcode
+        </button>
+        <button
+          onClick={handleShowCustomFoods}
+          className="bg-background text-primary-text border-2 mt-2 rounded border-border py-2 px-4 transition-all duration-300"
+        >
+          Custom Foods
         </button>
       </div>
 
@@ -309,6 +338,19 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
               </svg>
             </div>
           </div>
+        </div>
+      )}
+
+      {showCustomFoods && (
+        <div className="fixed inset-0 bg-background">
+            <CustomFoods
+              foods={customFoods}
+              onAdd={(food) => {
+                setShowCustomFoods(false);
+                setScannedFood(food);
+                setShowConfirmation(true);
+              }}
+              />
         </div>
       )}
 

@@ -113,7 +113,7 @@ export default function Navbar() {
           ) : (
             <IconOutline className="h-6 w-6 text-primary-text" />
           )}
-          <span>{label}</span>
+          <span className={`${isActive ? "inter-bold" : "inter-main"}`}>{label}</span>
           {isPremium && userRole !== "PREMIUM" && (
             <PremiumIcon text={`${label} has premium features`} />
           )}
@@ -189,6 +189,13 @@ export default function Navbar() {
           label: "Search",
           IconOutline: SearchOutlineIcon,
           IconSolid: SearchSolidIcon,
+          isPremium: true,
+        },
+        {
+          href: "/custom-foods",
+          label: "Custom Foods",
+          IconOutline: PencilAltOutlineIcon,
+          IconSolid: PencilAltSolidIcon,
           isPremium: true,
         },
       ],
@@ -320,7 +327,7 @@ export default function Navbar() {
                     className="flex items-center justify-between w-full text-left p-2 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                     aria-expanded={isShown ? "true" : "false"}
                   >
-                    <span className="font-semibold">{section.name}</span>
+                    <span className={`inter-bold text-xl`}>{section.name}</span>
                     {/* Indicator Icon */}
                     <svg
                       className={`w-5 h-5 transform transition-transform duration-300 ${

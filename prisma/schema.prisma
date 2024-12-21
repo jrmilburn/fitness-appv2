@@ -274,9 +274,9 @@ model MuscleGroup {
 }
 
 model DailyLog {
-  id     String @id @default(cuid())
+  id     String  @id @default(cuid())
   dateId String?
-  user   User?  @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
   userId String
   foods  Food[]
 
@@ -289,18 +289,21 @@ model DailyLog {
 }
 
 model Food {
-  id                    String @id @default(cuid())
-  name                  String
+  id                  String @id @default(cuid())
+  name                String
   carbohydratesPer100 Float?
   proteinPer100       Float?
   fatPer100           Float?
-  energyPer100      Int?
+  energyPer100        Int?
 
-  dailylog   DailyLog @relation(fields: [dailylogId], references: [id])
-  dailylogId String
+  dailylog   DailyLog? @relation(fields: [dailylogId], references: [id])
+  dailylogId String?
 
-  quantity    Float?
-  unit String?
+  custom      Boolean @default(false)
+  createdById String?
+
+  quantity Float?
+  unit     String?
 
   image String?
 }
