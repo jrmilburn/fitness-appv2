@@ -25,7 +25,7 @@ export default async function CustomFoodsPage() {
     return (
         <div className='h-100% pb-20'>
         <CustomFoods
-            onAdd={() => {}}
+            onAdd={null}
             foods={customfoods}
         />
         </div>
