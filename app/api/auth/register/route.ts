@@ -10,7 +10,8 @@ const allowedOrigins = [
   "http://localhost:3000",
   "http://localhost:3001",
   "https://fitness-appv2.vercel.app",
-  "https://fitnessapp-landingpage.vercel.app"
+  "https://fitnessapp-landingpage.vercel.app",
+  "https://landing.joemilburn.xyz"
 ];
 
 // Helper function to set CORS headers dynamically
@@ -90,7 +91,7 @@ export async function POST(req) {
     });
 
     // Construct verification link
-    const verificationLink = `${process.env.NEXT_PUBLIC_BASE_URL}/api/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
+    const verificationLink = `https://fitness.joemilburn.xyz/api/verify-email?token=${verificationToken}&email=${encodeURIComponent(email)}`;
 
     // Email subject and HTML content
     const subject = 'Verify Your Email - JFIT';

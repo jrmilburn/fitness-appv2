@@ -12,7 +12,7 @@ export default function PreviousPrograms({ setProgram, onNext }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/program`, {
+    fetch(`/api/program`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

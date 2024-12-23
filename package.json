@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 0.0.0.0",
     "lint": "next lint"
   },
   "dependencies": {
@@ -50,6 +50,7 @@
     "react-toastify": "^10.0.6",
     "remixicon": "^4.5.0",
     "save": "^2.9.0",
+    "sharp": "^0.33.5",
     "stripe": "^17.4.0",
     "ts-node": "^10.9.2",
     "tw-elements-react": "^1.0.0-alpha-end",

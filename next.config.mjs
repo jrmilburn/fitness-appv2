@@ -2,16 +2,54 @@ import withPWA from 'next-pwa';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = withPWA({
-  dest: 'public', // Directory where the service worker and related files will be generated
-  register: true, // Automatically register the service worker
-  skipWaiting: true, // Allow the new service worker to activate immediately
-  disable: process.env.NODE_ENV === 'development', // Disable PWA in development mode
+  // Where the generated service worker and other PWA assets go
+  dest: 'public',
+
+  // Automatically register the service worker
+  register: true,
+
+  // Let the new service worker take control immediately
+  skipWaiting: true,
+
+  // Disable in development, enable in production
+  disable: process.env.NODE_ENV !== 'production',
+
+  // Exclude certain Next.js manifest files that can cause build issues
   buildExcludes: [
-    /middleware-manifest.json$/, 
-    /app-build-manifest.json$/, 
-    /build-manifest.json$/
-  ], // Exclude problematic files
+    /middleware-manifest.json$/,
+    /app-build-manifest.json$/,
+    /build-manifest.json$/,
+  ],
+
+  // Customize Workbox runtime caching rules
+  runtimeCaching: [
+    {
+      // Cache static resources (images, CSS, JS) using Stale-While-Revalidate
+      urlPattern: ({ request }) =>
+        request.destination === 'image' ||
+        request.destination === 'style' ||
+        request.destination === 'script',
+      handler: 'StaleWhileRevalidate',
+      options: {
+        cacheName: 'static-resources',
+        expiration: {
+          maxEntries: 60,
+          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+        },
+      },
+    },
+    {
+      // Do NOT cache dynamic API calls; always fetch from network
+      // Update this regex to match your own domain or endpoints
+      urlPattern: /^https:\/\/fitness\.joemilburn\.xyz\/api\/.*$/,
+      handler: 'NetworkOnly',
+      options: {
+        cacheName: 'api-calls',
+      },
+    },
+  ],
 })({
+  // Next.js config below
   images: {
     remotePatterns: [
       {
@@ -22,13 +60,13 @@ const nextConfig = withPWA({
       },
       {
         protocol: 'https',
-        hostname: "images.openfoodfacts.org",
+        hostname: 'images.openfoodfacts.org',
         port: '',
-        pathname: '/**'
-      }
+        pathname: '/**',
+      },
     ],
   },
-  reactStrictMode: false, // Enable React strict mode
+  reactStrictMode: false,
 });
 
 export default nextConfig;

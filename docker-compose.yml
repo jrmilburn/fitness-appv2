@@ -1,0 +1,78 @@
+version: "3.8"
+services:
+  # 1) PostgreSQL Database
+  db:
+    image: postgres:16
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: jfit
+      POSTGRES_USER: jrmilburn
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    restart: always
+
+  # 2) Your main fitness app service
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_BASE_URL: "https://fitness.joemilburn.xyz"
+    container_name: fitness-app
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: "postgresql://jrmilburn:password@db:5432/jfit"
+      NEXT_PUBLIC_BASE_URL: "https://fitness.joemilburn.xyz"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    restart: always
+
+  # 3) Landing page service (listens on port 3001)
+  landing:
+    # If you have a Dockerfile for your landing page, use build:
+    build:
+      context: ./landing  # Adjust to your landing-page folder
+      dockerfile: Dockerfile
+      # remove or customize any build args if you need them
+      # args:
+      #   ENV_VAR_FOR_BUILD: "some-value"
+    
+    # Or, if you have a prebuilt image, replace build: with image:
+    # image: your-dockerhub-username/landing:latest
+
+    container_name: landing-app
+    env_file:
+      - .env  # if you want to re-use some env variables or have separate env values
+    environment:
+      # Example environment variables; customize or remove if not needed
+      NEXT_PUBLIC_BASE_URL: "https://fitness.joemilburn.xyz"
+    ports:
+      - "3001:3001"
+    restart: always
+    
+    # No DB dependency unless the landing page uses the DB
+    # depends_on:
+    #   - db
+
+  # 4) Cloudflare Tunnel service
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflaretunnel
+    volumes:
+      - ~/.cloudflared:/etc/cloudflared
+    command: >
+      tunnel --no-autoupdate run --token eyJhIjoiMjc1YzZlZWM4MzVkMTQ0NzA2Y2E3MmYxYjA4NzQ4ODgiLCJ0IjoiY2YzNzU1NjYtYTVhZC00ZjE4LWEyZGYtNWFmNjBhOGJhN2NiIiwicyI6IlptWmlaRFpsWVdZdFlqVTNPUzAwTURrekxUZzNNekl0WmpWaE1USmlaRGxtWkdGbSJ9
+    depends_on:
+      - web
+    restart: always
+  
+      # - landing  # Typically optional, but you can add if you want cloudflared to wait for landing
+
+volumes:
+  db-data:
