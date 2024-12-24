@@ -69,7 +69,7 @@ export default function Navbar() {
               <Link href='/jfit'>
                 Jfit
               </Link>
-            </button>ß
+            </button>
           </li>
           <li className="text-xl p-2">
             <button
