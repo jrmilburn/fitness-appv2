@@ -15,7 +15,6 @@ export default function Excercise({
     onDelete,
     advanced,
     progressionType,
-    trainingType,
     startSetCount,
     endSetCount
 }) {
