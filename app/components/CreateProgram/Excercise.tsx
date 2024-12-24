@@ -138,7 +138,7 @@ export default function Excercise({
     console.log('EXCERCISE CHECK', excercise);
 
     const [showExcercises, setShowExcercises] = useState(false);
-    const initialSelectedExcercise = Array.isArray(excercise) ? excercise[0] : excercise;
+    const initialSelectedExcercise = Array.isArray(excercise) ? excercise[0].name : excercise;
     const [selectedExcercise, setSelectedExcercise] = useState(initialSelectedExcercise);
     const [setProgressionType, setSetProgressionType] = useState(progressionType);
 
