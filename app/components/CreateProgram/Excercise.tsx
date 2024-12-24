@@ -74,7 +74,7 @@ const CardioFields = ({
             <div className="flex flex-col space-y-2">
                 {/* Activity Time */}
                 <label className="flex flex-col">
-                    Activity Time (seconds):
+                    Activity (s):
                     <input
                         type="number"
                         min="1"
@@ -86,7 +86,7 @@ const CardioFields = ({
 
                 {/* Rest Time */}
                 <label className="flex flex-col">
-                    Rest Time (seconds):
+                    Rest (s):
                     <input
                         type="number"
                         min="0"
