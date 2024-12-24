@@ -179,7 +179,6 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           where: {
             name: excercise.name,
             muscleGroupId: muscleGroup.id,
-            notes: { not: null },
           },
         });
 
@@ -188,7 +187,7 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           name: excercise.name,
           workoutId: createdWorkout.id,
           muscleGroupId: muscleGroup.id,
-          notes: existingExercise?.notes || null,
+          notes: excercise?.notes || null,
           startSets: excercise.startSets,
           endSets: excercise.endSets,
           startCycles: excercise.startCycles,
