@@ -86,6 +86,7 @@ export default function Workout({ workout, setProgram, program, excercises, adva
               progressionType={detail.excercise.progressionType || detail.excercise.setProgression}
               startSetCount={detail.excercise.startSets}
               endSetCount={detail.excercise.endSets}
+              notes={detail.excercise.notes}
             />
           ))}
         </div>

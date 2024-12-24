@@ -164,7 +164,8 @@ export default function Excercise({
     advanced,
     progressionType,
     startSetCount,
-    endSetCount
+    endSetCount,
+    notes
 }) {
 
     console.log('EXCERCISE CHECK', excercise);
@@ -177,7 +178,7 @@ export default function Excercise({
 
     const [setProgressionType, setSetProgressionType] = useState(progressionType);
 
-    const [excerciseNotes, setExcerciseNotes] = useState('');
+    const [excerciseNotes, setExcerciseNotes] = useState(notes || '');
 
     // Default sets
     const [startSets, setStartSets] = useState(startSetCount || 2);
