@@ -20,7 +20,7 @@ export default function Excercise({
 }) {
 
     const [showExcercises, setShowExcercises] = useState(false);
-    const [selectedExcercise, setSelectedExcercise] = useState(excercise);
+    const [selectedExcercise, setSelectedExcercise] = useState(excercise || excercise[0].name);
     const [setProgressionType, setSetProgressionType] = useState(progressionType);
 
     // Default sets
