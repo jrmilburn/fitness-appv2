@@ -188,7 +188,7 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           name: excercise.name,
           workoutId: createdWorkout.id,
           muscleGroupId: muscleGroup.id,
-          details: existingExercise?.notes || null,
+          notes: existingExercise?.notes || null,
           startSets: excercise.startSets,
           endSets: excercise.endSets,
           actualSets: excercise.startSets,
