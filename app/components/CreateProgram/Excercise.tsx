@@ -284,7 +284,7 @@ export default function Excercise({
                     onClick={handleShowExcercises}
                     className="w-[100%] h-10 text-left border-solid border-2 border-gray-700 p-1 rounded-md"
                 >
-                    {selectedExcercise ? selectedExcercise.name : 'Select Exercise'}
+                    {selectedExcercise ? (selectedExcercise.name || selectedExcercise) : 'Select Exercise'}
                 </button>
 
                 {/* Advanced Options */}
