@@ -13,6 +13,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
 
   console.log(session.user);
 
+  const [programNotes, setProgramNotes] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [advanced, setAdvanced] = useState(false);
   const router = useRouter();
@@ -147,6 +148,8 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
               className="w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
               placeholder="Enter any notes or comments about the program here..."
               rows={10}
+              value={programNotes}
+              onChange={(e) => setProgramNotes(e.target.value)}
             />
           </div>
         </div>

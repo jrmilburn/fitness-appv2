@@ -179,6 +179,8 @@ model Program {
   currentWeekId String?
   completed     Boolean   @default(false)
   isPremium     Boolean   @default(true)
+
+  notes   String?
 }
 
 model Week {
@@ -222,7 +224,7 @@ model Excercise {
   muscleGroupId   String
   muscleGroup     MuscleGroup @relation(fields: [muscleGroupId], references: [id])
   completed       Boolean     @default(false)
-  details         String?
+  notes         String?
   custom          Boolean     @default(false)
   createdById     String?
   createdBy       User?       @relation(name: "UserExcercises", fields: [createdById], references: [id])

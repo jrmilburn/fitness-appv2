@@ -177,6 +177,8 @@ export default function Excercise({
 
     const [setProgressionType, setSetProgressionType] = useState(progressionType);
 
+    const [excerciseNotes, setExcerciseNotes] = useState('');
+
     // Default sets
     const [startSets, setStartSets] = useState(startSetCount || 2);
     const [endSets, setEndSets] = useState(endSetCount || 4);
@@ -402,7 +404,8 @@ export default function Excercise({
                                 className="w-full h-16 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
                                 placeholder="Enter exercise cues here..."
                                 rows={2}
-                                // Add state and handler if needed
+                                value={excerciseNotes}
+                                onChange={(e) => setExcerciseNotes(e.target.value)}
                             />
                         </div>
                     </>
