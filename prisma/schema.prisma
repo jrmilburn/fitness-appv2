@@ -231,6 +231,8 @@ model Excercise {
   startSets       Int?
   endSets         Int?
   actualSets      Float?
+  startCycles Int?
+  endCycles Int?
   progressionType String?     @default("linear")
   excerciseNo     Int?
   autoregulation  Boolean     @default(false)

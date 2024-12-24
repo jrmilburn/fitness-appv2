@@ -44,7 +44,7 @@ export function processProgramData(program) {
             });
           } else {
             // HIIT or MISS: one set per cycle
-            const cycleCount = excercise.cycles || 0;
+            const cycleCount = excercise.startCycles || 0;
             setCount = cycleCount;
 
             console.log('SET COUNT', setCount);
@@ -191,6 +191,8 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           notes: existingExercise?.notes || null,
           startSets: excercise.startSets,
           endSets: excercise.endSets,
+          startCycles: excercise.startCycles,
+          endCycles: excercise.endCycles,
           actualSets: excercise.startSets,
           progressionType: excercise.setProgression,
           trainingType: excercise.trainingType,
