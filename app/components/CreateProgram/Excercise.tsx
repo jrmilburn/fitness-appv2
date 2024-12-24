@@ -5,7 +5,7 @@ import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/outline";
 // Sub-component for Non-Cardio Exercises
 const NonCardioFields = ({ startSets, setStartSets, endSets, setEndSets, setProgressionType }) => (
     <div className="flex flex-col space-y-4 mt-2">
-        <div className="flex space-x-4">
+        <div className="flex flex-col space-y-2">
             {/* Start Sets Input */}
             <label className="flex flex-col">
                 Start Sets:
@@ -14,7 +14,7 @@ const NonCardioFields = ({ startSets, setStartSets, endSets, setEndSets, setProg
                     min="1"
                     value={startSets}
                     onChange={(e) => setStartSets(Number(e.target.value))}
-                    className="border border-border p-1 mt-1 w-24"
+                    className="border border-border p-1 mt-1 w-24 rounded-md"
                 />
             </label>
             
@@ -27,7 +27,7 @@ const NonCardioFields = ({ startSets, setStartSets, endSets, setEndSets, setProg
                         min="1"
                         value={endSets}
                         onChange={(e) => setEndSets(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24"
+                        className="border border-border p-1 mt-1 w-24 rounded-md"
                     />
                 </label>
             )}
@@ -43,78 +43,110 @@ const CardioFields = ({
     setActivityTime,
     restTime,
     setRestTime,
-    cycles,
-    setCycles,
-    weeklyCardioProgression,
-    setWeeklyCardioProgression
+    startCycles,
+    setStartCycles,
+    endCycles,
+    setEndCycles,
+    startActivityTime,
+    setStartActivityTime,
+    endActivityTime,
+    setEndActivityTime
 }) => (
     <div className="flex flex-col space-y-4 mt-2">
         {/* Training Type Selection */}
-        <div className='flex gap-2'>
+        <div className='flex flex-col space-y-2'>
             <label className="flex flex-col">
                 Training Type:
                 <select
                     value={trainingTypeState}
                     onChange={(e) => setTrainingTypeState(e.target.value)}
-                    className="border border-border p-1 mt-1 h-8"
+                    className="border border-border p-1 mt-1 h-8 rounded-md"
                 >
                     <option value="HIIT">HIIT</option>
                     <option value="MISS">MISS</option>
                     <option value="LISS">LISS</option>
                 </select>
             </label>
+        </div>
 
-            {/* Cycles (Not shown for LISS) */}
-            {trainingTypeState !== "LISS" && (
+        {/* Conditional Rendering Based on Training Type */}
+        {trainingTypeState === "HIIT" || trainingTypeState === "MISS" ? (
+            <div className="flex flex-col space-y-2">
+                {/* Activity Time */}
                 <label className="flex flex-col">
-                    No of Cycles:
+                    Activity Time (seconds):
                     <input
                         type="number"
                         min="1"
-                        value={cycles}
-                        onChange={(e) => setCycles(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 h-8"
+                        value={activityTime}
+                        onChange={(e) => setActivityTime(Number(e.target.value))}
+                        className="border border-border p-1 mt-1 w-24 rounded-md"
                     />
                 </label>
-            )}
-        </div>
 
-        {/* Activity Time */}
-        <label className="flex flex-col">
-            Activity Time (seconds):
-            <input
-                type="number"
-                min="1"
-                value={activityTime}
-                onChange={(e) => setActivityTime(Number(e.target.value))}
-                className="border border-border p-1 mt-1 w-24"
-            />
-        </label>
+                {/* Rest Time */}
+                <label className="flex flex-col">
+                    Rest Time (seconds):
+                    <input
+                        type="number"
+                        min="0"
+                        value={restTime}
+                        onChange={(e) => setRestTime(Number(e.target.value))}
+                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                    />
+                </label>
 
-        {/* Rest Time (only shown if not LISS) */}
-        {trainingTypeState !== "LISS" && (
-            <label className="flex flex-col">
-                Rest Time (seconds):
-                <input
-                    type="number"
-                    min="0"
-                    value={restTime}
-                    onChange={(e) => setRestTime(Number(e.target.value))}
-                    className="border border-border p-1 mt-1 w-24"
-                />
-            </label>
-        )}
+                {/* Start Cycles */}
+                <label className="flex flex-col">
+                    Start Cycles:
+                    <input
+                        type="number"
+                        min="1"
+                        value={startCycles}
+                        onChange={(e) => setStartCycles(Number(e.target.value))}
+                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                    />
+                </label>
 
-        {/* Checkbox for Weekly Cardio Progression */}
-        <label className="flex items-center mt-2">
-            <input
-                type="checkbox"
-                checked={weeklyCardioProgression}
-                onChange={(e) => setWeeklyCardioProgression(e.target.checked)}
-                className="mr-2"
-            />
-            Implement Weekly Cardio Progression
-        </label>
+                {/* End Cycles */}
+                <label className="flex flex-col">
+                    End Cycles:
+                    <input
+                        type="number"
+                        min="1"
+                        value={endCycles}
+                        onChange={(e) => setEndCycles(Number(e.target.value))}
+                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                    />
+                </label>
+            </div>
+        ) : trainingTypeState === "LISS" ? (
+            <div className="flex flex-col space-y-2">
+                {/* Start Activity Time */}
+                <label className="flex flex-col">
+                    Start Activity Time (seconds):
+                    <input
+                        type="number"
+                        min="1"
+                        value={startActivityTime}
+                        onChange={(e) => setStartActivityTime(Number(e.target.value))}
+                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                    />
+                </label>
+
+                {/* End Activity Time */}
+                <label className="flex flex-col">
+                    End Activity Time (seconds):
+                    <input
+                        type="number"
+                        min="1"
+                        value={endActivityTime}
+                        onChange={(e) => setEndActivityTime(Number(e.target.value))}
+                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                    />
+                </label>
+            </div>
+        ) : null}
     </div>
 );
 
@@ -138,8 +170,11 @@ export default function Excercise({
     console.log('EXCERCISE CHECK', excercise);
 
     const [showExcercises, setShowExcercises] = useState(false);
-    const initialSelectedExcercise = Array.isArray(excercise) ? excercise[0].name : excercise;
+    
+    // Initialize selectedExcercise based on whether excercise is an array
+    const initialSelectedExcercise = Array.isArray(excercise) ? (excercise[0]?.name || excercise[0]) : excercise;
     const [selectedExcercise, setSelectedExcercise] = useState(initialSelectedExcercise);
+
     const [setProgressionType, setSetProgressionType] = useState(progressionType);
 
     // Default sets
@@ -150,10 +185,19 @@ export default function Excercise({
     const [trainingTypeState, setTrainingTypeState] = useState(excercise?.trainingType || "HIIT"); 
     const [activityTime, setActivityTime] = useState(excercise?.activityTime || 30);
     const [restTime, setRestTime] = useState(excercise?.restTime || 15);
-    const [cycles, setCycles] = useState(excercise?.cycles || 5);
+    const [startCycles, setStartCycles] = useState(excercise?.startCycles || 1);
+    const [endCycles, setEndCycles] = useState(excercise?.endCycles || 5);
+    const [startActivityTime, setStartActivityTime] = useState(excercise?.startActivityTime || 15);
+    const [endActivityTime, setEndActivityTime] = useState(excercise?.endActivityTime || 30);
 
-    // New state for weekly cardio progression
-    const [weeklyCardioProgression, setWeeklyCardioProgression] = useState(excercise?.weeklyCardioProgression || false);
+    // Update selectedExcercise if excercise prop changes
+    useEffect(() => {
+        if (Array.isArray(excercise)) {
+            setSelectedExcercise(excercise[0]?.name || excercise[0] || null); // Set to first item or null if empty
+        } else {
+            setSelectedExcercise(excercise);
+        }
+    }, [excercise]);
 
     const handleSelectExcercise = (e, chosenExcercise) => {
         e.preventDefault();
@@ -165,7 +209,7 @@ export default function Excercise({
                 ...updatedDetails[excerciseindex],
                 excercise: {
                     ...chosenExcercise,
-                    name: chosenExcercise
+                    name: chosenExcercise.name || chosenExcercise
                 }
             };
             return updatedDetails;
@@ -180,7 +224,7 @@ export default function Excercise({
                         if (session.excercises.length <= excerciseindex) {
                             session.excercises.push({
                                 muscle: muscleName,
-                                name: chosenExcercise,
+                                name: chosenExcercise.name || chosenExcercise,
                                 excerciseNo: excerciseindex,
                                 setProgression: setProgressionType,
                                 startSets: startSets,
@@ -188,13 +232,15 @@ export default function Excercise({
                                 trainingType: trainingTypeState,
                                 activityTime: activityTime,
                                 restTime: trainingTypeState === "LISS" ? 0 : restTime,
-                                cycles: trainingTypeState === "LISS" ? 1 : cycles,
-                                weeklyCardioProgression: weeklyCardioProgression,
+                                startCycles: trainingTypeState === "LISS" ? 0 : startCycles,
+                                endCycles: trainingTypeState === "LISS" ? 0 : endCycles,
+                                startActivityTime: trainingTypeState === "LISS" ? startActivityTime : 0,
+                                endActivityTime: trainingTypeState === "LISS" ? endActivityTime : 0,
                             });
                         } else {
                             session.excercises[excerciseindex] = {
                                 muscle: muscleName,
-                                name: chosenExcercise,
+                                name: chosenExcercise.name || chosenExcercise,
                                 excerciseNo: excerciseindex,
                                 setProgression: setProgressionType,
                                 startSets: startSets,
@@ -202,8 +248,10 @@ export default function Excercise({
                                 trainingType: trainingTypeState,
                                 activityTime: activityTime,
                                 restTime: trainingTypeState === "LISS" ? 0 : restTime,
-                                cycles: trainingTypeState === "LISS" ? 1 : cycles,
-                                weeklyCardioProgression: weeklyCardioProgression,
+                                startCycles: trainingTypeState === "LISS" ? 0 : startCycles,
+                                endCycles: trainingTypeState === "LISS" ? 0 : endCycles,
+                                startActivityTime: trainingTypeState === "LISS" ? startActivityTime : 0,
+                                endActivityTime: trainingTypeState === "LISS" ? endActivityTime : 0,
                             };
                         }
                     }
@@ -238,9 +286,11 @@ export default function Excercise({
                             }),
                             trainingType: trainingTypeState,
                             activityTime: activityTime,
-                            ...(trainingTypeState !== "LISS" && { restTime: restTime }),
-                            cycles: trainingTypeState === "LISS" ? 1 : cycles,
-                            weeklyCardioProgression: weeklyCardioProgression,
+                            restTime: trainingTypeState !== "LISS" ? restTime : 0,
+                            startCycles: trainingTypeState === "LISS" ? 0 : startCycles,
+                            endCycles: trainingTypeState === "LISS" ? 0 : endCycles,
+                            startActivityTime: trainingTypeState === "LISS" ? startActivityTime : 0,
+                            endActivityTime: trainingTypeState === "LISS" ? endActivityTime : 0,
                         };
                     }
                 });
@@ -255,26 +305,28 @@ export default function Excercise({
         trainingTypeState,
         activityTime,
         restTime,
-        cycles,
+        startCycles,
+        endCycles,
+        startActivityTime,
+        endActivityTime,
         muscleName,
         excerciseindex,
         setProgram,
-        workout,
-        weeklyCardioProgression
+        workout
     ]);
 
     return (
         <>
             <div className="bg-background-secondary p-2 flex flex-col space-y-2 items-baseline relative text-primary-text">
                 {/* Header Section */}
-                <div className='flex justify-between w-[60%] items-center'>
-                    <h2 className="bg-highlight p-1 text-secondary-text">{muscleName}</h2>
-                    <div className='flex flex-col'>
+                <div className='flex justify-between w-full md:w-[60%] items-center'>
+                    <h2 className="bg-highlight p-1 text-secondary-text rounded-md">{muscleName}</h2>
+                    <div className='flex flex-col space-y-1'>
                         <button onClick={(e) => handleMoveUp(e, excerciseindex)} aria-label="Move Up">
-                            <ChevronUpIcon className="h-6 w-6 text-primary-text" />
+                            <ChevronUpIcon className="h-6 w-6 text-primary-text hover:text-highlight transition-colors" />
                         </button>
                         <button onClick={(e) => handleMoveDown(e, excerciseindex)} aria-label="Move Down">
-                            <ChevronDownIcon className="h-6 w-6 text-primary-text" />
+                            <ChevronDownIcon className="h-6 w-6 text-primary-text hover:text-highlight transition-colors" />
                         </button>
                     </div>
                 </div>
@@ -282,7 +334,7 @@ export default function Excercise({
                 {/* Exercise Selection Button */}
                 <button
                     onClick={handleShowExcercises}
-                    className="w-[100%] h-10 text-left border-solid border-2 border-gray-700 p-1 rounded-md"
+                    className="w-full h-10 text-left border border-gray-700 p-1 rounded-md hover:bg-gray-100 transition-colors"
                 >
                     {selectedExcercise ? (selectedExcercise.name || selectedExcercise) : 'Select Exercise'}
                 </button>
@@ -327,10 +379,14 @@ export default function Excercise({
                                         setActivityTime={setActivityTime}
                                         restTime={restTime}
                                         setRestTime={setRestTime}
-                                        cycles={cycles}
-                                        setCycles={setCycles}
-                                        weeklyCardioProgression={weeklyCardioProgression}
-                                        setWeeklyCardioProgression={setWeeklyCardioProgression}
+                                        startCycles={startCycles}
+                                        setStartCycles={setStartCycles}
+                                        endCycles={endCycles}
+                                        setEndCycles={setEndCycles}
+                                        startActivityTime={startActivityTime}
+                                        setStartActivityTime={setStartActivityTime}
+                                        endActivityTime={endActivityTime}
+                                        setEndActivityTime={setEndActivityTime}
                                     />
                                 )}
                             </>
@@ -338,7 +394,7 @@ export default function Excercise({
 
                         {/* Exercise Notes */}
                         <div className="w-full my-4">
-                            <label htmlFor="excercise-notes" className="block text-primary-text inter-bold mb-2">
+                            <label htmlFor="excercise-notes" className="block text-primary-text font-semibold mb-2">
                                 Exercise Notes:
                             </label>
                             <textarea
@@ -355,7 +411,7 @@ export default function Excercise({
                 {/* Delete Button */}
                 <button
                     onClick={onDelete}
-                    className="absolute top-0 right-0 p-1 m-2 text-red-500 hover:text-red-700"
+                    className="absolute top-0 right-0 p-1 m-2 text-red-500 hover:text-red-700 transition-colors"
                     aria-label="Delete Exercise"
                 >
                     &#10006;
