@@ -135,6 +135,8 @@ export default function Excercise({
     endSetCount
 }) {
 
+    console.log('EXCERCISE CHECK', excercise);
+
     const [showExcercises, setShowExcercises] = useState(false);
     const initialSelectedExcercise = Array.isArray(excercise) ? excercise[0] : excercise;
     const [selectedExcercise, setSelectedExcercise] = useState(initialSelectedExcercise);
