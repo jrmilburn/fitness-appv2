@@ -174,14 +174,6 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           create: { name: muscleGroupName },
         });
 
-        // Check for existing exercise with non-null `details`
-        const existingExercise = await prisma.excercise.findFirst({
-          where: {
-            name: excercise.name,
-            muscleGroupId: muscleGroup.id,
-          },
-        });
-
         // Prepare exercise details, including the correct excerciseNo
         const excerciseDetails = {
           name: excercise.name,
