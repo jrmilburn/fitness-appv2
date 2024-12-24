@@ -29,6 +29,7 @@ export function processProgramData(program) {
 
         if(excercise.muscle === "Cardio") {
 
+          console.log('EXCERCISE BEFORE', excercise);
                 // Set the excerciseType to trainingType
           excercise.excerciseType = excercise.trainingType;
           console.log('EXCERCISE', excercise);
