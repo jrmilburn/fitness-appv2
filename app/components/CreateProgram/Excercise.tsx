@@ -187,8 +187,8 @@ export default function Excercise({
     const [trainingTypeState, setTrainingTypeState] = useState(excercise?.trainingType || "HIIT"); 
     const [activityTime, setActivityTime] = useState(excercise?.activityTime || 30);
     const [restTime, setRestTime] = useState(excercise?.restTime || 15);
-    const [startCycles, setStartCycles] = useState(excercise?.startCycles || 1);
-    const [endCycles, setEndCycles] = useState(excercise?.endCycles || 5);
+    const [startCycles, setStartCycles] = useState(excercise?.startCycles || 5);
+    const [endCycles, setEndCycles] = useState(excercise?.endCycles || 10);
     const [startActivityTime, setStartActivityTime] = useState(excercise?.startActivityTime || 15);
     const [endActivityTime, setEndActivityTime] = useState(excercise?.endActivityTime || 30);
 
@@ -293,6 +293,7 @@ export default function Excercise({
                             endCycles: trainingTypeState === "LISS" ? 0 : endCycles,
                             startActivityTime: trainingTypeState === "LISS" ? startActivityTime : 0,
                             endActivityTime: trainingTypeState === "LISS" ? endActivityTime : 0,
+                            notes: excerciseNotes
                         };
                     }
                 });
@@ -314,7 +315,8 @@ export default function Excercise({
         muscleName,
         excerciseindex,
         setProgram,
-        workout
+        workout,
+        excerciseNotes
     ]);
 
     return (
