@@ -18,6 +18,7 @@ export default function Excercise({
     onDelete,
     advanced,
     progressionType,
+    trainingType,
     startSetCount,
     endSetCount
 }) {
@@ -31,7 +32,7 @@ export default function Excercise({
     const [endSets, setEndSets] = useState(endSetCount || 4);
 
     // Cardio-specific states
-    const [trainingType, setTrainingType] = useState(excercise?.trainingType || "HIIT"); 
+    const [trainingTypeState, setTrainingTypeState] = useState(excercise?.trainingType || "HIIT"); 
     const [activityTime, setActivityTime] = useState(excercise?.activityTime || 30);
     const [restTime, setRestTime] = useState(excercise?.restTime || 15);
     const [cycles, setCycles] = useState(excercise?.cycles || 5);
@@ -66,10 +67,10 @@ export default function Excercise({
                                 setProgression: setProgressionType,
                                 startSets: startSets,
                                 endSets: endSets,
-                                trainingType: trainingType,
+                                trainingType: trainingTypeState,
                                 activityTime: activityTime,
                                 restTime: restTime,
-                                cycles: trainingType === "LISS" ? null : cycles,
+                                cycles: trainingType === "LISS" ? 1 : cycles,
                             });
                         } else {
                             session.excercises[excerciseindex] = {
@@ -79,10 +80,10 @@ export default function Excercise({
                                 setProgression: setProgressionType,
                                 startSets: startSets,
                                 endSets: endSets,
-                                trainingType: trainingType,
+                                trainingType: trainingTypeState,
                                 activityTime: activityTime,
                                 restTime: restTime,
-                                cycles: trainingType === "LISS" ? null : cycles,
+                                cycles: trainingTypeState === "LISS" ? 1 : cycles,
                             };
                         }
                     }
@@ -115,10 +116,10 @@ export default function Excercise({
                                 startSets: startSets,
                                 endSets: endSets,
                             }),
-                            trainingType: trainingType,
+                            trainingType: trainingTypeState,
                             activityTime: activityTime,
                             restTime: restTime,
-                            cycles: trainingType === "LISS" ? null : cycles,
+                            cycles: trainingTypeState === "LISS" ? 1 : cycles,
                         };
                     }
                 });
@@ -126,7 +127,7 @@ export default function Excercise({
     
             return newProgram;
         });
-    }, [setProgressionType, startSets, endSets, trainingType, activityTime, restTime, cycles, muscleName, excerciseindex, setProgram, workout]);
+    }, [setProgressionType, startSets, endSets, trainingTypeState, activityTime, restTime, cycles, muscleName, excerciseindex, setProgram, workout]);
 
     return (
         <>
@@ -208,7 +209,7 @@ export default function Excercise({
                                   Training Type:
                                   <select
                                     value={trainingType}
-                                    onChange={(e) => setTrainingType(e.target.value)}
+                                    onChange={(e) => setTrainingTypeState(e.target.value)}
                                     className="border border-border p-1 mt-1 h-8"
                                   >
                                     <option value="HIIT">HIIT</option>

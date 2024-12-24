@@ -29,11 +29,6 @@ export function processProgramData(program) {
 
         if(excercise.muscle === "Cardio") {
 
-          console.log('EXCERCISE BEFORE', excercise);
-                // Set the excerciseType to trainingType
-          excercise.excerciseType = excercise.trainingType;
-          console.log('EXCERCISE', excercise);
-
           if (excercise.trainingType === "LISS") {
             // LISS: single continuous set, no cycles
             setCount = 1;
@@ -198,7 +193,7 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           endSets: excercise.endSets,
           actualSets: excercise.startSets,
           progressionType: excercise.setProgression,
-          excerciseType: excercise.excerciseType,
+          trainingType: excercise.trainingType,
           excerciseNo: excerciseIndex + 1, // Use the index + 1 for excerciseNo
         };
 

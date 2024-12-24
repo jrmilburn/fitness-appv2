@@ -233,7 +233,7 @@ model Excercise {
   excerciseNo     Int?
   autoregulation  Boolean     @default(false)
 
-  excerciseType String?
+  trainingType String?
 
   autoRegulator   autoRegulator? @relation(fields: [autoRegulatorId], references: [id])
   autoRegulatorId String?

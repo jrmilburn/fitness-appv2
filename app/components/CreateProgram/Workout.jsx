@@ -84,6 +84,7 @@ export default function Workout({ workout, setProgram, program, excercises, adva
               onDelete={() => removeMuscleGroup(index)}
               advanced={advanced}
               progressionType={detail.excercise.progressionType || detail.excercise.setProgression}
+              trainingType={detail.excercise.trainingType}
               startSetCount={detail.excercise.startSets}
               endSetCount={detail.excercise.endSets}
             />
