@@ -66,8 +66,8 @@ export default function Navbar() {
             <button
               className="flex items-center space-x-2 focus:outline-none"
             >
-              <Link href='/Projects'>
-                Projects
+              <Link href='/jfit'>
+                Jfit
               </Link>
             </button>
           </li>
@@ -76,7 +76,7 @@ export default function Navbar() {
               className="flex items-center space-x-2 focus:outline-none"
             >
               <Link href='/posts'>
-                Posts
+                Jfinance
               </Link>
             </button>
           </li>
@@ -85,7 +85,7 @@ export default function Navbar() {
               className="flex items-center space-x-2 focus:outline-none"
             >
               <Link href='/map'>
-                View Project Map
+                Personal website
               </Link>
             </button>
           </li>
