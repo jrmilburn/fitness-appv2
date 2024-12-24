@@ -30,7 +30,7 @@ export async function POST(req) {
         where: {
           name: excercise,
           muscleGroupId: muscleId,
-          details: { not: null },
+          notes: { not: null },
         },
       });
 
@@ -38,7 +38,7 @@ export async function POST(req) {
         name: excercise,
         workoutId: workoutId,
         muscleGroupId: muscleId,
-        details: existingExercise?.details || null,
+        notes: existingExercise?.notes || null,
       };
 
       const createdExcercise = await prisma.excercise.upsert({
