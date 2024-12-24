@@ -1,6 +1,6 @@
 import { TrashIcon, PlusIcon } from "@heroicons/react/outline";
 
-export default function CustomFood({ food, onAdd, onDelete }) {
+export default function CustomFood({ food, onAdd, onDelete, canDelete=false }) {
 
     console.log(food);
 
@@ -27,7 +27,7 @@ export default function CustomFood({ food, onAdd, onDelete }) {
                     </p>
                 </div>
             </div>
-            {onAdd ? (
+            {!canDelete ? (
                 <button onClick={onAdd}>
                     <PlusIcon className="h-7 w-7 text-primary-text hover:text-green-400 transition-all duration-300" />
                 </button>

@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import CustomFood from './CustomFood';
 import NewFood from './NewFood';
 
-export default function CustomFoods({ foods, onAdd }) {
+export default function CustomFoods({ foods, onAdd, canDelete }) {
   const [newShown, setNewShown] = useState(false);
   const [show, setShow] = useState(false); // State to control modal animation
   const [customFoods, setCustomFoods] = useState(foods);
@@ -88,6 +88,7 @@ export default function CustomFoods({ foods, onAdd }) {
           food={food}
           onAdd={() => onAdd(food)}
           onDelete={() => handleDelete(food.id)}
+          canDelete={canDelete}
         />
       ))}
 

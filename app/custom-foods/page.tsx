@@ -27,6 +27,7 @@ export default async function CustomFoodsPage() {
         <CustomFoods
             onAdd={null}
             foods={customfoods}
+            canDelete={true}
         />
         </div>
 
