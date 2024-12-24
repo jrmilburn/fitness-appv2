@@ -69,13 +69,13 @@ export default function Navbar() {
               <Link href='/jfit'>
                 Jfit
               </Link>
-            </button>
+            </button>ß
           </li>
           <li className="text-xl p-2">
             <button
               className="flex items-center space-x-2 focus:outline-none"
             >
-              <Link href='/posts'>
+              <Link href='/jfinance'>
                 Jfinance
               </Link>
             </button>
@@ -84,9 +84,9 @@ export default function Navbar() {
             <button
               className="flex items-center space-x-2 focus:outline-none"
             >
-              <Link href='/map'>
+              <a href="https://joemilburn.xyz">
                 Personal website
-              </Link>
+              </a>
             </button>
           </li>
           <li className="text-xl p-2">
