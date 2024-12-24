@@ -350,6 +350,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
                 setScannedFood(food);
                 setShowConfirmation(true);
               }}
+              canDelete={false}
               />
         </div>
       )}
