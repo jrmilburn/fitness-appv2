@@ -411,7 +411,7 @@ export default function Excercise({
                             </label>
                             <textarea
                                 id="excercise-notes"
-                                className="w-full h-16 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
+                                className="w-full h-16 p-3 border border-border bg-background text-primary-text rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
                                 placeholder="Enter exercise cues here..."
                                 rows={2}
                                 value={excerciseNotes}
