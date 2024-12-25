@@ -40,7 +40,7 @@ export default function SignUp() {
     };
 
     return (
-        <div className="relative h-screen w-full font-sans overflow-hidden fixed w-full -translate-y-16">
+        <div className="relative h-screen w-full font-sans overflow-hidden fixed w-full -translate-y-16 sm:translate-y-0">
             {/* Background Image */}
             <Image
                 src="/auth-background.webp"

@@ -93,7 +93,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen max-h-screen px-4 z-10 overflow-hidden fixed w-full -translate-y-16">
+    <div className="flex flex-col justify-center items-center min-h-screen max-h-screen px-4 z-10 overflow-hidden fixed w-full -translate-y-16 sm:translate-y-0">
             <Image
                 src="/auth-background.webp"
                 alt="Background"
