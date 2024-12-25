@@ -20,15 +20,18 @@ export default function ExcerciseInfo({ name, lastWeekData }) {
                     <div
                         className={`absolute inset-0 transition-transform duration-500 ease-in-out`}
                     >
-                        {lastWeekData.length > 0 ? (
+                    {
+                        lastWeekData.every(set => set.recommendedWeight === null && set.recommendedReps === null) ? (
+                            <p>No data for last week</p>
+                        ) : (
                             lastWeekData.map((set, index) => {
                                 // Check if both recommendedWeight and recommendedReps exist
                                 if (!set.recommendedWeight || !set.recommendedReps) return null;
-
+                            
                                 // Reverse the weight and reps calculations
                                 const lastWeekWeight = roundDownToNearest2_5(set.recommendedWeight / 1.01);
                                 const lastWeekReps = set.recommendedReps - 1;
-
+                            
                                 return (
                                     <div key={index} className="flex justify-between">
                                         <p>Weight: {lastWeekWeight}kg</p>
@@ -36,9 +39,8 @@ export default function ExcerciseInfo({ name, lastWeekData }) {
                                     </div>
                                 );
                             })
-                        ) : (
-                            <p>No data for last week</p>
-                        )}
+                        )
+                    }
                     </div>
                 </div>
             </div>
