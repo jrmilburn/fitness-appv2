@@ -6,6 +6,8 @@ export default function ExcerciseInfo({ name, lastWeekData }) {
         return Math.floor(num / 2.5) * 2.5;
     };
 
+    console.log('LAST WEEK DATA', lastWeekData);
+
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-transparent z-50">
             <div className="bg-background text-primary-text w-full max-w-md p-6 rounded-lg shadow-lg">
