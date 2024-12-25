@@ -170,7 +170,9 @@ export default function Excercise({
     initActivityTime,
     initRestTime,
     initStartCycles,
-    initEndCycles
+    initEndCycles,
+    initStartActivityTime,
+    initEndActivityTime
 }) {
 
     console.log('EXCERCISE CHECK', excercise);
@@ -195,8 +197,8 @@ export default function Excercise({
     const [restTime, setRestTime] = useState(initRestTime || 15);
     const [startCycles, setStartCycles] = useState(initStartCycles || 5);
     const [endCycles, setEndCycles] = useState(initEndCycles || 10);
-    const [startActivityTime, setStartActivityTime] = useState(excercise?.startActivityTime || 15);
-    const [endActivityTime, setEndActivityTime] = useState(excercise?.endActivityTime || 30);
+    const [startActivityTime, setStartActivityTime] = useState(initStartActivityTime || 15);
+    const [endActivityTime, setEndActivityTime] = useState(initEndActivityTime || 30);
 
     // Update selectedExcercise if excercise prop changes
     useEffect(() => {

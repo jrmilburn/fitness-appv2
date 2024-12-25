@@ -92,6 +92,8 @@ export default function Workout({ workout, setProgram, program, excercises, adva
               initRestTime={detail.excercise.restTime}
               initStartCycles={detail.excercise.startCycles}
               initEndCycles={detail.excercise.endCycles}
+              initStartActivityTime={detail.excercise.startActivityTime}
+              initEndActivityTime={detail.excercise.endActivityTime}
             />
           ))}
         </div>
