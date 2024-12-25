@@ -346,7 +346,7 @@ export default function Excercise({
                 {/* Exercise Selection Button */}
                 <button
                     onClick={handleShowExcercises}
-                    className="w-full h-10 text-left border border-gray-700 p-1 rounded-md hover:bg-gray-100 transition-colors"
+                    className="w-full h-10 text-left border border-border bg-background text-primary-text p-1 rounded-md hover:bg-gray-100 transition-colors"
                 >
                     {selectedExcercise ? (selectedExcercise.name || selectedExcercise) : 'Select Exercise'}
                 </button>
