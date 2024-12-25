@@ -165,7 +165,12 @@ export default function Excercise({
     progressionType,
     startSetCount,
     endSetCount,
-    notes
+    notes,
+    trainingType,
+    initActivityTime,
+    initRestTime,
+    initStartCycles,
+    initEndCycles
 }) {
 
     console.log('EXCERCISE CHECK', excercise);
@@ -185,11 +190,11 @@ export default function Excercise({
     const [endSets, setEndSets] = useState(endSetCount || 4);
 
     // Cardio-specific states
-    const [trainingTypeState, setTrainingTypeState] = useState(excercise?.trainingType || "HIIT"); 
-    const [activityTime, setActivityTime] = useState(excercise?.activityTime || 30);
-    const [restTime, setRestTime] = useState(excercise?.restTime || 15);
-    const [startCycles, setStartCycles] = useState(excercise?.startCycles || 5);
-    const [endCycles, setEndCycles] = useState(excercise?.endCycles || 10);
+    const [trainingTypeState, setTrainingTypeState] = useState(trainingType || "HIIT"); 
+    const [activityTime, setActivityTime] = useState(initActivityTime || 30);
+    const [restTime, setRestTime] = useState(initRestTime || 15);
+    const [startCycles, setStartCycles] = useState(initStartCycles || 5);
+    const [endCycles, setEndCycles] = useState(initEndCycles || 10);
     const [startActivityTime, setStartActivityTime] = useState(excercise?.startActivityTime || 15);
     const [endActivityTime, setEndActivityTime] = useState(excercise?.endActivityTime || 30);
 

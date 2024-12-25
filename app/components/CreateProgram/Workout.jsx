@@ -87,6 +87,11 @@ export default function Workout({ workout, setProgram, program, excercises, adva
               startSetCount={detail.excercise.startSets}
               endSetCount={detail.excercise.endSets}
               notes={detail.excercise.notes}
+              trainingType={detail.excercise.trainingType}
+              initActivityTime={detail.excercise.activityTime}
+              initRestTime={detail.excercise.restTime}
+              initStartCycles={detail.excercise.startCycles}
+              initEndCycles={detail.excercise.endCycles}
             />
           ))}
         </div>
