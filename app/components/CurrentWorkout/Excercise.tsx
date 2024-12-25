@@ -305,11 +305,10 @@ export default function Excercise({
                     {infoShown && (
                         <div
                             ref={infoRef}
-                            className="absolute translate-x-[-50%] md:translate-x-[-70%] z-50 w-[400px] bg-white p-2 shadow-lg rounded-md"
+                            className="absolute translate-x-[-50%] md:translate-x-[-70%] z-50 bg-white p-2 shadow-lg rounded-md"
                         >
                             <ExcerciseInfo
                                 name={updatedExcercise.name}
-                                details={updatedExcercise.notes}
                                 lastWeekData={lastWeekData}
                             />
                         </div>
