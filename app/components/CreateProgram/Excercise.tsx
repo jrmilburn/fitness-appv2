@@ -14,7 +14,7 @@ const NonCardioFields = ({ startSets, setStartSets, endSets, setEndSets, setProg
                     min="1"
                     value={startSets}
                     onChange={(e) => setStartSets(Number(e.target.value))}
-                    className="border border-border p-1 mt-1 w-24 rounded-md"
+                    className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                 />
             </label>
             
@@ -27,7 +27,7 @@ const NonCardioFields = ({ startSets, setStartSets, endSets, setEndSets, setProg
                         min="1"
                         value={endSets}
                         onChange={(e) => setEndSets(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                        className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                     />
                 </label>
             )}
@@ -60,7 +60,7 @@ const CardioFields = ({
                 <select
                     value={trainingTypeState}
                     onChange={(e) => setTrainingTypeState(e.target.value)}
-                    className="border border-border p-1 mt-1 h-8 rounded-md"
+                    className="border border-border p-1 mt-1 h-8 rounded-md bg-background text-primary-text"
                 >
                     <option value="HIIT">HIIT</option>
                     <option value="MISS">MISS</option>
@@ -80,7 +80,7 @@ const CardioFields = ({
                         min="1"
                         value={activityTime}
                         onChange={(e) => setActivityTime(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                        className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                     />
                 </label>
 
@@ -92,7 +92,7 @@ const CardioFields = ({
                         min="0"
                         value={restTime}
                         onChange={(e) => setRestTime(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                        className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                     />
                 </label>
 
@@ -104,7 +104,7 @@ const CardioFields = ({
                         min="1"
                         value={startCycles}
                         onChange={(e) => setStartCycles(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                        className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                     />
                 </label>
 
@@ -116,7 +116,7 @@ const CardioFields = ({
                         min="1"
                         value={endCycles}
                         onChange={(e) => setEndCycles(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                        className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                     />
                 </label>
             </div>
@@ -130,7 +130,7 @@ const CardioFields = ({
                         min="1"
                         value={startActivityTime}
                         onChange={(e) => setStartActivityTime(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                        className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                     />
                 </label>
 
@@ -142,7 +142,7 @@ const CardioFields = ({
                         min="1"
                         value={endActivityTime}
                         onChange={(e) => setEndActivityTime(Number(e.target.value))}
-                        className="border border-border p-1 mt-1 w-24 rounded-md"
+                        className="border border-border p-1 mt-1 w-24 rounded-md bg-background text-primary-text"
                     />
                 </label>
             </div>
@@ -360,7 +360,7 @@ export default function Excercise({
                             <select
                                 value={setProgressionType}
                                 onChange={(e) => setSetProgressionType(e.target.value)}
-                                className="border border-border p-1 mt-1 rounded-md"
+                                className="border border-border bg-background text-primary-text p-1 mt-1 rounded-md"
                             >
                                 <option value="linear">Linear</option>
                                 <option value="none">None</option>
