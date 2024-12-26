@@ -14,6 +14,39 @@ export default function SearchItem({ product, addFood }) {
 
   const nutriments = product.nutriments || {};
 
+  const handleSelectFood = async () => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/foods/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: product.product_name,
+          protein: nutriments.proteins_100g,
+          fat: nutriments.fat_100g,
+          carbohydrates: nutriments.carbohydrates_100g
+        })
+      });
+  
+      if (!response.ok) {
+        console.error('Failed to create food:', response.statusText);
+        return;
+      }
+  
+      const data = await response.json();
+  
+      if (!data) {
+        console.error('No data returned from the API');
+        return;
+      }
+  
+      addFood(data);
+    } catch (error) {
+      console.error('Error creating food:', error);
+    }
+  };
+
   return (
     <li
       key={product.code}
@@ -43,7 +76,7 @@ export default function SearchItem({ product, addFood }) {
           )}
         </div>
         <div className="flex flex-col justify-center items-center gap-4">
-        <button onClick={() => addFood(product)}>
+        <button onClick={handleSelectFood}>
           <PlusCircleIcon className="h-6 w-6 text-primary-text" />
         </button>
         <button
