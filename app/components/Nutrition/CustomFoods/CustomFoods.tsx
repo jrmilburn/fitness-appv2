@@ -68,7 +68,7 @@ export default function CustomFoods({ foods, onAdd, canDelete }) {
       }`;
 
   return (
-    <div className="max-w-2xl flex flex-col mx-auto translate-x-[25%]">
+    <div className="max-w-2xl flex flex-col mx-auto">
       <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">
        {/* <h2 className="relative text-2xl pr-4 sm:text-3xl text-primary-text">Custom Exercises
           {session?.user?.role === "USER" && <PremiumIcon text={`Upgrade to premium for unlimited custom excercises. ${3 - customExcercises.length} remaining`}/>}

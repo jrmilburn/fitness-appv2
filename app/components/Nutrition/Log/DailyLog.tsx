@@ -349,7 +349,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       )}
 
       {showCustomFoods && (
-        <div className="fixed inset-0 bg-background w-full">
+        <div className="fixed inset-0 bg-background w-full md:translate-x-64">
             <CustomFoods
               foods={customFoods}
               onAdd={(food) => {
