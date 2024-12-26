@@ -184,6 +184,8 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
           endSets: excercise.endSets,
           startCycles: excercise.startCycles,
           endCycles: excercise.endCycles,
+          startActivityTime: excercise.startActivityTime,
+          endActivityTime: excercise.endActivityTime,
           actualSets: excercise.startSets,
           progressionType: excercise.setProgression,
           trainingType: excercise.trainingType,

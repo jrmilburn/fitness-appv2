@@ -244,8 +244,8 @@ export default function Excercise({
                                 restTime: trainingTypeState === "LISS" ? 0 : restTime,
                                 startCycles: trainingTypeState === "LISS" ? 0 : startCycles,
                                 endCycles: trainingTypeState === "LISS" ? 0 : endCycles,
-                                startActivityTime: trainingTypeState === "LISS" ? startActivityTime : 0,
-                                endActivityTime: trainingTypeState === "LISS" ? endActivityTime : 0,
+                                startActivityTime: startActivityTime,
+                                endActivityTime: endActivityTime,
                             });
                         } else {
                             session.excercises[excerciseindex] = {
