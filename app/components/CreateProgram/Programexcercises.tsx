@@ -163,7 +163,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
         </div>
 
         {/* Workouts Container */}
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col overflow-x-auto">
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full p-4 items-start max-w-[400px]">
             {(program.weeks.find(week => week.weekNo === 1) || program.weeks[0]).workouts.map((workout, index) => (
               <Workout
