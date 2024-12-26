@@ -58,6 +58,8 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
                       excerciseNo: excercise.excerciseNo,
                       trainingType: excercise.trainingType,
                       activityTime: excercise.activityTime,
+                      startActivityTime: excercise.startActivityTime,
+                      endActivityTime: excercise.endActivityTime,
                       restTime: excercise.restTime,
                       notes: excercise.notes
                   }))
