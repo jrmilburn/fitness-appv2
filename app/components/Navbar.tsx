@@ -185,13 +185,6 @@ export default function Navbar() {
           isPremium: true,
         },
         {
-          href: "/nutrition/search",
-          label: "Search",
-          IconOutline: SearchOutlineIcon,
-          IconSolid: SearchSolidIcon,
-          isPremium: true,
-        },
-        {
           href: "/custom-foods",
           label: "Custom Foods",
           IconOutline: PencilAltOutlineIcon,
