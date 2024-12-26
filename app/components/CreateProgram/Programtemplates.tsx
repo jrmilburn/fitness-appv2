@@ -59,7 +59,6 @@ export default function ProgramTemplates({ setProgram, onNext }) {
         </>
       ) : (
         programTemplates.map((program) => {
-          console.log(program);
           return (
             <div
               key={program.id}

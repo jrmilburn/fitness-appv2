@@ -66,6 +66,9 @@ export default async function Programs() {
         createdAt: 'desc'
       }
     });
+
+    console.log('TEMPLATSES', programs);
+    console.log('COMPLETED', completedPrograms);
     
 
   return (

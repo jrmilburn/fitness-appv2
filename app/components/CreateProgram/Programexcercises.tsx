@@ -12,7 +12,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
   const { data: session } = useSession();
 
   // Initialize programNotes with program.notes if it exists
-  const [programNotes, setProgramNotes] = useState(program.notes || '');
+  const [programNotes, setProgramNotes] = useState(program?.notes || '');
   const [isLoading, setIsLoading] = useState(false);
   const [advanced, setAdvanced] = useState(false);
   const router = useRouter();
