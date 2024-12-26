@@ -176,6 +176,8 @@ export default function Excercise({
 }) {
 
     console.log('EXCERCISE CHECK', excercise);
+    console.log('START TIME', initStartActivityTime);
+    console.log('END TIIME', initEndActivityTime);
 
     const [showExcercises, setShowExcercises] = useState(false);
     
