@@ -269,7 +269,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
         </button>
         <button
           onClick={handleShowCustomFoods}
-          className="bg-background text-primary-text border-2 mt-2 rounded border-border py-2 px-4 transition-all duration-300"
+          className="bg-background text-primary-text border-2 rounded border-border py-2 px-4 transition-all duration-300"
         >
           Custom Foods
         </button>
@@ -279,6 +279,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       <NewFood visible={newShown} 
         addFood={(food) =>{
             setNewShown(false);
+            console.log('FOOD FROM SEARCH', food);
             setScannedFood(food);
             setShowConfirmation(true);
         }
@@ -353,6 +354,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
               foods={customFoods}
               onAdd={(food) => {
                 setShowCustomFoods(false);
+                console.log('CUSTOM FOOD', food);
                 setScannedFood(food);
                 setShowConfirmation(true);
               }}
