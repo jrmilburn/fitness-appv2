@@ -124,7 +124,7 @@ const CardioFields = ({
             <div className="flex flex-col space-y-2">
                 {/* Start Activity Time */}
                 <label className="flex flex-col">
-                    Start Activity Time (seconds):
+                    Start Activity Time (s):
                     <input
                         type="number"
                         min="1"
@@ -136,7 +136,7 @@ const CardioFields = ({
 
                 {/* End Activity Time */}
                 <label className="flex flex-col">
-                    End Activity Time (seconds):
+                    End Activity Time (s):
                     <input
                         type="number"
                         min="1"
@@ -260,8 +260,8 @@ export default function Excercise({
                                 restTime: trainingTypeState === "LISS" ? 0 : restTime,
                                 startCycles: trainingTypeState === "LISS" ? 0 : startCycles,
                                 endCycles: trainingTypeState === "LISS" ? 0 : endCycles,
-                                startActivityTime: trainingTypeState === "LISS" ? startActivityTime : 0,
-                                endActivityTime: trainingTypeState === "LISS" ? endActivityTime : 0,
+                                startActivityTime: startActivityTime,
+                                endActivityTime: endActivityTime,
                             };
                         }
                     }
@@ -299,8 +299,8 @@ export default function Excercise({
                             restTime: trainingTypeState !== "LISS" ? restTime : 0,
                             startCycles: trainingTypeState === "LISS" ? 0 : startCycles,
                             endCycles: trainingTypeState === "LISS" ? 0 : endCycles,
-                            startActivityTime: trainingTypeState === "LISS" ? startActivityTime : 0,
-                            endActivityTime: trainingTypeState === "LISS" ? endActivityTime : 0,
+                            startActivityTime: startActivityTime,
+                            endActivityTime: endActivityTime,
                             notes: excerciseNotes
                         };
                     }
