@@ -12,10 +12,7 @@ export default function NewFood({ visible, addFood, onClose }) {
               X
             </button>
               <Search
-                addFood={ (selectedFood) => {
-                  addFood(selectedFood)
-                }
-                }
+                addFood={addFood}
               />
           </div>
         </div>
