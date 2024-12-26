@@ -163,7 +163,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
         </div>
 
         {/* Workouts Container */}
-        <div className="w-full flex flex-col overflow-x-auto">
+        <div className="w-full flex flex-col sm:overflow-x-auto">
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 w-full p-4 items-start max-w-[400px]">
             {(program.weeks.find(week => week.weekNo === 1) || program.weeks[0]).workouts.map((workout, index) => (
               <Workout
@@ -185,7 +185,7 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
             </label>
             <textarea
               id="program-notes"
-              className="w-full h-32 p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
+              className="w-full h-32 p-3 border border-border bg-background text-primary-text rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-highlight"
               placeholder="Enter any notes or comments about the program here..."
               value={programNotes}
               onChange={(e) => setProgramNotes(e.target.value)}

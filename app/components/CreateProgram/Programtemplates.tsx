@@ -128,6 +128,7 @@ export default function ProgramTemplates({ setProgram, onNext }) {
                     No workouts found for Week 1.
                   </p>
                 )}
+                <p className="text-secondary-text">{program.notes}</p>
               </div>
             </div>
           </div>

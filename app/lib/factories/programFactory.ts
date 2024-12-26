@@ -116,7 +116,7 @@ export function processProgramData(program) {
 
 
 export async function saveProgram(program, userId, setAsCurrentProgram = true) {
-  const { name, length, days, weeks } = program;
+  const { name, length, days, weeks, notes } = program;
 
   const createdProgram = await prisma.program.create({
     data: {
@@ -124,6 +124,7 @@ export async function saveProgram(program, userId, setAsCurrentProgram = true) {
       length,
       days,
       userId,
+      notes
     },
   });
 
