@@ -1,14 +1,7 @@
 import Search from "@/app/components/Nutrition/Search/Search";
-import Quantity from "./Quantity";
-import { useState, useEffect } from "react";
 
 export default function NewFood({ visible, addFood, onClose }) {
-  const [stage, setStage] = useState(1);
-  const [foodItem, setFoodItem] = useState(null);
 
-  useEffect(() => {
-    console.log(foodItem);
-  }, [foodItem]);
 
   return (
     <>
@@ -18,19 +11,12 @@ export default function NewFood({ visible, addFood, onClose }) {
             <button className="absolute top-0 right-0" onClick={onClose}>
               X
             </button>
-            {stage === 1 ? (
               <Search
-                addFood={(selectedFood) => {
-                  setFoodItem(selectedFood);
-                  setStage(2);
-                }}
+                addFood={ (selectedFood) => {
+                  addFood(selectedFood)
+                }
+                }
               />
-            ) : (
-              <Quantity 
-                foodItem={foodItem} 
-                addFood={addFood}
-                setStage={setStage} />
-            )}
           </div>
         </div>
       )}

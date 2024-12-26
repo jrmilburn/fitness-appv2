@@ -276,7 +276,13 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       </div>
 
       {/* New Food Modal */}
-      <NewFood visible={newShown} addFood={addFood} onClose={handleShowNewFood} />
+      <NewFood visible={newShown} 
+        addFood={(food) =>{
+            setNewShown(false);
+            setScannedFood(food);
+            setShowConfirmation(true);
+        }
+      } onClose={handleShowNewFood} />
 
       {/* Barcode Scanner Modal */}
       {showScanner && (
@@ -342,7 +348,7 @@ export default function DailyLog({ foods, dateId, dailyLogId }) {
       )}
 
       {showCustomFoods && (
-        <div className="fixed inset-0 bg-background">
+        <div className="fixed inset-0 bg-background w-full">
             <CustomFoods
               foods={customFoods}
               onAdd={(food) => {
