@@ -106,6 +106,7 @@ export default function ProgramTemplates({ setProgram, onNext }) {
                   <h3 className="text-lg inter-bold mb-2 text-primary-text">
                     {program.name} - Weekly Summary
                   </h3>
+                  <p className="text-secondary-text">{program.notes}</p>
                   {program.weeks[0]?.workouts?.length > 0 ? (
                     <div className="space-y-4">
                       {program.weeks[0].workouts.map((workout) => (
@@ -134,7 +135,6 @@ export default function ProgramTemplates({ setProgram, onNext }) {
                       No workouts found for Week 1.
                     </p>
                   )}
-                  <p className="text-secondary-text">{program.notes}</p>
                 </div>
               </div>
             </div>
