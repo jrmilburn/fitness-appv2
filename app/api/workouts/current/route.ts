@@ -62,6 +62,7 @@ export async function GET() {
         excercises: {
           include: {
             sets: { orderBy: { createdAt: 'asc' } },
+            muscleGroup: true
           },
           orderBy: { createdAt: 'asc' }, // Order exercises by creation time
         },
