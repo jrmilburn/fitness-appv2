@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Loader from "../Loader";
 import { useMediaQuery } from 'react-responsive';
 
-export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
+export default function AutoRegulationForm({ setSubmission, id, weekNo, excercise }) {
   const [soreness, setSoreness] = useState(null);
   const [jointpain, setJointPain] = useState(null);
   const [workload, setWorkload] = useState(null);
@@ -11,6 +11,8 @@ export default function AutoRegulationForm({ setSubmission, id, weekNo }) {
   const [isLoading, setIsLoading] = useState(false);
   const [err, setErr] = useState(false);
   const [show, setShow] = useState(false);
+
+  console.log(excercise);
 
   // Determine if the screen is mobile
   const isMobile = useMediaQuery({ maxWidth: 640 }); // Tailwind's 'sm' breakpoint is 640px

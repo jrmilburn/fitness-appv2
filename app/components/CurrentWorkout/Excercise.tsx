@@ -339,6 +339,7 @@ export default function Excercise({
                             setSubmission={setAutoRegulationSubmitted}
                             id={updatedExcercise.id}
                             weekNo={weekNo}
+                            excercise={updatedExcercise}
                         />
                     )}
                 </div>
