@@ -75,6 +75,27 @@ export default function Workout() {
 
   return (
     <div className='mx-auto flex flex-col items-center w-full sm:p-8 text-primary-text pb-20'>
+
+              {/* Navigation Buttons for Programs */}
+      {!isLoading && (
+        <div className="flex space-x-4 my-4">
+          <Link 
+            href="/create-program" 
+            className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
+          >
+            <PlusCircleIcon className="h-5 w-5 mr-2" />
+            New Program
+          </Link>
+          <Link 
+            href="/programs" 
+            className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
+          >
+            <ClipboardListIcon className="h-5 w-5 mr-2" />
+            View Programs
+          </Link>
+        </div>
+      )}
+
       {/* Workout Header */}
       {isLoading ? (
         <Skeleton height={40} width={300} />
@@ -87,26 +108,6 @@ export default function Workout() {
           week={week}
           setWeek={setWeek}
         />
-      )}
-
-      {/* Navigation Buttons for Programs */}
-      {!isLoading && (
-        <div className="flex space-x-4 my-4">
-          <Link 
-            href="/create-program" 
-            className="flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md"
-          >
-            <PlusCircleIcon className="h-5 w-5 mr-2" />
-            New Program
-          </Link>
-          <Link 
-            href="/programs" 
-            className="flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md"
-          >
-            <ClipboardListIcon className="h-5 w-5 mr-2" />
-            View Programs
-          </Link>
-        </div>
       )}
 
       {/* Exercise List */}
