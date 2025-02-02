@@ -5,7 +5,7 @@ import { authOptions } from '../lib/authOptions';
 import ProgramsList from '../components/Program/ProgramsList';
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import Link from 'next/link';
-import {ClipboardListIcon} from '@heroicons/react/outline';
+import {LightningBoltIcon} from '@heroicons/react/outline';
 
 export default async function Programs() {
     const userSession = await getServerSession(authOptions);
@@ -75,7 +75,7 @@ export default async function Programs() {
 
   return (
     <main className="max-w-screen-sm mx-auto h-100% pb-20 sm:pb-0">
-        <div className="flex space-x-4 my-4">
+        <div className="flex space-x-4 my-4 justify-center">
           <Link 
             href="/create-program" 
             className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
@@ -87,8 +87,8 @@ export default async function Programs() {
             href="/programs" 
             className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
           >
-            <ClipboardListIcon className="h-5 w-5 mr-2" />
-            View Programs
+            <LightningBoltIcon className="h-5 w-5 mr-2" />
+            Current Workout
           </Link>
         </div>
       <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">

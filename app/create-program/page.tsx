@@ -7,7 +7,7 @@ import ProgramTemplates from '../components/CreateProgram/Programtemplates';
 import { useState } from 'react';
 import Link from 'next/link';
 import { ClipboardListIcon } from '@heroicons/react/outline';
-import { PlusCircleIcon } from '@heroicons/react/solid';
+import { LightningBoltIcon } from '@heroicons/react/solid';
 
 
 export default function CreateProgram() {
@@ -37,8 +37,8 @@ export default function CreateProgram() {
                 href="/create-program" 
                 className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
               >
-                <PlusCircleIcon className="h-5 w-5 mr-2" />
-                New Program
+                <LightningBoltIcon className="h-5 w-5 mr-2" />
+                Current Workout
               </Link>
               <Link 
                 href="/programs" 
