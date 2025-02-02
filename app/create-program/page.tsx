@@ -5,6 +5,9 @@ import Programexcercises from '../components/CreateProgram/Programexcercises';
 import PreviousPrograms from '../components/CreateProgram/Previousprograms';
 import ProgramTemplates from '../components/CreateProgram/Programtemplates';
 import { useState } from 'react';
+import Link from 'next/link';
+import { ClipboardListIcon } from '@heroicons/react/outline';
+import { PlusCircleIcon } from '@heroicons/react/solid';
 
 
 export default function CreateProgram() {
@@ -28,6 +31,23 @@ export default function CreateProgram() {
 
     return (
         <main className="w-full h-100% pb-20 sm:pb-0 flex items-baseline">
+
+            <div className="flex space-x-4 my-4">
+              <Link 
+                href="/create-program" 
+                className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
+              >
+                <PlusCircleIcon className="h-5 w-5 mr-2" />
+                New Program
+              </Link>
+              <Link 
+                href="/programs" 
+                className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
+              >
+                <ClipboardListIcon className="h-5 w-5 mr-2" />
+                View Programs
+              </Link>
+            </div>
 
             {formPage === 0 ? (
                 <div className='flex flex-col space-y-4 w-full'>

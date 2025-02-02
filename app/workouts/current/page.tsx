@@ -76,7 +76,7 @@ export default function Workout() {
   return (
     <div className='mx-auto flex flex-col items-center w-full sm:p-8 text-primary-text pb-20'>
 
-              {/* Navigation Buttons for Programs */}
+    {/* Navigation Buttons for Programs */}
       {!isLoading && (
         <div className="flex space-x-4 my-4">
           <Link 
