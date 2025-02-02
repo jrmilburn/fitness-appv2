@@ -3,7 +3,6 @@
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,10 +22,6 @@ const updateThemeColor = () => {
 };
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname();
-
-  const hideNavbarPaths = ["/register", "/login"];
-  const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
 
   useEffect(() => {
     // Initialize pull-to-refresh
