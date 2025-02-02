@@ -102,7 +102,7 @@ export default function Navbar() {
           <Link href="/">
             <div className="flex flex-col items-center mb-8">
               <Image src="/logo.png" alt="Logo" width={80} height={80} />
-              <h2 className="font-bold text-3xl">MyApp</h2>
+              <h2 className="font-bold text-3xl">JFit</h2>
             </div>
           </Link>
           {/* Only the training links */}
@@ -151,7 +151,7 @@ export default function Navbar() {
             <li>
               <button
                 onClick={() => signOut()}
-                className="bg-red-500 text-white p-2 rounded"
+                className="bg-background-secondary text-xl rounded p-2 w-full"
               >
                 Sign Out
               </button>
@@ -187,7 +187,7 @@ export default function Navbar() {
             <MoonOutlineIcon className="h-6 w-6" />
           )}
         </button>
-        <button onClick={() => signOut()} className="bg-red-500 text-white p-2 rounded">
+        <button onClick={() => signOut()} className="bg-background-secondary text-xl rounded p-2 w-full">
           Sign Out
         </button>
       </div>
