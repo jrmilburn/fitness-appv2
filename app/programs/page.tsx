@@ -84,7 +84,7 @@ export default async function Programs() {
             New Program
           </Link>
           <Link 
-            href="/programs" 
+            href="/workouts/current" 
             className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
           >
             <LightningBoltIcon className="h-5 w-5 mr-2" />

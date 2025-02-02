@@ -32,9 +32,9 @@ export default function CreateProgram() {
     return (
         <main className="w-full h-100% pb-20 sm:pb-0 flex items-baseline">
 
-            <div className="flex space-x-4 my-4">
+            <div className="flex space-x-4 my-4 justify-center">
               <Link 
-                href="/create-program" 
+                href="/workouts/current" 
                 className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
               >
                 <LightningBoltIcon className="h-5 w-5 mr-2" />
