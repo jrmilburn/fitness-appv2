@@ -1,11 +1,9 @@
 "use client";
 
 import "./globals.css";
-import Navbar from "./components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { usePathname } from "next/navigation";
-import ChatIcon from "./components/ChatIcon/ChatIcon";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -121,7 +119,6 @@ export default function RootLayout({ children }) {
           className={`antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-auto pt-16 md:pt-0 bg-background text-primary-text dark:bg-background dark:text-primary-text font-sans inter-main`}
         >
           <ProtectedRoute>
-            {shouldShowNavbar && <Navbar />}
 
             <main
               className={`flex-grow inter-main ${
@@ -131,7 +128,6 @@ export default function RootLayout({ children }) {
               {children}
             </main>
 
-            {shouldShowNavbar && <ChatIcon />}
           </ProtectedRoute>
 
           <ToastContainer />
