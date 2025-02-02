@@ -121,9 +121,7 @@ export default function RootLayout({ children }) {
           <ProtectedRoute>
 
             <main
-              className={`flex-grow inter-main ${
-                shouldShowNavbar ? "sm:ml-80" : ""
-              } z-0 bg-background`}
+              className={`flex-grow inter-main z-0 bg-background`}
             >
               {children}
             </main>
