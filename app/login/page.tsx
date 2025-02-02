@@ -58,7 +58,7 @@ export default function Login() {
         const result = await signIn("credentials", {
           redirect: false,
           email,
-          otp: enteredOtp,
+          password: enteredOtp,
         });
 
         if (!result?.ok) {
