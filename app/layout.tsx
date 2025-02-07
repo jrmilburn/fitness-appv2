@@ -1,8 +1,11 @@
 "use client";
 
 import "./globals.css";
+import Navbar from "./components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { usePathname } from "next/navigation";
+import ChatIcon from "./components/ChatIcon/ChatIcon";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,6 +25,10 @@ const updateThemeColor = () => {
 };
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+
+  const hideNavbarPaths = ["/register", "/login"];
+  const shouldShowNavbar = !hideNavbarPaths.includes(pathname);
 
   useEffect(() => {
     // Initialize pull-to-refresh
@@ -114,13 +121,17 @@ export default function RootLayout({ children }) {
           className={`antialiased flex flex-col md:flex-row max-h-screen h-screen overflow-auto pt-16 md:pt-0 bg-background text-primary-text dark:bg-background dark:text-primary-text font-sans inter-main`}
         >
           <ProtectedRoute>
+            {shouldShowNavbar && <Navbar />}
 
             <main
-              className={`flex-grow inter-main z-0 bg-background`}
+              className={`flex-grow inter-main ${
+                shouldShowNavbar ? "sm:ml-80" : ""
+              } z-0 bg-background`}
             >
               {children}
             </main>
 
+            {shouldShowNavbar && <ChatIcon />}
           </ProtectedRoute>
 
           <ToastContainer />

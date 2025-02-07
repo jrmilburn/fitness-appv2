@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
 import Loader from '../Loader';
 import Workout from './Workout';
+import PremiumIcon from '../PremiumIcon'; 
 
 export default function ProgramExercises({ program, setProgram, type, onPrevious, clientId = null }) {
 
@@ -155,7 +156,9 @@ export default function ProgramExercises({ program, setProgram, type, onPrevious
             aria-label="Toggle Advanced Builder"
           >
             {advanced ? 'Switch to Basic Builder' : 'Switch to Advanced Builder'}
-
+            {session?.user?.role === "USER" && (
+              <PremiumIcon text='Advanced Builder is a premium feature' />
+            )}
           </button>
         </div>
 

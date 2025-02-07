@@ -4,8 +4,6 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '../lib/authOptions';
 import ProgramsList from '../components/Program/ProgramsList';
 import { PlusCircleIcon } from "@heroicons/react/outline";
-import Link from 'next/link';
-import {LightningBoltIcon} from '@heroicons/react/outline';
 
 export default async function Programs() {
     const userSession = await getServerSession(authOptions);
@@ -75,22 +73,6 @@ export default async function Programs() {
 
   return (
     <main className="max-w-screen-sm mx-auto h-100% pb-20 sm:pb-0">
-        <div className="flex space-x-4 my-4 justify-center">
-          <Link 
-            href="/create-program" 
-            className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
-          >
-            <PlusCircleIcon className="h-5 w-5 mr-2" />
-            New Program
-          </Link>
-          <Link 
-            href="/workouts/current" 
-            className="flex items-center px-4 py-2 bg-highlight text-white rounded-md"
-          >
-            <LightningBoltIcon className="h-5 w-5 mr-2" />
-            Current Workout
-          </Link>
-        </div>
       <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">
       <h1 className="text-2xl sm:text-3xl inter text-primary-text">Your Programs</h1>
       <button
