@@ -14,12 +14,8 @@ import {
   PlusCircleIcon as PlusCircleOutlineIcon,
   ClipboardListIcon as ClipboardListOutlineIcon,
   PencilAltIcon as PencilAltOutlineIcon,
-  UserGroupIcon as UserGroupOutlineIcon,
-  UserIcon as UserOutlineIcon,
   SearchIcon as SearchOutlineIcon,
-  CogIcon as CogOutlineIcon,
   MoonIcon as MoonOutlineIcon,
-  CreditCardIcon as CreditCardOutlineIcon,
 } from "@heroicons/react/outline";
 
 // Import Solid Icons
@@ -28,12 +24,8 @@ import {
   PlusCircleIcon as PlusCircleSolidIcon,
   ClipboardListIcon as ClipboardListSolidIcon,
   PencilAltIcon as PencilAltSolidIcon,
-  UserGroupIcon as UserGroupSolidIcon,
-  UserIcon as UserSolidIcon,
   SearchIcon as SearchSolidIcon,
-  CogIcon as CogSolidIcon,
   SunIcon as SunSolidIcon,
-  CreditCardIcon as CreditCardSolidIcon,
 } from "@heroicons/react/solid";
 
 import "remixicon/fonts/remixicon.css";
@@ -85,7 +77,7 @@ export default function Navbar() {
     });
   };
 
-  const getCurrentDateId = () => {
+  /*const getCurrentDateId = () => {
     const today = new Date();
     const day = String(today.getDate()).padStart(2, "0");
     const month = String(today.getMonth() + 1).padStart(2, "0");
@@ -93,7 +85,7 @@ export default function Navbar() {
     return `${day}${month}${year}`;
   };
 
-  const currentDateId = getCurrentDateId();
+  const currentDateId = getCurrentDateId();*/
 
   const NavItem = ({ href, label, IconOutline, IconSolid, isPremium = false }) => {
     const isActive =
@@ -171,66 +163,6 @@ export default function Navbar() {
           IconOutline: PencilAltOutlineIcon,
           IconSolid: PencilAltSolidIcon,
           isPremium: true,
-        },
-      ],
-    },
-    {
-      name: "Nutrition",
-      links: [
-        {
-          href: `/nutrition/log/${currentDateId}`,
-          label: "Log",
-          IconOutline: FoodOutlineIcon,
-          IconSolid: FoodSolidIcon,
-          isPremium: true,
-        },
-        {
-          href: "/custom-foods",
-          label: "Custom Foods",
-          IconOutline: PencilAltOutlineIcon,
-          IconSolid: PencilAltSolidIcon,
-          isPremium: true,
-        },
-      ],
-    },
-    {
-      name: "Coaching",
-      links: [
-        {
-          href: "/coaching/clients",
-          label: "Clients",
-          IconOutline: UserGroupOutlineIcon,
-          IconSolid: UserGroupSolidIcon,
-          isPremium: true,
-        },
-      ],
-    },
-    {
-      name: "User",
-      links: [
-        {
-          href: "/profile",
-          label: "Profile",
-          IconOutline: UserOutlineIcon,
-          IconSolid: UserSolidIcon,
-        },
-        {
-          href: "/search",
-          label: "Search",
-          IconOutline: SearchOutlineIcon,
-          IconSolid: SearchSolidIcon,
-        },
-        {
-          href: "/settings",
-          label: "Settings",
-          IconOutline: CogOutlineIcon,
-          IconSolid: CogSolidIcon,
-        },
-        {
-          href: "/subscription",
-          label: "Subscription",
-          IconOutline: CreditCardOutlineIcon,
-          IconSolid: CreditCardSolidIcon,
         },
       ],
     },
@@ -411,14 +343,9 @@ export default function Navbar() {
           IconSolid={SearchSolidIcon}
         />
         <QuickNavItem
-          href="/coaching/clients"
-          IconOutline={UserGroupOutlineIcon}
-          IconSolid={UserGroupSolidIcon}
-        />
-        <QuickNavItem
-          href="/profile"
-          IconOutline={UserOutlineIcon}
-          IconSolid={UserSolidIcon}
+          href="/create-program"
+          IconOutline={PlusCircleOutlineIcon}
+          IconSolid={PlusCircleSolidIcon}
         />
         <ChatIcon navbar={true} />
       </div>
