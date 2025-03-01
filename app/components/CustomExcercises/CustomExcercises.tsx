@@ -6,7 +6,6 @@ import NewExcercise from '../CreateProgram/NewExcercise';
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { useMediaQuery } from 'react-responsive';
 import { useSession } from 'next-auth/react';
-import PremiumIcon from '../PremiumIcon';
 
 export default function CustomExcercises({ excercises, muscleGroups }) {
   const [newShown, setNewShown] = useState(false);
@@ -72,7 +71,6 @@ export default function CustomExcercises({ excercises, muscleGroups }) {
     <div className="max-w-2xl flex flex-col mx-auto">
       <div className="flex w-full justify-between border-b-2 border-border p-4 items-center">
         <h2 className="relative text-2xl pr-4 sm:text-3xl text-primary-text">Custom Exercises
-          {session?.user?.role === "USER" && <PremiumIcon text={`Upgrade to premium for unlimited custom excercises. ${3 - customExcercises.length} remaining`}/>}
         </h2>
         <button
           className=" relative inter-bold border-2 p-2 hover:bg-background-secondary rounded flex gap-2 text-primary-text"

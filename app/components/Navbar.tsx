@@ -5,7 +5,6 @@ import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import PremiumIcon from "./PremiumIcon";
 import { useSession } from "next-auth/react";
 
 // Import Outline Icons
@@ -39,16 +38,12 @@ export const FoodSolidIcon = ({ className }) => (
   <i className={`ri-restaurant-fill ${className}`}></i> // Solid icon
 );
 
-import ChatIcon from "./ChatIcon/ChatIcon";
-
 export default function Navbar() {
   const [navOpen, setNavOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [shownSection, setShownSection] = useState(null);
 
   const pathname = usePathname();
-  const { data: session } = useSession();
-  const userRole = session?.user?.role || "USER";
 
   const toggleNav = () => setNavOpen(!navOpen);
 
@@ -87,7 +82,7 @@ export default function Navbar() {
 
   const currentDateId = getCurrentDateId();*/
 
-  const NavItem = ({ href, label, IconOutline, IconSolid, isPremium = false }) => {
+  const NavItem = ({ href, label, IconOutline, IconSolid }) => {
     const isActive =
       href.startsWith("/nutrition/log")
         ? pathname.startsWith("/nutrition/log")
@@ -106,9 +101,7 @@ export default function Navbar() {
             <IconOutline className="h-6 w-6 text-primary-text" />
           )}
           <span className={`${isActive ? "inter-bold" : "inter-main"}`}>{label}</span>
-          {isPremium && userRole !== "PREMIUM" && (
-            <PremiumIcon text={`${label} has premium features`} />
-          )}
+
         </Link>
       </li>
     );
@@ -149,7 +142,6 @@ export default function Navbar() {
           label: "New Program",
           IconOutline: PlusCircleOutlineIcon,
           IconSolid: PlusCircleSolidIcon,
-          isPremium: true,
         },
         {
           href: "/programs",
@@ -162,7 +154,6 @@ export default function Navbar() {
           label: "Custom Exercises",
           IconOutline: PencilAltOutlineIcon,
           IconSolid: PencilAltSolidIcon,
-          isPremium: true,
         },
       ],
     },
@@ -286,7 +277,6 @@ export default function Navbar() {
                           label={link.label}
                           IconOutline={link.IconOutline}
                           IconSolid={link.IconSolid}
-                          isPremium={link.isPremium}
                         />
                       ))}
                     </ul>
@@ -347,7 +337,6 @@ export default function Navbar() {
           IconOutline={PlusCircleOutlineIcon}
           IconSolid={PlusCircleSolidIcon}
         />
-        <ChatIcon navbar={true} />
       </div>
     </div>
   );
