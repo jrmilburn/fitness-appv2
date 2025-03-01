@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar";
 import { SessionProvider } from "next-auth/react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { usePathname } from "next/navigation";
-import ChatIcon from "./components/ChatIcon/ChatIcon";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -131,7 +130,6 @@ export default function RootLayout({ children }) {
               {children}
             </main>
 
-            {shouldShowNavbar && <ChatIcon />}
           </ProtectedRoute>
 
           <ToastContainer />
